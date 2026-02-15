@@ -1,3 +1,21 @@
+# Large image files
 *.ppm
+*.png
+
+# Executable binaries
 ray_tracer
+perlin_noise
+voronoi
+ray_sphere_intersection
+
+# Temporary status files
 status.json
+
+# Temp directory
+temp/
+
+# Deployment guide
+HEXO_DEPLOYMENT_GUIDE.md
+
+# Upload reports
+uploads_report.md
