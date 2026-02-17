@@ -1,6 +1,6 @@
 {
-  "date": "2026-02-15",
-  "projectName": "Ray-Sphere Intersection Visualization",
+  "date": "2026-02-17",
+  "projectName": "Perlin-Noise-Texture-Generator",
   "status": "completed",
   "attempts": 1,
   "progress": {
@@ -13,16 +13,24 @@
       "validation": true
     },
     "githubUpload": true,
-    "blogPublish": false
+    "blogPublish": true
   },
   "timeline": [
-    {"time": "10:00", "action": "开始项目规划"},
-    {"time": "10:02", "action": "规划完成，开始编写代码"},
-    {"time": "10:04", "action": "代码编写完成，开始编译"},
-    {"time": "10:05", "action": "编译成功：0错误0警告"},
-    {"time": "10:07", "action": "运行成功：成功生成图像文件"},
-    {"time": "10:35", "action": "GitHub上传完成：项目文件已成功提交到仓库"}
+    {"time": "10:00", "action": "项目启动，开始规划"},
+    {"time": "10:01", "action": "规划完成：Perlin Noise 程序化纹理生成器"},
+    {"time": "10:02", "action": "代码编写完成，已下载 stb_image_write.h"},
+    {"time": "10:03", "action": "开始编译"},
+    {"time": "10:04", "action": "编译成功（有警告但不影响），开始运行"},
+    {"time": "10:05", "action": "运行成功，生成 3 个纹理文件"},
+    {"time": "10:06", "action": "验证完成：所有文件 512x512 PNG 格式正确"},
+    {"time": "10:07", "action": "创建项目目录，编写 README"},
+    {"time": "10:08", "action": "Git 提交并推送到 GitHub 成功"},
+    {"time": "10:09", "action": "复制图片到博客 assets"},
+    {"time": "10:10", "action": "编写博客文章"},
+    {"time": "10:11", "action": "博客提交并推送成功"}
   ],
   "lastError": "",
-  "codeBackup": "/root/.openclaw/workspace/daily-coding-practice/.backup"
+  "codeBackup": "/root/.openclaw/workspace/daily-coding-practice/temp/",
+  "githubUrl": "https://github.com/chiuhoukazusa/daily-coding-practice/tree/main/2026/02/02-17-Perlin-Noise-Texture-Generator",
+  "blogUrl": "https://chiuhoukazusa.github.io/2026/02/17/daily-practice-perlin-noise.html"
 }
