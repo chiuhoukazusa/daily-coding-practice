@@ -15,7 +15,7 @@
 | 02-14 | Bresenham Line Algorithm | 像素绘制, 光栅化 | bresenham.png | ✅ 完成 |
 | 02-15 | Ray-Sphere Intersection V2 | 光线追踪优化 | render.png | ✅ 完成 |
 | 02-16 | Perlin Noise 地形生成 | Perlin Noise, 高度图 | terrain_512/1024.png | ✅ 完成 |
-| 02-17 | ⚠️ **重复项目** | ❌ 和02-10重复 | clouds/marble/wood.png | ⚠️ 需替换 |
+| 02-17 | Shadow Ray Tracing | 光线追踪, Shadow Ray, Phong光照, 多光源 | shadow_output.png | ✅ 完成 |
 
 ## 技术领域覆盖
 
@@ -25,14 +25,16 @@
 - [x] 光线追踪（Ray Tracing）
 - [x] 像素绘制算法（Bresenham）
 - [x] 高度图地形生成
+- [x] **阴影算法（Shadow Ray）** ← 今日新增
+- [x] **Phong光照模型** ← 今日新增
 
 ### 📋 待探索领域（优先级排序）
 
 #### 🔥 高优先级（立即可做）
-1. **阴影算法** - Shadow Mapping / Ray-traced Shadows
+1. ~~**阴影算法**~~ ✅ 已完成（2026-02-17）
 2. **反射/折射** - 递归光线追踪，透明材质
 3. **抗锯齿技术** - MSAA / SSAA / FXAA
-4. **Phong光照模型** - 环境光+漫反射+镜面反射
+4. ~~**Phong光照模型**~~ ✅ 已完成（2026-02-17）
 5. **纹理映射** - UV坐标，纹理采样
 
 #### ⭐ 中优先级（需要一定基础）
