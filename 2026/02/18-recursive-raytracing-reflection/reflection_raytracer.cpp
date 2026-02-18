@@ -210,9 +210,9 @@ int main() {
     Scene scene;
     
     // 添加球体（不同反射率）
-    // 中心大镜面球（高反射率）
+    // 中心大镜面球（高反射率，但保留足够的直接光照）
     scene.addSphere(Sphere(Vec3(0, 0, -5), 1.0, 
-                           Material(Vec3(0.9, 0.9, 0.9), 0.1, 0.9, 0.8)));
+                           Material(Vec3(0.9, 0.9, 0.9), 0.3, 0.9, 0.7)));
     
     // 左侧红色球（中等反射率）
     scene.addSphere(Sphere(Vec3(-2.5, 0, -4), 0.8, 
