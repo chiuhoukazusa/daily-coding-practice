@@ -1,6 +1,6 @@
 {
-  "date": "2026-02-18",
-  "projectName": "Perlin Noise 地形生成器",
+  "date": "2026-02-19",
+  "projectName": "递归光线追踪 - 折射效果（玻璃球）",
   "status": "in-progress",
   "attempts": 1,
   "progress": {
@@ -16,20 +16,17 @@
     "blogPublish": false
   },
   "timeline": [
-    {"time": "10:00", "action": "开始项目规划"},
-    {"time": "10:02", "action": "规划完成，选择项目：Perlin Noise 地形生成器"},
-    {"time": "10:02", "action": "开始编写代码"},
-    {"time": "10:06", "action": "代码编写完成（170行），开始编译"},
-    {"time": "10:07", "action": "✅ 编译成功（0错误0警告），开始运行"},
-    {"time": "10:08", "action": "✅ 运行成功，生成 terrain.ppm"},
-    {"time": "10:09", "action": "✅ 输出验证成功，转换为 PNG 格式"},
-    {"time": "10:09", "action": "核心开发完成，开始 GitHub 上传"}
+    {"time": "05:30", "action": "任务开始，读取技能文档"},
+    {"time": "05:32", "action": "检查重复项目 - 通过"},
+    {"time": "05:33", "action": "选择项目：递归光线追踪 - 折射效果（玻璃球）"},
+    {"time": "05:33", "action": "规划完成：基于昨日反射代码，添加折射和菲涅尔效应"},
+    {"time": "05:35", "action": "代码编写完成（340行），包含折射、Fresnel效应"},
+    {"time": "05:36", "action": "下载 stb_image_write.h"},
+    {"time": "05:36", "action": "编译成功！开始运行测试"},
+    {"time": "05:37", "action": "渲染完成（800x600，60KB PNG）"},
+    {"time": "05:38", "action": "输出验证通过：左球绿色、中球折射灰蓝、右球反射"},
+    {"time": "05:38", "action": "核心开发完成！开始 GitHub 上传"}
   ],
   "lastError": "",
-  "codeBackup": "/root/.openclaw/workspace/daily-coding-practice/temp/",
-  "iterationHistory": [
-    {"iteration": 1, "time": "10:07", "action": "编译", "result": "成功"},
-    {"iteration": 2, "time": "10:08", "action": "运行", "result": "成功"},
-    {"iteration": 3, "time": "10:09", "action": "验证输出", "result": "成功"}
-  ]
+  "codeBackup": "/root/.openclaw/workspace/daily-coding-practice/temp/"
 }
