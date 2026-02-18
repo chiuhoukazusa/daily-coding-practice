@@ -185,7 +185,7 @@ Vec3 trace(const Ray& ray, const Scene& scene, int depth) {
     
     // 递归反射
     if (hit_sphere->material.reflectivity > 0.0) {
-        Vec3 reflect_dir = (ray.direction * -1.0).reflect(normal);
+        Vec3 reflect_dir = ray.direction.reflect(normal);  // 修复：直接反射入射方向
         Ray reflect_ray(hit_point + normal * 1e-4, reflect_dir);
         Vec3 reflect_color = trace(reflect_ray, scene, depth - 1);
         color = color * (1.0 - hit_sphere->material.reflectivity) 
