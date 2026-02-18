@@ -1,13 +1,44 @@
 ---
-name: daily-coding-practice-iterative
-description: 每日编程实践（迭代版） - 每天完成一个可运行的小项目，自动迭代直到编译通过、运行成功、结果符合预期，并自动上传GitHub和博客
+name: daily-coding-practice
+description: 每日编程实践 - 每天一个可运行的小项目，持续迭代修复直到编译通过、运行成功、结果符合预期，并自动上传GitHub和博客。包含重复项目检测和博客部署验证功能。
 ---
 
-# Daily Coding Practice (Iterative) - 每日编程实践（迭代版）
+# Daily Coding Practice - 每日编程实践
 
 ## 目标
 
 每天完成一个可运行的小项目，**自动迭代修复问题**，直到编译通过、运行成功、输出符合预期，并自动完成代码上传和博客发布。
+
+## ⚠️ 强制性前置检查（防止重复项目）
+
+**在开始任何项目之前，必须执行以下检查**：
+
+### 1. 检查今日是否已有项目
+
+```bash
+cd /root/.openclaw/workspace/daily-coding-practice
+TODAY=$(date +%m-%d)
+if grep -q "| $TODAY |" PROJECT_INDEX.md; then
+    echo "❌ 今天已有项目！"
+    exit 1
+fi
+```
+
+### 2. 检查是否与近期项目重复
+
+使用本 skill 自带的 `check_duplicate.sh` 脚本：
+
+```bash
+cd /root/.openclaw/workspace/daily-coding-practice
+./scripts/check_duplicate.sh "项目名称"
+```
+
+**如果检测到重复**：
+- 停止当前流程
+- 从 PROJECT_INDEX.md 的"待探索领域"中选择其他项目
+- 重新运行重复检查
+
+**只有通过重复检查后，才能继续项目创建。**
 
 ## 核心流程
 
@@ -216,10 +247,25 @@ git push origin main
 - [ ] 无内存泄漏（如果使用 valgrind 检查）
 - [ ] 运行时间合理（不能超过 1 分钟）
 
-### ✅ 输出验证
+### ✅ 输出验证（必须量化检查）
 - [ ] 生成预期的输出文件（图片/数据/动画）
-- [ ] 输出结果在合理范围内
-- [ ] 视觉效果/数值结果符合预期
+- [ ] **量化验证**：不能仅凭"肉眼看"或"文件存在"就判断成功
+- [ ] **图片输出**：必须检查关键区域的实际像素值
+  ```bash
+  # 示例：检查图片中心区域颜色
+  convert output.png -crop 100x100+350+250 +repage -scale 1x1\! -format "%[pixel:u]" info:-
+  # 输出类似: srgb(50.9%,75.8%,65.4%)
+  # 验证 RGB 是否在预期范围内
+  ```
+- [ ] **数值输出**：验证计算结果的数量级和范围
+- [ ] **文本输出**：检查关键字段/格式是否正确
+- [ ] 视觉效果/数值结果符合**量化的预期标准**
+
+**反面教材（2026-02-18 递归光线追踪 Bug）：**
+- ❌ 错误做法：只检查 `reflection_output.png` 文件是否存在
+- ❌ 错误做法：只看 HTML 页面中图片链接是否存在
+- ✅ 正确做法：提取中心球区域像素，验证 RGB 值是否为黑色 (0,0,0)
+- 教训：即使代码运行无崩溃，输出结果可能完全错误（如反射向量计算Bug导致黑球）
 
 ### ✅ 代码质量
 - [ ] 代码有适当注释
@@ -304,6 +350,250 @@ git push origin main
 6. 清理调试代码
 7. 验证最终输出
 ```
+
+## 🔍 输出验证最佳实践（核心原则）
+
+**关键原则：永远不要相信"看起来对"或"文件存在"**
+
+### 为什么需要量化验证？
+
+**案例：2026-02-18 递归光线追踪 Bug**
+```
+问题：中心镜面球渲染为纯黑色
+原因：反射向量计算错误 (ray.direction * -1.0).reflect(normal)
+症状：
+  ✅ 编译通过
+  ✅ 运行无崩溃
+  ✅ 生成 PNG 文件
+  ❌ 但实际内容完全错误！
+
+错误验证方法：
+  ❌ 只检查 reflection_output.png 是否存在
+  ❌ 只检查 HTML 中图片链接是否 404
+  ❌ 只看图片"好像有颜色"
+
+正确验证方法：
+  ✅ 提取中心球区域像素值
+  ✅ 验证 RGB 是否为黑色 (0,0,0)
+  ✅ 检查是否符合预期的颜色范围
+
+修复后验证：
+  中心球 RGB(50.9%, 75.8%, 65.4%) ← 明亮的青绿色 ✅
+```
+
+### 图形学项目验证方法
+
+#### 1. 像素级验证（最严格）
+```bash
+# 检查特定区域的颜色
+# 参数：中心点 (x,y) 和采样区域大小
+check_region_color() {
+    local img=$1 x=$2 y=$3 size=$4
+    convert "$img" -crop ${size}x${size}+$((x-size/2))+$((y-size/2)) +repage \
+            -scale 1x1\! -format "RGB(%[fx:int(255*r)],%[fx:int(255*g)],%[fx:int(255*b)])" info:-
+}
+
+# 示例：检查 800x600 图片的中心球（假设在 400,300）
+COLOR=$(check_region_color reflection_output.png 400 300 100)
+echo "中心球颜色: $COLOR"
+
+# 验证不是纯黑
+if [[ "$COLOR" == "RGB(0,0,0)" ]] || [[ "$COLOR" =~ RGB\([0-9],.*\) ]]; then
+    echo "❌ 中心球是黑色！验证失败"
+    exit 1
+fi
+```
+
+#### 2. 统计验证（检查颜色分布）
+```bash
+# 检查图片的颜色统计信息
+identify -verbose output.png | grep -A 3 "Channel statistics"
+
+# 示例输出：
+#   Red:
+#     min: 10  (0.0392)
+#     max: 255 (1.0)
+#     mean: 139.787 (0.548)
+
+# 如果 min=max=0 → 全黑图片
+# 如果 mean < 0.1 → 整体太暗
+```
+
+#### 3. 直方图验证（检测异常）
+```bash
+# 生成直方图并检查是否存在颜色变化
+convert output.png -format "%c" histogram:info:- | head -20
+
+# 如果只有 1-2 种颜色 → 可能有问题
+# 如果全是黑色 (0,0,0) → 明显错误
+```
+
+### 数值计算项目验证方法
+
+#### 1. 边界值检查
+```cpp
+// 检查输出是否在合理范围内
+assert(result >= min_expected && result <= max_expected);
+
+// 示例：Perlin 噪声应该在 [-1, 1]
+double noise_val = perlin(x, y);
+assert(noise_val >= -1.0 && noise_val <= 1.0);
+```
+
+#### 2. 统计特性验证
+```cpp
+// 检查平均值、方差等统计特性
+vector<double> samples;
+for (int i = 0; i < 1000; i++) {
+    samples.push_back(compute());
+}
+double mean = accumulate(samples.begin(), samples.end(), 0.0) / samples.size();
+cout << "平均值: " << mean << " (预期: " << expected_mean << ")" << endl;
+
+// 如果偏差过大 → 有 Bug
+assert(abs(mean - expected_mean) < tolerance);
+```
+
+#### 3. 单调性/对称性验证
+```cpp
+// 检查函数性质
+assert(func(x) <= func(x+1));  // 单调递增
+assert(func(x) == func(-x));   // 对称性
+assert(func(0) == 0);          // 边界条件
+```
+
+### 算法可视化项目验证方法
+
+#### 1. 关键帧检查
+```bash
+# 检查动画的关键帧
+for frame in 0 50 100; do
+    echo "Frame $frame:"
+    check_region_color "animation_${frame}.png" 400 300 50
+done
+
+# 验证动画是否有变化（不是静态图）
+FRAME0=$(md5sum animation_0.png | cut -d' ' -f1)
+FRAME50=$(md5sum animation_50.png | cut -d' ' -f1)
+if [[ "$FRAME0" == "$FRAME50" ]]; then
+    echo "❌ 动画没有变化！"
+    exit 1
+fi
+```
+
+#### 2. 轨迹验证
+```cpp
+// 记录并验证算法轨迹
+vector<Point> visited;
+algorithm(start, goal, visited);
+
+// 检查起点和终点
+assert(visited.front() == start);
+assert(visited.back() == goal);
+
+// 检查路径连续性
+for (size_t i = 1; i < visited.size(); i++) {
+    assert(is_adjacent(visited[i-1], visited[i]));
+}
+```
+
+### Python 辅助验证脚本示例
+
+```python
+#!/usr/bin/env python3
+"""
+图像验证工具 - 用于检查渲染输出是否正确
+用法: ./validate_output.py reflection_output.png --center 400,300 --size 100
+"""
+from PIL import Image
+import numpy as np
+import sys
+
+def validate_region(img_path, center_x, center_y, size):
+    img = Image.open(img_path)
+    pixels = np.array(img)
+    
+    # 提取中心区域
+    half_size = size // 2
+    region = pixels[
+        center_y-half_size:center_y+half_size,
+        center_x-half_size:center_x+half_size
+    ]
+    
+    # 统计
+    mean_color = region.mean(axis=(0,1))
+    min_color = region.min(axis=(0,1))
+    max_color = region.max(axis=(0,1))
+    
+    print(f"区域 ({center_x},{center_y}) 大小 {size}x{size}:")
+    print(f"  平均颜色: RGB({mean_color[0]:.1f}, {mean_color[1]:.1f}, {mean_color[2]:.1f})")
+    print(f"  最小值: RGB({min_color[0]}, {min_color[1]}, {min_color[2]})")
+    print(f"  最大值: RGB({max_color[0]}, {max_color[1]}, {max_color[2]})")
+    
+    # 检查是否是黑色
+    is_black = (mean_color < 10).all()
+    if is_black:
+        print("❌ 该区域是纯黑色！")
+        return False
+    else:
+        print("✅ 该区域有颜色")
+        return True
+
+if __name__ == "__main__":
+    # 示例用法
+    validate_region(sys.argv[1], 400, 300, 100)
+```
+
+### 验证清单（必须全部通过）
+
+**图形学项目：**
+- [ ] 输出文件存在且非空（文件大小 > 1KB）
+- [ ] 关键区域像素值检查（非全黑/全白/纯色）
+- [ ] 颜色统计正常（min/max/mean 在合理范围）
+- [ ] 视觉效果符合预期（人工检查，但不能只靠这个）
+
+**数值计算项目：**
+- [ ] 输出值在预期范围内（边界检查）
+- [ ] 统计特性正确（均值/方差/分布）
+- [ ] 边界条件/特殊情况测试通过
+- [ ] 与已知正确结果对比（如果有参考实现）
+
+**算法项目：**
+- [ ] 算法正确性验证（输出路径/结果正确）
+- [ ] 性能指标达标（时间/空间复杂度）
+- [ ] 边界情况测试（空输入/极端值）
+- [ ] 可视化输出清晰（如果有）
+
+### 何时可以跳过量化验证？
+
+**只有以下情况可以适当简化验证：**
+1. 交互式工具（需要人工操作才能看到结果）
+2. 随机生成内容（每次结果不同，只能检查统计特性）
+3. 性能测试（主要关注时间/内存，而非输出内容）
+
+**但即使在这些情况下，也应该：**
+- 检查输出格式正确
+- 验证统计特性在合理范围
+- 测试边界情况不会崩溃
+
+### 教训总结
+
+> **"It works on my machine" 是不够的**
+> **"The file exists" 是不够的**
+> **"Looks good to me" 是不够的**
+> 
+> **唯一可靠的验证：量化检查实际输出内容**
+
+记住 2026-02-18 的教训：
+- 代码编译通过 ✅
+- 程序运行无崩溃 ✅
+- 生成了 PNG 文件 ✅
+- 图片链接返回 200 ✅
+- **但中心球是纯黑的** ❌
+
+如果当时做了量化验证（检查中心球 RGB 值），能立即发现问题！
+
+
 
 ## 时间管理
 
