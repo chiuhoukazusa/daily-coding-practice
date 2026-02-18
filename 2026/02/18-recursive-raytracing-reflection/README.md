@@ -64,11 +64,11 @@ struct Material {
 ```
 
 **场景中的材质配置**：
-- 中心银色球：`reflectivity = 0.8`（高反射，几乎是镜子）
-- 左侧红球：`reflectivity = 0.4`（中等反射）
-- 右侧蓝球：`reflectivity = 0.2`（轻微反射）
-- 地面：`reflectivity = 0.0`（无反射，纯漫反射）
-- 顶部金球：`reflectivity = 0.6`（较高反射）
+- 中心银色球：`diffuse=0.3, reflectivity=0.7`（较强反射 + 适量漫反射，避免过暗）
+- 左侧红球：`diffuse=0.6, reflectivity=0.4`（中等反射）
+- 右侧蓝球：`diffuse=0.8, reflectivity=0.2`（轻微反射）
+- 地面：`diffuse=0.9, reflectivity=0.0`（无反射，纯漫反射）
+- 顶部金球：`diffuse=0.3, reflectivity=0.6`（较高反射）
 
 ### 4. 完整的光照模型
 
@@ -96,12 +96,14 @@ struct Material {
 
 ### 迭代历史
 
-1. **初始版本** - 编译错误：`Vec3 * Vec3` 运算符未定义
-2. **第一次修复** - 添加 `Vec3 operator*(const Vec3&)` 逐分量乘法
-3. **最终版本** - ✅ 编译通过，运行成功，生成镜面反射图像
+1. **v1** - 编译错误：`Vec3 * Vec3` 运算符未定义
+2. **v2** - 修复：添加 `Vec3 operator*(const Vec3&)` 逐分量乘法
+3. **v3** - 编译通过，运行成功
+4. **v4** - 发现问题：中心银球过暗（diffuse太低+reflectivity太高）
+5. **v5** - 最终版本：调整材质参数（diffuse 0.1→0.3, reflectivity 0.8→0.7）✅
 
-**迭代次数**: 2次  
-**开发时间**: 约15分钟
+**迭代次数**: 5次  
+**开发时间**: 约25分钟（含修复）
 
 ### 遇到的问题与解决
 
@@ -118,6 +120,33 @@ Vec3 color = scene.ambient * hit_sphere->material.color;
 Vec3 operator*(const Vec3& v) const { 
     return Vec3(x * v.x, y * v.y, z * v.z); 
 }
+```
+
+---
+
+**问题2**: 中心银球过暗
+
+**现象**: 渲染后发现中心银球非常暗，几乎看不清
+
+**根因分析**:
+```cpp
+// 原始材质: Material(Vec3(0.9, 0.9, 0.9), 0.1, 0.9, 0.8)
+//                                         ↑       ↑
+//                                    diffuse=0.1  reflectivity=0.8
+```
+
+- 漫反射系数太低 (0.1) → 直接光照很弱
+- 反射率太高 (0.8) → 大部分颜色来自反射
+- 颜色混合公式: `color = direct * 0.2 + reflected * 0.8`
+- 当反射周围物体（暗色地面等）时 → 最终颜色很暗
+
+**解决**: 平衡材质参数
+```cpp
+// 修复后: Material(Vec3(0.9, 0.9, 0.9), 0.3, 0.9, 0.7)
+//                                       ↑       ↑
+//                                  diffuse=0.3  reflectivity=0.7
+
+// 效果: 保持30%直接光照 + 70%反射 → 球体更亮且仍有强烈反射效果
 ```
 
 ## 技术要点
