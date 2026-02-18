@@ -64,11 +64,16 @@ struct Material {
 ```
 
 **场景中的材质配置**：
-- 中心银色球：`diffuse=0.3, reflectivity=0.7`（较强反射 + 适量漫反射，避免过暗）
+- 中心银色球：`diffuse=0.0, reflectivity=1.0`（**纯镜面反射**，完全镜子效果）
 - 左侧红球：`diffuse=0.6, reflectivity=0.4`（中等反射）
 - 右侧蓝球：`diffuse=0.8, reflectivity=0.2`（轻微反射）
 - 地面：`diffuse=0.9, reflectivity=0.0`（无反射，纯漫反射）
 - 顶部金球：`diffuse=0.3, reflectivity=0.6`（较高反射）
+
+**光照配置**：
+- 主光源：`intensity = 1.5`（右上方白光，增强亮度）
+- 副光源：`intensity = 1.0`（左上方微蓝光，增强亮度）
+- 环境光：`ambient = 0.2`（全局基础亮度）
 
 ### 4. 完整的光照模型
 
@@ -100,10 +105,11 @@ struct Material {
 2. **v2** - 修复：添加 `Vec3 operator*(const Vec3&)` 逐分量乘法
 3. **v3** - 编译通过，运行成功
 4. **v4** - 发现问题：中心银球过暗（diffuse太低+reflectivity太高）
-5. **v5** - 最终版本：调整材质参数（diffuse 0.1→0.3, reflectivity 0.8→0.7）✅
+5. **v5** - 尝试修复：调整材质参数（diffuse 0.1→0.3, reflectivity 0.8→0.7）
+6. **v6** - 最终版本：**纯镜面反射** (diffuse=0.0, reflectivity=1.0) + 增强光源 ✅
 
-**迭代次数**: 5次  
-**开发时间**: 约25分钟（含修复）
+**迭代次数**: 6次  
+**开发时间**: 约35分钟（含多次迭代和调试）
 
 ### 遇到的问题与解决
 
@@ -124,7 +130,7 @@ Vec3 operator*(const Vec3& v) const {
 
 ---
 
-**问题2**: 中心银球过暗
+**问题2**: 中心银球过暗（迭代v4→v5）
 
 **现象**: 渲染后发现中心银球非常暗，几乎看不清
 
@@ -140,9 +146,33 @@ Vec3 operator*(const Vec3& v) const {
 - 颜色混合公式: `color = direct * 0.2 + reflected * 0.8`
 - 当反射周围物体（暗色地面等）时 → 最终颜色很暗
 
-**解决**: 平衡材质参数
-```cpp
-// 修复后: Material(Vec3(0.9, 0.9, 0.9), 0.3, 0.9, 0.7)
+**第一次尝试**: 平衡材质参数
+//                                         ↑0.3   ↑0.7
+// 效果: 保持30%直接光照 + 70%反射 → 球体稍亮但仍不理想
+```
+
+---
+
+**问题3**: 中心银球仍然偏暗（最终优化v5→v6）
+
+**现象**: v5虽然比v4亮了一些，但作为"镜面球"仍然不够明亮清晰
+
+**根本原因**: 
+- 镜面球的本质是**反射环境**，而不是自己发光
+- 如果环境光照不够亮 → 反射出来的内容也暗
+- 混合模式（部分漫反射 + 部分反射）对于"镜子"来说不够纯粹
+
+**最终解决方案**: 纯镜面反射 + 增强环境光照
+//                                            ↑0.0   ↑1.0
+// 效果: 100%反射，0%漫反射 → 完全镜子
+
+// 同时增强光源:
+Light(Vec3(5, 5, -2), Vec3(1, 1, 1), 1.5)        // 主光源 1.0→1.5
+Light(Vec3(-5, 3, -3), Vec3(0.9, 0.9, 1.0), 1.0) // 副光源 0.6→1.0
+Scene.ambient = Vec3(0.2, 0.2, 0.2)             // 环境光 0.1→0.2
+
+// 原理: 让环境更明亮 → 镜面球反射的内容自然也更明亮清晰 ✅
+```
 //                                       ↑       ↑
 //                                  diffuse=0.3  reflectivity=0.7
 
@@ -153,8 +183,6 @@ Vec3 operator*(const Vec3& v) const {
 
 ### 递归深度控制
 
-```cpp
-const int max_depth = 5;
 Vec3 color = trace(ray, scene, max_depth);
 ```
 
@@ -165,8 +193,6 @@ Vec3 color = trace(ray, scene, max_depth);
 
 ### 防止自相交
 
-```cpp
-Ray reflect_ray(hit_point + normal * 1e-4, reflect_dir);
 ```
 
 **偏移量的作用**：
@@ -176,8 +202,6 @@ Ray reflect_ray(hit_point + normal * 1e-4, reflect_dir);
 
 ### 颜色混合策略
 
-```cpp
-color = color * (1.0 - reflectivity) + reflect_color * reflectivity;
 ```
 
 **物理意义**：
