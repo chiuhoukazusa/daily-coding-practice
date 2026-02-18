@@ -110,7 +110,7 @@ struct Scene {
     std::vector<Light> lights;
     Vec3 ambient;
     
-    Scene() : ambient(0.1, 0.1, 0.1) {}
+    Scene() : ambient(0.2, 0.2, 0.2) {}  // 增强环境光
     
     void addSphere(const Sphere& sphere) { spheres.push_back(sphere); }
     void addLight(const Light& light) { lights.push_back(light); }
@@ -210,9 +210,9 @@ int main() {
     Scene scene;
     
     // 添加球体（不同反射率）
-    // 中心大镜面球（高反射率，但保留足够的直接光照）
+    // 中心大镜面球（纯镜面反射，完全镜子效果）
     scene.addSphere(Sphere(Vec3(0, 0, -5), 1.0, 
-                           Material(Vec3(0.9, 0.9, 0.9), 0.3, 0.9, 0.7)));
+                           Material(Vec3(1.0, 1.0, 1.0), 0.0, 1.0, 1.0)));
     
     // 左侧红色球（中等反射率）
     scene.addSphere(Sphere(Vec3(-2.5, 0, -4), 0.8, 
@@ -230,9 +230,9 @@ int main() {
     scene.addSphere(Sphere(Vec3(0, 1.5, -4), 0.5, 
                            Material(Vec3(1.0, 0.84, 0.0), 0.3, 0.7, 0.6)));
     
-    // 添加光源
-    scene.addLight(Light(Vec3(5, 5, -2), Vec3(1, 1, 1), 1.0));
-    scene.addLight(Light(Vec3(-5, 3, -3), Vec3(0.8, 0.8, 1.0), 0.6));
+    // 添加光源（增强亮度）
+    scene.addLight(Light(Vec3(5, 5, -2), Vec3(1, 1, 1), 1.5));      // 主光源增强
+    scene.addLight(Light(Vec3(-5, 3, -3), Vec3(0.9, 0.9, 1.0), 1.0)); // 副光源增强
     
     // 渲染
     std::vector<unsigned char> image(width * height * 3);
