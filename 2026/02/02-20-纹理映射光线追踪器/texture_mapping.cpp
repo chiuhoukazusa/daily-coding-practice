@@ -200,6 +200,9 @@ int main() {
             double px = (2.0 * (x + 0.5) / width - 1.0) * tan(fov/2) * aspectRatio;
             double py = (1.0 - 2.0 * (y + 0.5) / height) * tan(fov/2);
             
+            // ✅ 修复：up向量指向下方（-Y），需要翻转py
+            py = -py;
+            
             Vec3 rayDir = (forward + right * px + up * py).normalize();
             Ray ray(cameraPos, rayDir);
             
