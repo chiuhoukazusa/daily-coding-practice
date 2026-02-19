@@ -2,8 +2,8 @@
 *.ppm
 
 # Output images (keep only in blog_img repo)
-*_output.png
-output.png
+# Ignore ALL .png files except those explicitly added with git add -f
+*.png
 
 # Executable binaries (all executables)
 # Specific known executables
