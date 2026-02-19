@@ -173,7 +173,47 @@ git commit -m "Daily Practice: ${DATE} - ${PROJECT_NAME}"
 git push origin main
 ```
 
-### 4. 博客发布阶段（Hexo）
+### 4. 图片上传阶段（blog_img）
+
+**⚠️ 关键要求**：必须先上传图片到 blog_img 仓库，再发布博客！
+
+```bash
+# 图片托管仓库路径
+BLOG_IMG_DIR="/root/.openclaw/workspace/blog_img"
+
+# 验证路径存在
+if [ ! -d "$BLOG_IMG_DIR" ]; then
+    echo "❌ 错误：图片仓库不存在: $BLOG_IMG_DIR"
+    exit 1
+fi
+
+# 创建项目图片目录
+IMG_PROJECT_DIR="$BLOG_IMG_DIR/2026/02/${DATE}-${PROJECT_NAME}"
+mkdir -p "$IMG_PROJECT_DIR"
+
+# 复制输出图片
+cp $PROJECT_DIR/*.png "$IMG_PROJECT_DIR/"
+
+# 提交并推送到 GitHub
+cd $BLOG_IMG_DIR
+git add .
+git commit -m "Add: ${PROJECT_NAME} 输出图片 - $(date +%Y-%m-%d)"
+git push origin main
+
+# 验证图片可访问性（等待 GitHub 更新）
+sleep 3
+IMG_URL="https://raw.githubusercontent.com/chiuhoukazusa/blog_img/main/2026/02/${DATE}-${PROJECT_NAME}/output.png"
+HTTP_CODE=$(curl -o /dev/null -s -w "%{http_code}" "$IMG_URL")
+
+if [ "$HTTP_CODE" != "200" ]; then
+    echo "⚠️ 警告：图片尚未可访问 (HTTP $HTTP_CODE)，等待 GitHub CDN 刷新..."
+    sleep 5
+fi
+
+echo "✅ 图片已上传：$IMG_URL"
+```
+
+### 5. 博客发布阶段（Hexo）
 
 **⚠️ 关键要求**：必须使用正确的 Hexo 源码仓库路径！
 
@@ -321,10 +361,12 @@ fi
 - [ ] 目录结构清晰
 
 ### ✅ 上传完成
-- [ ] GitHub 仓库已更新
+- [ ] GitHub 代码仓库已更新
+- [ ] **图片已上传到 blog_img 仓库**（必须在博客发布前完成）
+- [ ] **验证图片 URL 可访问**（HTTP 200）
 - [ ] 博客文章已发布到 **正确的 Hexo 仓库**（`chiuhou-blog-source`）
-- [ ] 输出图片已上传到 GitHub
 - [ ] **验证博客路径**：必须是 `chiuhou-blog-source/source/_posts/` 而非老博客
+- [ ] **验证封面图和文章图片链接正确**
 
 ## 项目主题库
 
