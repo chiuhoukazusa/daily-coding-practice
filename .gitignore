@@ -1,21 +1,43 @@
 # Large image files
 *.ppm
-*.png
 
-# Executable binaries
+# Output images (keep only in blog_img repo)
+*_output.png
+output.png
+
+# Executable binaries (all executables)
+# Specific known executables
 ray_tracer
 perlin_noise
 voronoi
 ray_sphere_intersection
+raytracer
+refraction
+texture_mapping
+shadow_raytracer
+reflection_raytracer
+cohen_sutherland
+bresenham_output
+
+# Python cache
+__pycache__/
+*.pyc
 
 # Temporary status files
 status.json
 
-# Temp directory
+# Temp and backup directories
 temp/
+.backup/
 
 # Deployment guide
 HEXO_DEPLOYMENT_GUIDE.md
 
 # Upload reports
 uploads_report.md
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*~
