@@ -173,20 +173,37 @@ git commit -m "Daily Practice: ${DATE} - ${PROJECT_NAME}"
 git push origin main
 ```
 
-### 4. 博客发布阶段
-```bash
-# 切换到博客仓库
-cd /root/.openclaw/workspace/chiuhoukazusa.github.io
+### 4. 博客发布阶段（Hexo）
 
-# 创建博客文章
-BLOG_FILE="_posts/$(date +%Y-%m-%d)-daily-practice-${PROJECT_NAME}.md"
+**⚠️ 关键要求**：必须使用正确的 Hexo 源码仓库路径！
+
+```bash
+# ✅ 正确的博客仓库路径
+BLOG_SOURCE_DIR="/root/.openclaw/workspace/chiuhou-blog-source"
+
+# 验证路径存在
+if [ ! -d "$BLOG_SOURCE_DIR" ]; then
+    echo "❌ 错误：Hexo 源码仓库不存在: $BLOG_SOURCE_DIR"
+    exit 1
+fi
+
+# 切换到 Hexo 源码仓库
+cd $BLOG_SOURCE_DIR
+
+# 创建博客文章（Hexo Markdown 格式）
+BLOG_FILE="source/_posts/daily-coding-${PROJECT_NAME}-$(date +%Y-%m-%d).md"
 cat > $BLOG_FILE <<EOF
 ---
-layout: post
 title: "每日编程实践: ${PROJECT_NAME}"
-date: $(date +"%Y-%m-%d %H:%M:%S +0800")
-categories: [编程实践, C++]
-tags: [每日一练, 图形学, 算法]
+date: $(date +"%Y-%m-%d %H:%M:%S")
+tags:
+  - 每日一练
+  - 图形学
+  - 算法
+  - C++
+categories:
+  - 编程实践
+cover: https://raw.githubusercontent.com/chiuhoukazusa/blog_img/main/${PROJECT_DIR}/output.png
 ---
 
 # ${PROJECT_NAME}
@@ -208,7 +225,7 @@ tags: [每日一练, 图形学, 算法]
 \`\`\`
 
 ## 运行结果
-![输出结果]({{ site.baseurl }}/assets/images/${DATE}-result.png)
+![输出结果](https://raw.githubusercontent.com/chiuhoukazusa/blog_img/main/${PROJECT_DIR}/output.png)
 
 ## 技术总结
 - [学到的技术点1]
@@ -216,7 +233,7 @@ tags: [每日一练, 图形学, 算法]
 - [遇到的坑和解决方案]
 
 ## 代码仓库
-GitHub: [链接到 daily-coding-practice 仓库]
+GitHub: https://github.com/chiuhoukazusa/daily-coding-practice/tree/main/${PROJECT_DIR}
 
 ---
 **完成时间**: $(date +"%Y-%m-%d %H:%M")  
@@ -224,15 +241,46 @@ GitHub: [链接到 daily-coding-practice 仓库]
 **编译器**: g++ 12.3.1
 EOF
 
-# 复制输出图片到博客 assets
-mkdir -p assets/images
-cp $PROJECT_DIR/output.png assets/images/${DATE}-result.png
+# Hexo 生成和部署
+hexo clean
+hexo generate
+hexo deploy
 
-# Git 提交并推送
-git add .
-git commit -m "Daily Practice: ${PROJECT_NAME}"
-git push origin main
+# 验证部署成功
+if [ $? -eq 0 ]; then
+    echo "✅ 博客发布成功"
+else
+    echo "❌ 博客发布失败"
+    exit 1
+fi
 ```
+
+**关键变更说明**：
+1. ✅ 使用正确路径：`chiuhou-blog-source`（Hexo）而非 `chiuhoukazusa.github.io`（Jekyll 老博客）
+2. ✅ 使用 Hexo 命令：`hexo clean && hexo generate && hexo deploy`
+3. ✅ 正确的 Front Matter 格式（YAML 列表格式）
+4. ✅ 图片路径使用 GitHub raw URL（已上传到 blog_img 仓库）
+5. ✅ 添加路径验证：发布前检查仓库是否存在
+
+**常见错误对比**：
+
+| 错误做法 | 正确做法 | 说明 |
+|---------|---------|------|
+| ❌ `chiuhoukazusa.github.io` | ✅ `chiuhou-blog-source` | Jekyll vs Hexo |
+| ❌ `_posts/` | ✅ `source/_posts/` | Hexo 源码路径 |
+| ❌ `layout: post` | ✅ `title: xxx` | Hexo Front Matter |
+| ❌ `git push` 直接推送 | ✅ `hexo deploy` | Hexo 部署命令 |
+| ❌ 不验证路径 | ✅ `if [ ! -d ... ]` | 执行前检查 |
+
+**为什么会犯这个错误**：
+- SKILL.md 中的示例代码是为 Jekyll 博客编写的
+- 没有适配 Hexo 博客系统
+- 缺少环境检测和路径验证
+
+**如何避免**：
+- 执行前必须验证博客仓库路径
+- 检查是否存在 `_config.yml`（Hexo）或 `_config.yml`（Jekyll）
+- 使用对应的部署命令（`hexo deploy` vs `git push`）
 
 ## 验收标准
 
@@ -274,8 +322,9 @@ git push origin main
 
 ### ✅ 上传完成
 - [ ] GitHub 仓库已更新
-- [ ] 博客文章已发布
-- [ ] 输出图片已上传
+- [ ] 博客文章已发布到 **正确的 Hexo 仓库**（`chiuhou-blog-source`）
+- [ ] 输出图片已上传到 GitHub
+- [ ] **验证博客路径**：必须是 `chiuhou-blog-source/source/_posts/` 而非老博客
 
 ## 项目主题库
 
