@@ -1,7 +1,7 @@
 {
   "date": "2026-02-19",
   "projectName": "递归光线追踪 - 折射效果（玻璃球）",
-  "status": "in-progress",
+  "status": "completed",
   "attempts": 1,
   "progress": {
     "coreDevCompleted": true,
@@ -12,8 +12,8 @@
       "running": true,
       "validation": true
     },
-    "githubUpload": false,
-    "blogPublish": false
+    "githubUpload": true,
+    "blogPublish": true
   },
   "timeline": [
     {"time": "05:30", "action": "任务开始，读取技能文档"},
@@ -25,7 +25,17 @@
     {"time": "05:36", "action": "编译成功！开始运行测试"},
     {"time": "05:37", "action": "渲染完成（800x600，60KB PNG）"},
     {"time": "05:38", "action": "输出验证通过：左球绿色、中球折射灰蓝、右球反射"},
-    {"time": "05:38", "action": "核心开发完成！开始 GitHub 上传"}
+    {"time": "05:38", "action": "核心开发完成！开始 GitHub 上传"},
+    {"time": "05:39", "action": "创建项目目录 2026/02/02-19-refraction-glass-ball"},
+    {"time": "05:40", "action": "复制代码文件和输出图片"},
+    {"time": "05:41", "action": "编写 README.md（3.5KB）"},
+    {"time": "05:42", "action": "Git commit 并 push 成功"},
+    {"time": "05:42", "action": "GitHub 上传完成！开始博客发布"},
+    {"time": "05:43", "action": "创建博客文章（5.5KB）"},
+    {"time": "05:44", "action": "复制图片到 assets/images/"},
+    {"time": "05:45", "action": "博客 Git commit 并 push 成功"},
+    {"time": "05:45", "action": "博客发布完成！更新 PROJECT_INDEX.md"},
+    {"time": "05:46", "action": "✅ 所有阶段完成！"}
   ],
   "lastError": "",
   "codeBackup": "/root/.openclaw/workspace/daily-coding-practice/temp/"

@@ -211,12 +211,19 @@ Vec3 trace(const Ray& ray, const Scene& scene, int depth) {
         return ambient + color;
     }
     else if (hitSphere->material == METAL) {
-        // 镜面反射
+        // 镜面反射（金属）
         Vec3 reflectDir = ray.direction.reflect(normal);
         Ray reflectRay(hitPoint, reflectDir);
         Vec3 reflectColor = trace(reflectRay, scene, depth - 1);
         
-        return reflectColor * 0.9;  // 90% 反射
+        // ✅ 修复：金属反射必须乘上金属本身的颜色（金黄色）
+        // 否则就是无色镜子，看起来像透明材质
+        Vec3 metalColor = hitSphere->color;
+        return Vec3(
+            reflectColor.x * metalColor.x,
+            reflectColor.y * metalColor.y,
+            reflectColor.z * metalColor.z
+        ) * 0.9;  // 90% 能量保留
     }
     else if (hitSphere->material == GLASS) {
         // 玻璃材质：反射 + 折射
@@ -269,9 +276,10 @@ int main() {
     Scene scene;
     
     // 添加球体：左（漫反射绿球）、中（玻璃球）、右（金属球）
-    scene.addSphere(Sphere(Vec3(-2.5, 0, -10), 1.5, Vec3(0.2, 0.8, 0.2), DIFFUSE));
+    // 球心间距改为 4.0，避免重叠（半径1.5，间距至少要 > 3.0）
+    scene.addSphere(Sphere(Vec3(-4.0, 0, -10), 1.5, Vec3(0.2, 0.8, 0.2), DIFFUSE));
     scene.addSphere(Sphere(Vec3(0, 0, -10), 1.5, Vec3(1.0, 1.0, 1.0), GLASS, 1.5));  // 折射率1.5
-    scene.addSphere(Sphere(Vec3(2.5, 0, -10), 1.5, Vec3(0.8, 0.6, 0.2), METAL));
+    scene.addSphere(Sphere(Vec3(4.0, 0, -10), 1.5, Vec3(0.8, 0.6, 0.2), METAL));
     
     // 地板（大球）
     scene.addSphere(Sphere(Vec3(0, -101.5, -10), 100, Vec3(0.5, 0.5, 0.5), DIFFUSE));
