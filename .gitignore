@@ -1,9 +1,5 @@
-# Large image files
+# Large image files (PPM is uncompressed, can be huge)
 *.ppm
-
-# Output images (keep only in blog_img repo)
-# Ignore ALL .png files except those explicitly added with git add -f
-*.png
 
 # Executable binaries (all executables)
 # Specific known executables
