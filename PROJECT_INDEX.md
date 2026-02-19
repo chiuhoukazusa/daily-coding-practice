@@ -8,6 +8,7 @@
 
 | 日期 | 项目名称 | 核心技术 | 输出 | 状态 |
 |------|---------|---------|------|------|
+| 02-06 | Simple Ray Tracer | 基础光线追踪, 球体渲染 | output.ppm | ✅ 完成 |
 | 02-10 | Perlin Noise 纹理生成器 | Perlin Noise, FBM, 程序化纹理 | clouds/marble/wood.png | ✅ 完成 |
 | 02-11 | Voronoi Diagram | 计算几何, 最近点搜索 | voronoi.png | ✅ 完成 |
 | 02-12 | Ray-Sphere Intersection | 光线追踪, 球体求交 | raytracer.png | ✅ 完成 |
