@@ -311,7 +311,9 @@ int main() {
         for (int x = 0; x < width; ++x) {
             // NDC 坐标
             double px = (2.0 * (x + 0.5) / width - 1.0) * aspectRatio * std::tan(fov / 2.0);
-            double py = (1.0 - 2.0 * (y + 0.5) / height) * std::tan(fov / 2.0);
+            // ✅ 修复上下颠倒：y=0 → py正（向上看），y=height → py负（向下看）
+            double py = (2.0 * (y + 0.5) / height - 1.0) * std::tan(fov / 2.0);
+            py = -py;  // 翻转Y轴（因为图像Y从上到下，世界Y从下到上）
             
             Vec3 rayDir(px, py, -1.0);
             Ray ray(cameraPos, rayDir);
