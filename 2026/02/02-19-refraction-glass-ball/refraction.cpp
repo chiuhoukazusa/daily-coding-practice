@@ -213,7 +213,10 @@ Vec3 trace(const Ray& ray, const Scene& scene, int depth) {
     else if (hitSphere->material == METAL) {
         // 镜面反射（金属）
         Vec3 reflectDir = ray.direction.reflect(normal);
-        Ray reflectRay(hitPoint, reflectDir);
+        
+        // ✅ 修复自相交：反射光线沿法线偏移
+        Vec3 reflectOrigin = hitPoint + normal * 0.001;
+        Ray reflectRay(reflectOrigin, reflectDir);
         Vec3 reflectColor = trace(reflectRay, scene, depth - 1);
         
         // ✅ 修复：金属反射必须乘上金属本身的颜色（金黄色）
@@ -244,17 +247,21 @@ Vec3 trace(const Ray& ray, const Scene& scene, int depth) {
         // 如果发生全反射，只计算反射
         if (refractDir.length() < 0.001) {
             Vec3 reflectDir = ray.direction.reflect(n);
-            Ray reflectRay(hitPoint, reflectDir);
+            // ✅ 修复自相交：反射光线沿法线偏移
+            Vec3 reflectOrigin = hitPoint + n * 0.001;
+            Ray reflectRay(reflectOrigin, reflectDir);
             return trace(reflectRay, scene, depth - 1);
         }
         
-        // 反射
+        // 反射（沿法线方向偏移）
         Vec3 reflectDir = ray.direction.reflect(n);
-        Ray reflectRay(hitPoint, reflectDir);
+        Vec3 reflectOrigin = hitPoint + n * 0.001;
+        Ray reflectRay(reflectOrigin, reflectDir);
         Vec3 reflectColor = trace(reflectRay, scene, depth - 1);
         
-        // 折射
-        Ray refractRay(hitPoint, refractDir);
+        // 折射（沿相反法线方向偏移，因为进入内部）
+        Vec3 refractOrigin = hitPoint - n * 0.001;
+        Ray refractRay(refractOrigin, refractDir);
         Vec3 refractColor = trace(refractRay, scene, depth - 1);
         
         // 根据 Fresnel 混合
