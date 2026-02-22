@@ -1,82 +1,68 @@
 #!/bin/bash
-# check_duplicate.sh - Check if today's project is duplicate
+# 重复项目检测脚本
+# 使用: ./scripts/check_duplicate.sh "项目主题"
+# 例如: ./scripts/check_duplicate.sh "抗锯齿"
 
 set -e
 
-PROJECT_INDEX="/root/.openclaw/workspace/daily-coding-practice/PROJECT_INDEX.md"
-TODAY=$(date +%m-%d)
-CURRENT_YEAR=$(date +%Y)
-
-# Colors
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
-
-echo "🔍 Checking for duplicate projects..."
-echo "Date: $TODAY"
-echo ""
-
-# Check if today already has a project
-if grep -q "| $TODAY |" "$PROJECT_INDEX"; then
-    echo -e "${RED}❌ DUPLICATE DETECTED: Today ($TODAY) already has a project!${NC}"
-    echo ""
-    echo "Existing project:"
-    grep "| $TODAY |" "$PROJECT_INDEX"
-    echo ""
+if [ -z "$1" ]; then
+    echo "❌ 错误: 请提供项目主题作为参数"
+    echo "使用方法: $0 '项目主题'"
+    echo "示例: $0 '抗锯齿'"
     exit 1
 fi
 
-# Extract project proposal (passed as argument)
-PROPOSED_PROJECT="$1"
+THEME="$1"
+PROJECT_INDEX="PROJECT_INDEX.md"
 
-if [ -z "$PROPOSED_PROJECT" ]; then
-    echo -e "${YELLOW}⚠️  No project name provided for duplicate check${NC}"
-    exit 0
+if [ ! -f "$PROJECT_INDEX" ]; then
+    echo "❌ 错误: 找不到 PROJECT_INDEX.md"
+    exit 1
 fi
 
-echo "Proposed project: $PROPOSED_PROJECT"
+echo "🔍 检查项目主题: '$THEME'"
 echo ""
 
-# Check for similar projects in the past 7 days
-echo "Checking recent projects (past 7 days):"
+# 搜索相似项目（不区分大小写）
+echo "📋 相似项目列表:"
+echo "========================================"
 
-# Get past 7 days' dates
-for i in {0..7}; do
-    CHECK_DATE=$(date -d "$i days ago" +%m-%d)
-    if grep -q "| $CHECK_DATE |" "$PROJECT_INDEX"; then
-        EXISTING_PROJECT=$(grep "| $CHECK_DATE |" "$PROJECT_INDEX" | awk -F'|' '{print $3}' | xargs)
-        echo "  $CHECK_DATE: $EXISTING_PROJECT"
+FOUND=0
+while IFS='|' read -r line; do
+    # 跳过表头和分隔线
+    if [[ "$line" =~ ^[[:space:]]*\|[[:space:]]*日期 ]] || [[ "$line" =~ ^[[:space:]]*\|[-:]+ ]]; then
+        continue
+    fi
+    
+    # 提取日期、项目名称、核心技术
+    if [[ "$line" =~ \|[[:space:]]*([0-9-]+)[[:space:]]*\|[[:space:]]*([^\|]+)[[:space:]]*\|[[:space:]]*([^\|]+)[[:space:]]*\| ]]; then
+        DATE="${BASH_REMATCH[1]}"
+        NAME="${BASH_REMATCH[2]}"
+        TECH="${BASH_REMATCH[3]}"
         
-        # Fuzzy match: check if project names share keywords
-        # Extract keywords (lowercase, remove spaces)
-        PROPOSED_LOWER=$(echo "$PROPOSED_PROJECT" | tr '[:upper:]' '[:lower:]' | tr -d ' ')
-        EXISTING_LOWER=$(echo "$EXISTING_PROJECT" | tr '[:upper:]' '[:lower:]' | tr -d ' ')
-        
-        # Check for common substrings
-        if [[ "$PROPOSED_LOWER" == *"perlin"* && "$EXISTING_LOWER" == *"perlin"* ]]; then
-            echo -e "${RED}❌ SIMILAR PROJECT DETECTED!${NC}"
-            echo "  Proposed: $PROPOSED_PROJECT"
-            echo "  Existing: $EXISTING_PROJECT (on $CHECK_DATE)"
+        # 搜索匹配（项目名或核心技术）
+        if echo "$NAME $TECH" | grep -qi "$THEME"; then
+            echo "⚠️  [$DATE] $NAME"
+            echo "    核心技术: $TECH"
             echo ""
-            echo "⚠️  Please choose a different project from 待探索领域 list"
-            exit 1
-        fi
-        
-        if [[ "$PROPOSED_LOWER" == *"ray"* && "$EXISTING_LOWER" == *"ray"* ]]; then
-            # Allow ray tracing if it's a major feature upgrade
-            if [[ "$PROPOSED_LOWER" == *"reflect"* || "$PROPOSED_LOWER" == *"refract"* ]]; then
-                # New features: reflection or refraction - ALLOW
-                continue
-            elif [[ "$EXISTING_LOWER" == *"shadow"* && "$PROPOSED_LOWER" != *"shadow"* && "$PROPOSED_LOWER" != *"reflect"* && "$PROPOSED_LOWER" != *"refract"* ]]; then
-                echo -e "${RED}❌ RAY TRACING DOWNGRADE DETECTED!${NC}"
-                echo "  Previous project already has shadows"
-                exit 1
-            fi
+            FOUND=$((FOUND + 1))
         fi
     fi
-done
+done < "$PROJECT_INDEX"
 
-echo ""
-echo -e "${GREEN}✅ No duplicates found. Safe to proceed.${NC}"
-exit 0
+echo "========================================"
+
+if [ "$FOUND" -gt 0 ]; then
+    echo "❌ 发现 $FOUND 个相似项目！"
+    echo ""
+    echo "⚠️  警告: 可能存在重复！"
+    echo "建议:"
+    echo "  1. 检查上述项目是否与你的计划重复"
+    echo "  2. 如果重复，选择其他主题"
+    echo "  3. 如果是扩展/改进，确保有明显差异"
+    echo ""
+    exit 1
+else
+    echo "✅ 未发现相似项目，可以开始！"
+    echo ""
+fi
