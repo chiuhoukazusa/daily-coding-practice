@@ -1,0 +1,95 @@
+// Phase 3: 景深 + 复杂场景
+// 在原文件基础上添加景深相机
+
+// 在 Camera 类中添加：
+struct CameraWithDOF {
+    Point3 origin;
+    Point3 lowerLeftCorner;
+    Vec3 horizontal;
+    Vec3 vertical;
+    Vec3 u, v, w;
+    double lensRadius;
+    
+    CameraWithDOF(Point3 lookFrom, Point3 lookAt, Vec3 vup, double vfov, 
+                  double aspectRatio, double aperture, double focusDist) {
+        double theta = vfov * PI / 180.0;
+        double h = tan(theta / 2.0);
+        double viewportHeight = 2.0 * h;
+        double viewportWidth = aspectRatio * viewportHeight;
+        
+        w = (lookFrom - lookAt).normalized();
+        u = vup.cross(w).normalized();
+        v = w.cross(u);
+        
+        origin = lookFrom;
+        horizontal = u * (viewportWidth * focusDist);
+        vertical = v * (viewportHeight * focusDist);
+        lowerLeftCorner = origin - horizontal / 2 - vertical / 2 - w * focusDist;
+        
+        lensRadius = aperture / 2.0;
+    }
+    
+    Ray getRay(double s, double t) const {
+        Vec3 rd = randomInUnitDisk() * lensRadius;
+        Vec3 offset = u * rd.x + v * rd.y;
+        
+        return Ray(origin + offset, 
+                   lowerLeftCorner + horizontal * s + vertical * t - origin - offset);
+    }
+};
+
+Vec3 randomInUnitDisk() {
+    while (true) {
+        Vec3 p(randomDouble(-1, 1), randomDouble(-1, 1), 0);
+        if (p.dot(p) < 1) return p;
+    }
+}
+
+// 随机场景生成
+Scene randomScene() {
+    Scene scene;
+    
+    Material* groundMaterial = new Material(LAMBERTIAN, Color(0.5, 0.5, 0.5), 0, 0);
+    scene.spheres.push_back(Sphere(Point3(0, -1000, 0), 1000, groundMaterial));
+    
+    for (int a = -11; a < 11; a++) {
+        for (int b = -11; b < 11; b++) {
+            double chooseMat = randomDouble();
+            Point3 center(a + 0.9 * randomDouble(), 0.2, b + 0.9 * randomDouble());
+            
+            if ((center - Point3(4, 0.2, 0)).length() > 0.9) {
+                Material* sphereMaterial;
+                
+                if (chooseMat < 0.8) {
+                    // 漫反射
+                    Color albedo(randomDouble() * randomDouble(), 
+                                randomDouble() * randomDouble(), 
+                                randomDouble() * randomDouble());
+                    sphereMaterial = new Material(LAMBERTIAN, albedo, 0, 0);
+                } else if (chooseMat < 0.95) {
+                    // 金属
+                    Color albedo(randomDouble(0.5, 1), randomDouble(0.5, 1), randomDouble(0.5, 1));
+                    double fuzz = randomDouble(0, 0.5);
+                    sphereMaterial = new Material(METAL, albedo, fuzz, 0);
+                } else {
+                    // 玻璃
+                    sphereMaterial = new Material(DIELECTRIC, Color(1, 1, 1), 0, 1.5);
+                }
+                
+                scene.spheres.push_back(Sphere(center, 0.2, sphereMaterial));
+            }
+        }
+    }
+    
+    // 三个大球
+    Material* material1 = new Material(DIELECTRIC, Color(1, 1, 1), 0, 1.5);
+    scene.spheres.push_back(Sphere(Point3(0, 1, 0), 1.0, material1));
+    
+    Material* material2 = new Material(LAMBERTIAN, Color(0.4, 0.2, 0.1), 0, 0);
+    scene.spheres.push_back(Sphere(Point3(-4, 1, 0), 1.0, material2));
+    
+    Material* material3 = new Material(METAL, Color(0.7, 0.6, 0.5), 0.0, 0);
+    scene.spheres.push_back(Sphere(Point3(4, 1, 0), 1.0, material3));
+    
+    return scene;
+}

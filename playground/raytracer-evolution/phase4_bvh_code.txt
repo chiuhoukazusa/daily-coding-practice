@@ -1,0 +1,123 @@
+// Phase 4: BVH 加速结构
+// 在 raytracer_phase3.cpp 基础上添加
+
+// ========== AABB 类 ==========
+struct AABB {
+    Point3 minimum;
+    Point3 maximum;
+    
+    AABB() {}
+    AABB(const Point3& a, const Point3& b) : minimum(a), maximum(b) {}
+    
+    Point3 min() const { return minimum; }
+    Point3 max() const { return maximum; }
+    
+    bool hit(const Ray& r, double tMin, double tMax) const {
+        for (int a = 0; a < 3; a++) {
+            double invD = 1.0 / r.direction[a];
+            double t0 = (minimum[a] - r.origin[a]) * invD;
+            double t1 = (maximum[a] - r.origin[a]) * invD;
+            if (invD < 0.0) std::swap(t0, t1);
+            tMin = t0 > tMin ? t0 : tMin;
+            tMax = t1 < tMax ? t1 : tMax;
+            if (tMax <= tMin) return false;
+        }
+        return true;
+    }
+    
+    static AABB surroundingBox(AABB box0, AABB box1) {
+        Point3 small(fmin(box0.min().x, box1.min().x),
+                     fmin(box0.min().y, box1.min().y),
+                     fmin(box0.min().z, box1.min().z));
+        
+        Point3 big(fmax(box0.max().x, box1.max().x),
+                   fmax(box0.max().y, box1.max().y),
+                   fmax(box0.max().z, box1.max().z));
+        
+        return AABB(small, big);
+    }
+};
+
+// Sphere 添加 boundingBox 方法
+AABB Sphere::boundingBox() const {
+    return AABB(
+        center - Vec3(radius, radius, radius),
+        center + Vec3(radius, radius, radius)
+    );
+}
+
+// ========== BVH 节点 ==========
+struct BVHNode {
+    AABB box;
+    std::shared_ptr<BVHNode> left;
+    std::shared_ptr<BVHNode> right;
+    std::shared_ptr<Sphere> sphere;  // 叶子节点
+    
+    BVHNode() {}
+    
+    // 叶子节点
+    BVHNode(std::shared_ptr<Sphere> s) : sphere(s), box(s->boundingBox()) {}
+    
+    // 内部节点
+    BVHNode(std::shared_ptr<BVHNode> l, std::shared_ptr<BVHNode> r) 
+        : left(l), right(r), sphere(nullptr) {
+        box = AABB::surroundingBox(l->box, r->box);
+    }
+    
+    bool hit(const Ray& r, double tMin, double tMax, HitRecord& rec) const {
+        if (!box.hit(r, tMin, tMax))
+            return false;
+        
+        if (sphere) {
+            // 叶子节点
+            return sphere->hit(r, tMin, tMax, rec);
+        }
+        
+        // 内部节点 - 递归测试子节点
+        HitRecord leftRec, rightRec;
+        bool hitLeft = left && left->hit(r, tMin, tMax, leftRec);
+        bool hitRight = right && right->hit(r, tMin, tMax, rightRec);
+        
+        if (hitLeft && hitRight) {
+            rec = (leftRec.t < rightRec.t) ? leftRec : rightRec;
+            return true;
+        } else if (hitLeft) {
+            rec = leftRec;
+            return true;
+        } else if (hitRight) {
+            rec = rightRec;
+            return true;
+        }
+        
+        return false;
+    }
+};
+
+// ========== BVH 构建 ==========
+std::shared_ptr<BVHNode> buildBVH(std::vector<std::shared_ptr<Sphere>>& spheres, int start, int end, int axis) {
+    int objectSpan = end - start;
+    
+    if (objectSpan == 1) {
+        return std::make_shared<BVHNode>(spheres[start]);
+    }
+    
+    // 按指定轴排序
+    auto comparator = [axis](const std::shared_ptr<Sphere>& a, const std::shared_ptr<Sphere>& b) {
+        return a->center[axis] < b->center[axis];
+    };
+    
+    std::sort(spheres.begin() + start, spheres.begin() + end, comparator);
+    
+    int mid = start + objectSpan / 2;
+    auto left = buildBVH(spheres, start, mid, (axis + 1) % 3);
+    auto right = buildBVH(spheres, mid, end, (axis + 1) % 3);
+    
+    return std::make_shared<BVHNode>(left, right);
+}
+
+// 访问 Vec3 元素
+double Vec3::operator[](int i) const {
+    if (i == 0) return x;
+    if (i == 1) return y;
+    return z;
+}
