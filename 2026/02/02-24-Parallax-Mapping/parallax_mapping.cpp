@@ -196,21 +196,6 @@ Vec3 parallax_mapping(const Vec3& point, const Sphere& sphere, const Vec3& view_
     return color;
 }
 
-// 光线追踪主函数
-Vec3 trace(const Ray& ray, const Sphere& sphere, const Vec3& light_dir, bool use_parallax) {
-    double t;
-    if (!sphere.intersect(ray, t)) {
-        // 背景色（渐变）
-        double gradient = 0.5 * (ray.direction.y + 1.0);
-        return Vec3(0.5, 0.7, 1.0) * gradient + Vec3(1.0, 1.0, 1.0) * (1.0 - gradient);
-    }
-    
-    Vec3 hit_point = ray.at(t);
-    Vec3 view_dir = (ray.origin - hit_point).normalize();
-    
-    return parallax_mapping(hit_point, sphere, view_dir, light_dir, use_parallax);
-}
-
 // 保存为PPM图像
 void save_ppm(const std::string& filename, const std::vector<Vec3>& pixels, int width, int height) {
     std::ofstream file(filename);
@@ -231,11 +216,11 @@ void save_ppm(const std::string& filename, const std::vector<Vec3>& pixels, int 
 int main() {
     std::cout << "开始渲染 Parallax Mapping 效果对比..." << std::endl;
     
-    // 场景设置
-    Sphere sphere(Vec3(0, 0, -3), 1.0);
+    // 场景设置：两个球体并排
+    Sphere sphere_left(Vec3(-1.5, 0, -3), 1.0);   // 左球：普通纹理
+    Sphere sphere_right(Vec3(1.5, 0, -3), 1.0);   // 右球：视差贴图
     Vec3 light_dir = Vec3(0.5, 0.5, 1.0).normalize();
     
-    // 渲染两张图：左边不使用视差贴图，右边使用视差贴图
     std::vector<Vec3> pixels(WIDTH * HEIGHT);
     
     for (int j = 0; j < HEIGHT; j++) {
@@ -256,11 +241,28 @@ int main() {
             Vec3 ray_dir = Vec3(x, y, -1.0).normalize();
             Ray ray(Vec3(0, 0, 0), ray_dir);
             
-            // 左半边：不使用视差贴图
-            // 右半边：使用视差贴图
-            bool use_parallax = (i >= WIDTH / 2);
+            // 检查两个球体的交点，选择最近的
+            double t_left, t_right;
+            bool hit_left = sphere_left.intersect(ray, t_left);
+            bool hit_right = sphere_right.intersect(ray, t_right);
             
-            Vec3 color = trace(ray, sphere, light_dir, use_parallax);
+            Vec3 color;
+            if (hit_left && (!hit_right || t_left < t_right)) {
+                // 左球：不使用视差贴图
+                Vec3 hit_point = ray.at(t_left);
+                Vec3 view_dir = (ray.origin - hit_point).normalize();
+                color = parallax_mapping(hit_point, sphere_left, view_dir, light_dir, false);
+            } else if (hit_right) {
+                // 右球：使用视差贴图
+                Vec3 hit_point = ray.at(t_right);
+                Vec3 view_dir = (ray.origin - hit_point).normalize();
+                color = parallax_mapping(hit_point, sphere_right, view_dir, light_dir, true);
+            } else {
+                // 背景色（渐变）
+                double gradient = 0.5 * (ray_dir.y + 1.0);
+                color = Vec3(0.5, 0.7, 1.0) * gradient + Vec3(1.0, 1.0, 1.0) * (1.0 - gradient);
+            }
+            
             pixels[j * WIDTH + i] = color;
         }
     }
