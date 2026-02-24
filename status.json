@@ -1,6 +1,6 @@
 {
-  "date": "2026-02-24",
-  "projectName": "Parallax Mapping（视差贴图）",
+  "date": "2026-02-25",
+  "projectName": "OBJ-Model-Loader",
   "status": "in-progress",
   "attempts": 1,
   "progress": {
@@ -17,18 +17,11 @@
   },
   "timeline": [
     {"time": "05:30", "action": "开始项目规划"},
-    {"time": "05:31", "action": "选择项目：Parallax Mapping（视差贴图）"},
-    {"time": "05:32", "action": "设计方案：实现简单视差贴图 + 对比普通纹理映射"},
-    {"time": "05:33", "action": "代码编写完成（约250行）"},
-    {"time": "05:34", "action": "编译警告：未使用变量"},
-    {"time": "05:35", "action": "修复警告，重新编译"},
-    {"time": "05:36", "action": "✅ 编译通过（0错误0警告）"},
-    {"time": "05:37", "action": "运行程序，渲染800x600图片"},
-    {"time": "05:38", "action": "✅ 运行成功，生成parallax_output.ppm"},
-    {"time": "05:39", "action": "转换为PNG格式"},
-    {"time": "05:40", "action": "✅ 输出验证通过：砖块纹理+对比效果正常"},
-    {"time": "05:41", "action": "开始上传到GitHub..."}
+    {"time": "05:30", "action": "代码编写完成"},
+    {"time": "05:31", "action": "编译成功"},
+    {"time": "05:31", "action": "运行成功，生成 obj_loader_output.png"},
+    {"time": "05:32", "action": "量化验证通过：立方体线框正确渲染"}
   ],
-  "lastError": null,
+  "lastError": "",
   "codeBackup": "/root/.openclaw/workspace/daily-coding-practice/temp/"
 }
