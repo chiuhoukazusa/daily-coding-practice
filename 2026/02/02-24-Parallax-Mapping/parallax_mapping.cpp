@@ -42,6 +42,16 @@ struct Vec3 {
     }
 };
 
+// 2D向量（用于UV坐标）
+struct Vec2 {
+    double x, y;
+    
+    Vec2(double x = 0, double y = 0) : x(x), y(y) {}
+    
+    Vec2 operator-(const Vec2& v) const { return Vec2(x - v.x, y - v.y); }
+    Vec2 operator*(double t) const { return Vec2(x * t, y * t); }
+};
+
 // 光线类
 struct Ray {
     Vec3 origin;
@@ -128,7 +138,7 @@ Vec3 brickTexture(double u, double v, double& height) {
         height = 0.0; // 灰浆深度为0
         return Vec3(0.5, 0.5, 0.5); // 灰色灰浆
     } else {
-        height = 0.1; // 砖块凸起
+        height = 0.3; // 增大砖块凸起高度（原来0.1）
         // 砖块颜色（红褐色，带一些变化）
         double noise = std::sin(u * 100.0) * std::cos(v * 100.0) * 0.1;
         return Vec3(0.7 + noise, 0.3 + noise * 0.5, 0.2);
@@ -168,18 +178,28 @@ Vec3 parallax_mapping(const Vec3& point, const Sphere& sphere, const Vec3& view_
         // 将视线方向转换到切线空间
         Vec3 view_tangent = Vec3(view_dir.dot(T), view_dir.dot(B), view_dir.dot(N));
         
-        // 获取当前UV的高度
-        double height;
-        brickTexture(u, v, height);
+        // Steep Parallax Mapping - 沿视线方向分层采样
+        const int num_layers = 32;  // 增加采样层数
+        double layer_depth = 1.0 / num_layers;
+        double current_depth = 0.0;
         
-        // 视差偏移量（简单版本）
-        double parallax_scale = 0.05; // 视差强度
-        double offset_x = view_tangent.x / view_tangent.z * height * parallax_scale;
-        double offset_y = view_tangent.y / view_tangent.z * height * parallax_scale;
+        double parallax_scale = 0.3;  // 进一步增大视差强度
+        Vec2 delta_uv = Vec2(view_tangent.x / view_tangent.z * parallax_scale,
+                             view_tangent.y / view_tangent.z * parallax_scale);
+        Vec2 current_uv = Vec2(u, v);
         
-        // 偏移UV坐标
-        u -= offset_x;
-        v -= offset_y;
+        // 沿着视线方向步进，直到找到高度匹配的点
+        double current_height;
+        brickTexture(current_uv.x, current_uv.y, current_height);
+        
+        while (current_depth < current_height && current_depth < 1.0) {
+            current_uv = current_uv - delta_uv * layer_depth;
+            brickTexture(current_uv.x, current_uv.y, current_height);
+            current_depth += layer_depth;
+        }
+        
+        u = current_uv.x;
+        v = current_uv.y;
         
         // 确保UV在[0,1]范围内（可以重复）
         u = u - std::floor(u);
@@ -216,10 +236,9 @@ void save_ppm(const std::string& filename, const std::vector<Vec3>& pixels, int 
 int main() {
     std::cout << "开始渲染 Parallax Mapping 效果对比..." << std::endl;
     
-    // 场景设置：两个球体并排
-    Sphere sphere_left(Vec3(-1.5, 0, -3), 1.0);   // 左球：普通纹理
-    Sphere sphere_right(Vec3(1.5, 0, -3), 1.0);   // 右球：视差贴图
-    Vec3 light_dir = Vec3(0.5, 0.5, 1.0).normalize();
+    // 场景设置：同一个球体，左右半边对比
+    Sphere sphere(Vec3(0, 0, -3), 1.0);  // 单个球体，居中
+    Vec3 light_dir = Vec3(0.0, 0.0, 1.0).normalize();  // 正面光照
     
     std::vector<Vec3> pixels(WIDTH * HEIGHT);
     
@@ -241,24 +260,20 @@ int main() {
             Vec3 ray_dir = Vec3(x, y, -1.0).normalize();
             Ray ray(Vec3(0, 0, 0), ray_dir);
             
-            // 检查两个球体的交点，选择最近的
-            double t_left, t_right;
-            bool hit_left = sphere_left.intersect(ray, t_left);
-            bool hit_right = sphere_right.intersect(ray, t_right);
+            // 检查球体交点
+            double t;
+            bool hit = sphere.intersect(ray, t);
             
             Vec3 color;
-            if (hit_left && (!hit_right || t_left < t_right)) {
-                // 左球：不使用视差贴图
-                Vec3 hit_point = ray.at(t_left);
+            if (hit) {
+                Vec3 hit_point = ray.at(t);
                 Vec3 view_dir = (ray.origin - hit_point).normalize();
-                color = parallax_mapping(hit_point, sphere_left, view_dir, light_dir, false);
-            } else if (hit_right) {
-                // 右球：使用视差贴图
-                Vec3 hit_point = ray.at(t_right);
-                Vec3 view_dir = (ray.origin - hit_point).normalize();
-                color = parallax_mapping(hit_point, sphere_right, view_dir, light_dir, true);
+                
+                // 左半边不使用视差，右半边使用视差
+                bool use_parallax = (i >= WIDTH / 2);
+                color = parallax_mapping(hit_point, sphere, view_dir, light_dir, use_parallax);
             } else {
-                // 背景色（渐变）
+                // 背景色
                 double gradient = 0.5 * (ray_dir.y + 1.0);
                 color = Vec3(0.5, 0.7, 1.0) * gradient + Vec3(1.0, 1.0, 1.0) * (1.0 - gradient);
             }
