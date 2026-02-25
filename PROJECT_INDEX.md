@@ -24,6 +24,7 @@
 | 02-23 | Normal Mapping | 法线贴图, 切线空间, TBN矩阵, 程序化纹理, Phong光照 | normal_mapping_output.png | ✅ 完成 |
 | 02-24 | Parallax Mapping | 视差贴图, UV偏移, 高度图, 砖块纹理, 左右对比 | parallax_output.png | ✅ 完成 |
 | 02-25 | OBJ Model Loader | OBJ格式解析, 线框渲染, 正交投影, Bresenham算法 | obj_loader_output.png | ✅ 完成 |
+| 02-26 | Triangle Rasterization | Barycentric坐标, Z-Buffer深度测试, 颜色插值, 边界框优化 | rasterization_output.png | ✅ 完成 |
 
 ## 技术领域覆盖
 
@@ -42,6 +43,7 @@
 - [x] **法线贴图（Normal Mapping）** ✅ (2026-02-23)
 - [x] **视差贴图（Parallax Mapping）** ✅ (2026-02-24)
 - [x] **3D模型加载（OBJ格式）** ✅ (2026-02-25)
+- [x] **三角形光栅化（Rasterization）** ✅ (2026-02-26)
 
 ### 📋 待探索领域（优先级排序）
 
@@ -52,7 +54,8 @@
 4. ~~**法线贴图**~~ ✅ 已完成（2026-02-23）
 5. ~~**视差贴图（Parallax Mapping）**~~ ✅ 已完成（2026-02-24）
 6. ~~**3D模型加载**~~ ✅ 已完成（2026-02-25）
-7. **三角形光栅化** - 基础实体渲染 ← 下一步推荐
+7. ~~**三角形光栅化**~~ ✅ 已完成（2026-02-26）
+8. **B-spline曲线** - 更灵活的曲线 ← 下一步推荐
 
 #### ⭐ 中优先级（需要一定基础）
 6. ~~**Bezier曲线**~~ ✅ 已完成（2026-02-22）
