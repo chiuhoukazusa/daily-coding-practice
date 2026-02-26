@@ -25,6 +25,7 @@
 | 02-24 | Parallax Mapping | 视差贴图, UV偏移, 高度图, 砖块纹理, 左右对比 | parallax_output.png | ✅ 完成 |
 | 02-25 | OBJ Model Loader | OBJ格式解析, 线框渲染, 正交投影, Bresenham算法 | obj_loader_output.png | ✅ 完成 |
 | 02-26 | Triangle Rasterization | Barycentric坐标, Z-Buffer深度测试, 颜色插值, 边界框优化 | rasterization_output.png | ✅ 完成 |
+| 02-27 | PBR Cook-Torrance BRDF | Cook-Torrance BRDF, GGX NDF, Fresnel-Schlick, Smith几何遮蔽, ACES色调映射 | pbr_output.png | ✅ 完成 |
 
 ## 技术领域覆盖
 
