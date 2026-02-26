@@ -1,7 +1,7 @@
 {
   "date": "2026-02-27",
   "projectName": "PBR Cook-Torrance BRDF",
-  "status": "in-progress",
+  "status": "completed",
   "attempts": 1,
   "progress": {
     "coreDevCompleted": true,
@@ -12,18 +12,23 @@
       "running": true,
       "validation": true
     },
-    "githubUpload": false,
-    "blogPublish": false
+    "githubUpload": true,
+    "blogPublish": true
   },
   "timeline": [
     {"time": "05:30", "action": "开始项目规划 - PBR Cook-Torrance BRDF"},
-    {"time": "05:30", "action": "重复检查通过，选定主题：PBR 基于物理的渲染"},
+    {"time": "05:30", "action": "重复检查通过（Phong/Gouraud Shading均未做），最终选定 PBR Cook-Torrance"},
     {"time": "05:30", "action": "规划完成，开始编写代码"},
-    {"time": "05:31", "action": "代码编写完成（394行），开始编译"},
-    {"time": "05:31", "action": "✅ 编译成功（0错误0警告），开始运行"},
-    {"time": "05:31", "action": "✅ 运行成功（0.2秒），生成 pbr_output.png (260KB)"},
-    {"time": "05:32", "action": "✅ 量化验证通过：Row0金属度梯度(167→34)，Row3粗糙度效果正确"},
-    {"time": "05:32", "action": "核心开发完成，开始上传 GitHub"}
+    {"time": "05:31", "action": "代码编写完成（394行 main.cpp），开始编译"},
+    {"time": "05:31", "action": "✅ 编译成功（0错误0警告，-Wno-missing-field-initializers 抑制stb库警告）"},
+    {"time": "05:31", "action": "✅ 运行成功（0.2秒），生成 pbr_output.png 260KB"},
+    {"time": "05:32", "action": "✅ 量化验证通过：Row0亮度梯度(167→95→34)，Row3(159→111→93)，物理正确"},
+    {"time": "05:32", "action": "核心开发完成，开始上传 GitHub"},
+    {"time": "05:33", "action": "✅ GitHub 上传成功 (daily-coding-practice)，开始上传图片"},
+    {"time": "05:33", "action": "✅ blog_img 图片上传成功，HTTP 200 验证通过"},
+    {"time": "05:34", "action": "开始发布 Hexo 博客"},
+    {"time": "05:34", "action": "✅ Hexo 博客发布成功，106文件生成"},
+    {"time": "05:35", "action": "✅ PROJECT_INDEX.md 更新完成，所有任务完成！"}
   ],
   "lastError": "",
   "codeBackup": "/root/.openclaw/workspace/daily-coding-practice/temp/"
