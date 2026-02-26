@@ -1,6 +1,6 @@
 {
-  "date": "2026-02-26",
-  "projectName": "Triangle Rasterization",
+  "date": "2026-02-27",
+  "projectName": "PBR Cook-Torrance BRDF",
   "status": "in-progress",
   "attempts": 1,
   "progress": {
@@ -16,15 +16,14 @@
     "blogPublish": false
   },
   "timeline": [
-    {"time": "05:30", "action": "开始项目规划 - 三角形光栅化"},
-    {"time": "05:31", "action": "规划完成，准备编写代码"},
-    {"time": "05:33", "action": "代码编写完成，开始编译"},
-    {"time": "05:34", "action": "编译失败：缺少 <limits> 头文件"},
-    {"time": "05:34", "action": "修复：添加 #include <limits>，重新编译"},
-    {"time": "05:35", "action": "✅ 编译成功，开始运行"},
-    {"time": "05:36", "action": "✅ 运行成功，生成 PNG 图片，开始验证"},
-    {"time": "05:37", "action": "✅ 像素验证通过：红色三角形 RGB(220,53,54), 绿色 RGB(46,147,119), 蓝色 RGB(62,62,240)"},
-    {"time": "05:37", "action": "核心开发完成，开始上传 GitHub"}
+    {"time": "05:30", "action": "开始项目规划 - PBR Cook-Torrance BRDF"},
+    {"time": "05:30", "action": "重复检查通过，选定主题：PBR 基于物理的渲染"},
+    {"time": "05:30", "action": "规划完成，开始编写代码"},
+    {"time": "05:31", "action": "代码编写完成（394行），开始编译"},
+    {"time": "05:31", "action": "✅ 编译成功（0错误0警告），开始运行"},
+    {"time": "05:31", "action": "✅ 运行成功（0.2秒），生成 pbr_output.png (260KB)"},
+    {"time": "05:32", "action": "✅ 量化验证通过：Row0金属度梯度(167→34)，Row3粗糙度效果正确"},
+    {"time": "05:32", "action": "核心开发完成，开始上传 GitHub"}
   ],
   "lastError": "",
   "codeBackup": "/root/.openclaw/workspace/daily-coding-practice/temp/"
