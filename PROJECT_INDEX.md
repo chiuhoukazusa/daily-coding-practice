@@ -26,6 +26,7 @@
 | 02-25 | OBJ Model Loader | OBJ格式解析, 线框渲染, 正交投影, Bresenham算法 | obj_loader_output.png | ✅ 完成 |
 | 02-26 | Triangle Rasterization | Barycentric坐标, Z-Buffer深度测试, 颜色插值, 边界框优化 | rasterization_output.png | ✅ 完成 |
 | 02-27 | PBR Cook-Torrance BRDF | Cook-Torrance BRDF, GGX NDF, Fresnel-Schlick, Smith几何遮蔽, ACES色调映射 | pbr_output.png | ✅ 完成 |
+| 02-28 | Ambient Occlusion | 蒙特卡洛积分, 余弦加权采样, TBN矩阵, 环境光遮蔽 | ao_output.png | ✅ 完成 |
 
 ## 技术领域覆盖
 
