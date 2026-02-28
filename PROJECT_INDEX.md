@@ -27,6 +27,7 @@
 | 02-26 | Triangle Rasterization | Barycentric坐标, Z-Buffer深度测试, 颜色插值, 边界框优化 | rasterization_output.png | ✅ 完成 |
 | 02-27 | PBR Cook-Torrance BRDF | Cook-Torrance BRDF, GGX NDF, Fresnel-Schlick, Smith几何遮蔽, ACES色调映射 | pbr_output.png | ✅ 完成 |
 | 02-28 | Ambient Occlusion | 蒙特卡洛积分, 余弦加权采样, TBN矩阵, 环境光遮蔽 | ao_output.png | ✅ 完成 |
+| 03-01 | BVH Accelerated Ray Tracer | BVH树, SAH构建策略, AABB求交, 光线追踪加速 | bvh_output.png, bvh_comparison.png, bvh_visualization.png | ✅ 完成 |
 
 ## 技术领域覆盖
 
