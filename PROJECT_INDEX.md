@@ -28,6 +28,7 @@
 | 02-27 | PBR Cook-Torrance BRDF | Cook-Torrance BRDF, GGX NDF, Fresnel-Schlick, Smith几何遮蔽, ACES色调映射 | pbr_output.png | ✅ 完成 |
 | 02-28 | Ambient Occlusion | 蒙特卡洛积分, 余弦加权采样, TBN矩阵, 环境光遮蔽 | ao_output.png | ✅ 完成 |
 | 03-01 | BVH Accelerated Ray Tracer | BVH树, SAH构建策略, AABB求交, 光线追踪加速 | bvh_output.png, bvh_comparison.png, bvh_visualization.png | ✅ 完成 |
+| 03-02 | B-spline Curve Renderer | Cox-de Boor算法, 均匀/端点插值Knot Vector, 二次/三次曲线, Bezier对比 | bspline_output.png (x4) | ✅ 完成 |
 
 ## 技术领域覆盖
 
@@ -58,7 +59,7 @@
 5. ~~**视差贴图（Parallax Mapping）**~~ ✅ 已完成（2026-02-24）
 6. ~~**3D模型加载**~~ ✅ 已完成（2026-02-25）
 7. ~~**三角形光栅化**~~ ✅ 已完成（2026-02-26）
-8. **B-spline曲线** - 更灵活的曲线 ← 下一步推荐
+8. **B-spline曲线** - ✅ 已完成（2026-03-02）
 
 #### ⭐ 中优先级（需要一定基础）
 6. ~~**Bezier曲线**~~ ✅ 已完成（2026-02-22）
