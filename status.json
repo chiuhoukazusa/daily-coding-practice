@@ -1,25 +1,31 @@
 {
-  "date": "2026-03-01",
-  "projectName": "BVH-Accelerated-Ray-Tracer",
+  "date": "2026-03-02",
+  "projectName": "B-spline-Curve",
   "status": "in-progress",
   "attempts": 1,
   "progress": {
-    "coreDevCompleted": false,
+    "coreDevCompleted": true,
     "coreDevStage": {
       "planning": true,
-      "coding": false,
-      "compiling": false,
-      "running": false,
-      "validation": false
+      "coding": true,
+      "compiling": true,
+      "running": true,
+      "validation": true
     },
     "githubUpload": false,
     "blogPublish": false
   },
   "timeline": [
-    {"time": "05:30", "action": "开始项目 - 选定主题: BVH加速结构 (Bounding Volume Hierarchy)"},
-    {"time": "05:31", "action": "重复检查通过，无历史重复项目"},
-    {"time": "05:31", "action": "项目规划完成，开始编写代码"}
+    {"time": "05:30", "action": "Cron任务触发，开始每日编程实践"},
+    {"time": "05:30", "action": "检查PROJECT_INDEX.md，选定主题: B-spline Curve"},
+    {"time": "05:30", "action": "重复检查通过，规划完成，开始编写代码"},
+    {"time": "05:31", "action": "编写 main.cpp 完成（~700行，Cox-de Boor算法，4个面板）"},
+    {"time": "05:31", "action": "编译失败：缺少 #include <functional>，drawCurve 函数参数问题"},
+    {"time": "05:32", "action": "修复：添加 functional 头文件，移除未使用的 drawCurve 函数"},
+    {"time": "05:32", "action": "编译成功 - 0错误0警告 (g++ -std=c++17 -O2)"},
+    {"time": "05:32", "action": "运行成功 - 生成4个PNG，验证通过（单位分割性✅，端点插值✅）"},
+    {"time": "05:32", "action": "量化验证：非背景像素29438，绿色曲线5505，蓝色曲线3834，黄色控制点1388"}
   ],
   "lastError": null,
-  "codeBackup": "/root/.openclaw/workspace/daily-coding-practice/temp/"
+  "codeBackup": null
 }
