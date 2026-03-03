@@ -30,6 +30,7 @@
 | 03-01 | BVH Accelerated Ray Tracer | BVH树, SAH构建策略, AABB求交, 光线追踪加速 | bvh_output.png, bvh_comparison.png, bvh_visualization.png | ✅ 完成 |
 | 03-02 | B-spline Curve Renderer | Cox-de Boor算法, 均匀/端点插值Knot Vector, 二次/三次曲线, Bezier对比 | bspline_output.png (x4) | ✅ 完成 |
 | 03-03 | Environment Mapping Skybox | 立方体贴图, 天空盒渲染, 环境反射, 程序化天空生成, Fresnel折射 | skybox_output.png, cubemap_faces.png | ✅ 完成 |
+| 03-04 | Particle System Fire Smoke | CPU粒子系统, 火焰/烟雾/火星, 加法混合, 高斯软粒子, 湍流噪声 | fire_output.png, fire_sequence.png | ✅ 完成 |
 
 ## 技术领域覆盖
 
