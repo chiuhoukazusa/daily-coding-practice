@@ -1,6 +1,6 @@
 {
-  "date": "2026-03-02",
-  "projectName": "B-spline-Curve",
+  "date": "2026-03-04",
+  "projectName": "Particle-System-Fire-Smoke",
   "status": "in-progress",
   "attempts": 1,
   "progress": {
@@ -16,15 +16,14 @@
     "blogPublish": false
   },
   "timeline": [
-    {"time": "05:30", "action": "Cron任务触发，开始每日编程实践"},
-    {"time": "05:30", "action": "检查PROJECT_INDEX.md，选定主题: B-spline Curve"},
-    {"time": "05:30", "action": "重复检查通过，规划完成，开始编写代码"},
-    {"time": "05:31", "action": "编写 main.cpp 完成（~700行，Cox-de Boor算法，4个面板）"},
-    {"time": "05:31", "action": "编译失败：缺少 #include <functional>，drawCurve 函数参数问题"},
-    {"time": "05:32", "action": "修复：添加 functional 头文件，移除未使用的 drawCurve 函数"},
-    {"time": "05:32", "action": "编译成功 - 0错误0警告 (g++ -std=c++17 -O2)"},
-    {"time": "05:32", "action": "运行成功 - 生成4个PNG，验证通过（单位分割性✅，端点插值✅）"},
-    {"time": "05:32", "action": "量化验证：非背景像素29438，绿色曲线5505，蓝色曲线3834，黄色控制点1388"}
+    {"time": "05:30", "action": "Cron任务触发，检查PROJECT_INDEX.md"},
+    {"time": "05:30", "action": "重复检查通过，选定主题: CPU粒子系统 - 火焰/烟雾效果"},
+    {"time": "05:30", "action": "规划完成，开始编写代码"},
+    {"time": "05:31", "action": "main.cpp编写完成（~600行，火焰/烟雾/火星三类粒子，加法混合渲染）"},
+    {"time": "05:32", "action": "首次编译通过：0错误0警告 ✅"},
+    {"time": "05:32", "action": "运行成功：0.10秒，生成fire_output.png(800x600)和fire_sequence.png(800x300)"},
+    {"time": "05:32", "action": "量化验证：火焰区域R>B✅，11.2%非黑像素✅，四帧亮度递增✅，高亮像素23604个✅，发射器区域最大亮度255✅"},
+    {"time": "05:32", "action": "核心开发阶段全部完成 ✅，开始上传GitHub"}
   ],
   "lastError": null,
   "codeBackup": null
