@@ -34,6 +34,7 @@
 | 03-05 | Volume Rendering Ray Marching | Ray Marching, 3D Perlin FBM, Beer-Lambert吸收, Henyey-Greenstein相位函数, ACES色调映射 | volume_output.png | ✅ 完成 |
 | 03-06 | Subsurface Scattering 次表面散射 | Dipole近似模型, σ_eff有效散射系数, 背光透射, Wrapped Diffuse, Fresnel效应, 三材质对比(蜡烛/皮肤/玉石) | sss_output.png | ✅ 完成 |
 | 03-07 | Marching Cubes 等值面提取 | Marching Cubes, 256配置三角形表, Smooth Union SDF, Z-Buffer光栅化, Phong着色 | marching_cubes_output.png, marching_cubes_side.png | ✅ 完成 |
+| 03-08 | Cloth Simulation 布料模拟 | 质点弹簧系统, Verlet积分, 球体碰撞, Phong着色 | cloth_output.png, cloth_sequence.png | ✅ 完成 |
 
 ## 技术领域覆盖
 
