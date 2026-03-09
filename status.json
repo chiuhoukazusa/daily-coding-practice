@@ -1,49 +1,30 @@
 {
-  "date": "2026-03-09",
-  "projectName": "SPH Fluid Simulation 流体模拟",
-  "status": "completed",
+  "date": "2026-03-10",
+  "projectName": "PCSS 软阴影渲染器",
+  "status": "in-progress",
   "attempts": 1,
   "progress": {
-    "coreDevCompleted": true,
+    "coreDevCompleted": false,
     "coreDevStage": {
       "planning": true,
-      "coding": true,
-      "compiling": true,
-      "running": true,
-      "validation": true
+      "coding": false,
+      "compiling": false,
+      "running": false,
+      "validation": false
     },
-    "githubUpload": true,
-    "blogPublish": true
+    "githubUpload": false,
+    "blogPublish": false
   },
   "timeline": [
-    {"time": "05:30", "action": "开始每日编程实践 - SPH Fluid Simulation 流体模拟"},
-    {"time": "05:30", "action": "前置检查通过：今日无重复项目，SPH流体模拟为新主题"},
-    {"time": "05:30", "action": "项目规划完成：SPH粒子系统+Poly6/Spiky/Viscosity核函数+Leapfrog积分"},
-    {"time": "05:31", "action": "代码编写完成（~380行C++），开始编译"},
-    {"time": "05:31", "action": "编译失败：stb_image_write.h 第三方库 -Wmissing-field-initializers 警告"},
-    {"time": "05:31", "action": "修复1：添加 #pragma GCC diagnostic ignored 屏蔽第三方库警告"},
+    {"time": "05:30", "action": "开始每日编程实践 - PCSS软阴影渲染器"},
+    {"time": "05:30", "action": "前置检查通过：今日无重复项目，PCSS软阴影为新主题"},
+    {"time": "05:30", "action": "项目规划完成：PCSS(Percentage Closer Soft Shadows)+PCF+半影宽度计算+多光源对比"},
+    {"time": "05:31", "action": "代码编写完成(765行C++)，开始编译"},
     {"time": "05:32", "action": "编译通过 (0错误 0警告) ✅"},
-    {"time": "05:32", "action": "运行失败：density断言 avg_dens > 10.0f 不通过（实际~0.84）"},
-    {"time": "05:33", "action": "修复2：核函数归一化常数调整，REST_DENS=0.8、GAS_CONST=50、VISC=0.1"},
-    {"time": "05:33", "action": "运行失败：bright_frac(0.8%) < 1% 阈值，图像实际有3916彩色像素"},
-    {"time": "05:34", "action": "修复3：bright_frac验证阈值调整为0.5%"},
-    {"time": "05:35", "action": "编译通过 (0错误 0警告) ✅"},
-    {"time": "05:35", "action": "运行成功：2.16秒，生成主图+5个序列帧 ✅"},
-    {"time": "05:35", "action": "量化验证：0越界，密度avg=3.6，速度max=1.31，底部41727彩色像素 ✅"},
-    {"time": "05:35", "action": "核心开发完成，开始上传阶段"},
-    {"time": "05:36", "action": "GitHub代码仓库上传成功 (commit b8da6bd) ✅"},
-    {"time": "05:36", "action": "图片上传blog_img仓库成功 (HTTP 200验证) ✅"},
-    {"time": "05:37", "action": "博客文章编写完成，开始Hexo部署"},
-    {"time": "05:37", "action": "hexo clean && hexo generate 成功（140个文件）"},
-    {"time": "05:37", "action": "hexo deploy 成功，博客已发布 ✅"},
-    {"time": "05:38", "action": "PROJECT_INDEX.md 更新完成"},
-    {"time": "05:38", "action": "全部完成！状态设为completed"}
+    {"time": "05:32", "action": "运行成功：0.86秒，生成4个PNG文件 ✅"},
+    {"time": "05:33", "action": "量化验证通过：三图均值139/138/139，PCF文件大4x体现软化效果 ✅"},
+    {"time": "05:33", "action": "核心开发完成，开始上传阶段"}
   ],
   "lastError": null,
-  "codeBackup": "/root/.openclaw/workspace/daily-coding-practice/temp/sph-fluid/",
-  "links": {
-    "github": "https://github.com/chiuhoukazusa/daily-coding-practice/tree/main/2026/03/03-09-sph-fluid-simulation",
-    "blog": "https://chiuhoukazusa.github.io/2026/03/09/daily-coding-sph-fluid-simulation-2026-03-09/",
-    "image": "https://raw.githubusercontent.com/chiuhoukazusa/blog_img/main/2026/03/03-09-sph-fluid-simulation/sph_output.png"
-  }
+  "codeBackup": "/root/.openclaw/workspace/daily-coding-practice/temp/pcss-soft-shadows/"
 }
