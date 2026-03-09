@@ -36,6 +36,7 @@
 | 03-07 | Marching Cubes 等值面提取 | Marching Cubes, 256配置三角形表, Smooth Union SDF, Z-Buffer光栅化, Phong着色 | marching_cubes_output.png, marching_cubes_side.png | ✅ 完成 |
 | 03-08 | Cloth Simulation 布料模拟 | 质点弹簧系统, Verlet积分, 球体碰撞, Phong着色 | cloth_output.png, cloth_sequence.png | ✅ 完成 |
 | 03-09 | SPH Fluid Simulation 流体模拟 | Müller SPH, Poly6/Spiky/Viscosity核函数, Leapfrog积分, 压力+粘性+重力 | sph_output.png, sph_seq_*.png (x5) | ✅ 完成 |
+| 03-10 | PCSS 软阴影渲染器 | Shadow Map正交投影, PCF Poisson Disk采样, PCSS两步法(Blocker Search+Penumbra Estimation+Adaptive PCF), Phong光照 | hard_shadow.png, pcf_shadow.png, pcss_shadow.png, comparison.png | ✅ 完成 |
 
 ## 技术领域覆盖
 
