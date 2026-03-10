@@ -37,6 +37,7 @@
 | 03-08 | Cloth Simulation 布料模拟 | 质点弹簧系统, Verlet积分, 球体碰撞, Phong着色 | cloth_output.png, cloth_sequence.png | ✅ 完成 |
 | 03-09 | SPH Fluid Simulation 流体模拟 | Müller SPH, Poly6/Spiky/Viscosity核函数, Leapfrog积分, 压力+粘性+重力 | sph_output.png, sph_seq_*.png (x5) | ✅ 完成 |
 | 03-10 | PCSS 软阴影渲染器 | Shadow Map正交投影, PCF Poisson Disk采样, PCSS两步法(Blocker Search+Penumbra Estimation+Adaptive PCF), Phong光照 | hard_shadow.png, pcf_shadow.png, pcss_shadow.png, comparison.png | ✅ 完成 |
+| 03-11 | TAA 时域抗锯齿渲染器 | Halton Jitter, EMA历史累积, Variance Clipping, 防鬼影, SSAA对比 | noaa/ssaa/taa/taa_ghost/comparison.png | ✅ 完成 |
 
 ## 技术领域覆盖
 
