@@ -1,7 +1,7 @@
 {
   "date": "2026-03-12",
   "projectName": "Cascaded Shadow Maps CSM级联阴影",
-  "status": "in-progress",
+  "status": "completed",
   "attempts": 8,
   "progress": {
     "coreDevCompleted": true,
@@ -12,29 +12,10 @@
       "running": true,
       "validation": true
     },
-    "githubUpload": false,
-    "blogPublish": false
+    "githubUpload": true,
+    "blogPublish": true
   },
-  "timeline": [
-    {"time": "05:30", "action": "开始每日编程实践 - Cascaded Shadow Maps CSM级联阴影"},
-    {"time": "05:30", "action": "前置检查通过：今日无重复项目，CSM为新主题"},
-    {"time": "05:31", "action": "项目规划：4级联CSM+正交投影+PCF软化+近中远三段距离对比图"},
-    {"time": "05:32", "action": "开始编写代码 v1（含STB写PNG）"},
-    {"time": "05:33", "action": "编译失败：ortho函数返回错误变量名(return r vs return res)"},
-    {"time": "05:34", "action": "修复返回值 + 未使用参数警告，编译通过(0错误0警告)"},
-    {"time": "05:35", "action": "运行成功，生成PPM图像，但Shadow Map全为0%"},
-    {"time": "05:36", "action": "发现根本问题：barycentric坐标公式符号错误"},
-    {"time": "05:38", "action": "重写v2：清晰的行主序Mat4 + 正确的lookAt/perspective/ortho"},
-    {"time": "05:40", "action": "v2编译通过，运行但Shadow Map仍为0% - 深度裁剪问题"},
-    {"time": "05:42", "action": "修复：移除过早的逐顶点深度裁剪，改为逐像素裁剪"},
-    {"time": "05:43", "action": "Shadow Map开始有几何体(0.3-0.9%)但主渲染几乎全蓝(99%)"},
-    {"time": "05:44", "action": "调试：发现正交投影Z方向约定错误，视图空间Z为负值"},
-    {"time": "05:46", "action": "修复：orthoNear/orthoFar使用-maxZ/-minZ转换为正值"},
-    {"time": "05:47", "action": "发现主渲染仍全蓝：barycentric公式WXYZ顺序错误"},
-    {"time": "05:48", "action": "关键修复：将w0/w1公式从 (dx)*(dy)+(dy)*(dx) 改为 (dy)*(dx)+(dx)*(dy) 正确顺序"},
-    {"time": "05:56", "action": "编译通过(0错误0警告)，运行成功，Shadow Map覆盖率42-84%，主渲染49%非天空像素"},
-    {"time": "05:56", "action": "验证通过：生成csm_output.png(800x500), csm_cascade_vis.png, csm_shadowmaps.png"}
-  ],
-  "lastError": null,
-  "codeBackup": "/root/.openclaw/workspace/daily-coding-practice/temp/csm-cascaded-shadow-maps/"
+  "allCompleted": true,
+  "githubUrl": "https://github.com/chiuhoukazusa/daily-coding-practice/tree/main/2026/03/03-12-csm-cascaded-shadow-maps",
+  "blogUrl": "https://chiuhoukazusa.github.io/2026/03/12/daily-coding-csm-cascaded-shadow-maps-2026-03-12/"
 }
