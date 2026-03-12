@@ -287,7 +287,8 @@ void addCone(std::vector<Tri>& out, Vec3 base, float radius, float height, int s
 std::vector<Tri> buildScene() {
     std::vector<Tri> s;
     // 地面 80x80
-    addPlane(s,{-40,0,-80},{1,0,0},{0,0,1},80,80,20,20,{0.38f,0.58f,0.28f});
+    // 地面：origin左后角，right=+X，fwd=-Z（朝相机方向），法线朝上(0,1,0)
+    addPlane(s,{-40,0,0},{1,0,0},{0,0,-1},80,80,20,20,{0.92f,0.93f,0.95f});
     
     // 近景球 (z=-4..-9)
     addSphere(s,{ 0,1.5f,-5},  1.5f, 24,36, {0.85f,0.25f,0.2f});
@@ -307,11 +308,11 @@ std::vector<Tri> buildScene() {
     addSphere(s,{-4,2.5f,-63}, 2.5f, 24,36, {0.6f,0.4f,0.2f});
     addSphere(s,{ 7,2,-67},    2.0f, 20,28, {0.3f,0.25f,0.8f});
     
-    // 山丘
-    addCone(s,{-15,0,-15},  5,4.5f,  14,{0.52f,0.42f,0.32f});
-    addCone(s,{ 18,0,-28},  7,7.0f,  16,{0.48f,0.40f,0.30f});
-    addCone(s,{-22,0,-48},  9,8.5f,  18,{0.50f,0.42f,0.31f});
-    addCone(s,{ 12,0,-58},  6,6.0f,  14,{0.50f,0.40f,0.30f});
+    // 雪地山丘
+    addCone(s,{-15,0,-15},  5,4.5f,  14,{0.90f,0.92f,0.95f});
+    addCone(s,{ 18,0,-28},  7,7.0f,  16,{0.88f,0.90f,0.93f});
+    addCone(s,{-22,0,-48},  9,8.5f,  18,{0.91f,0.93f,0.96f});
+    addCone(s,{ 12,0,-58},  6,6.0f,  14,{0.89f,0.91f,0.94f});
     
     return s;
 }
@@ -598,14 +599,23 @@ void renderMain(Image& img, DepthBuf& depthBuf,
                 Vec3 albedo=tri.color;
                 if(cascadeVis) albedo=tri.color*0.6f+dbgC[cascIdx]*0.4f;
                 
-                Vec3 ambient=albedo*0.18f;
+                // shadow 最低保留 0.02，阴影够深清晰，冷蓝色调模拟雪地间接光
+                float shadowAmt = 0.02f + 0.98f * shadow;
+                Vec3 shadowTint = Vec3(1.0f, 1.0f, 1.0f) * shadowAmt
+                                + Vec3(0.5f, 0.55f, 0.85f) * (1.0f - shadowAmt);
+                
+                Vec3 ambient=albedo*0.30f;
                 float diffAmt=std::max(0.f,wNorm.dot(lightDir));
-                Vec3 diffuse=albedo*Vec3(1,0.95f,0.9f)*diffAmt*shadow;
+                Vec3 diffuse=albedo*Vec3(1.05f,1.0f,0.95f)*diffAmt*1.2f*shadowTint;
                 Vec3 reflDir=wNorm*(2*wNorm.dot(lightDir))-lightDir;
                 float specAmt=powf(std::max(0.f,viewDir.dot(reflDir)),32.f);
-                Vec3 specular=Vec3(1,1,1)*specAmt*0.25f*shadow;
+                Vec3 specular=Vec3(1,1,1)*specAmt*0.4f*shadowAmt;
                 
+                // tone mapping：轻微曝光提升 + 钳位
                 Vec3 finalColor=ambient+diffuse+specular;
+                finalColor.x=std::min(1.f, finalColor.x);
+                finalColor.y=std::min(1.f, finalColor.y);
+                finalColor.z=std::min(1.f, finalColor.z);
                 img.setPixel(px,py,finalColor);
             }
         }
@@ -756,7 +766,7 @@ int main() {
     
     // 主渲染
     printf("Main render...\n");
-    Image skyColor = Image(W, H, {0.43f, 0.65f, 0.82f});
+    Image skyColor = Image(W, H, {0.53f, 0.75f, 0.92f});
     DepthBuf depth(W,H);
     renderMain(skyColor, depth, scene, camVP, camView, camPos, lightDir,
                cascades, splits, false);
