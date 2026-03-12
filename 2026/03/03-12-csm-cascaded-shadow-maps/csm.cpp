@@ -376,7 +376,7 @@ void buildLightMatrix(Cascade& casc, std::array<Vec3,8> corners, Vec3 lightDir) 
     center=center*(1.0f/8);
     
     // 光源"眼睛"位置
-    Vec3 lightPos = center - lightDir * 200.0f;
+    Vec3 lightPos = center + lightDir * 200.0f;
     Vec3 up = std::abs(lightDir.y) < 0.99f ? Vec3(0,1,0) : Vec3(1,0,0);
     casc.lightView = lookAt(lightPos, center, up);
     
@@ -588,7 +588,7 @@ void renderMain(Image& img, DepthBuf& depthBuf,
                     float d=lz/lw*0.5f+0.5f;
                     if(u>=0&&u<=1&&v>=0&&v<=1&&d>=0&&d<=1){
                         float cosA=std::abs(wNorm.dot(lightDir));
-                        float bias=std::max(0.0005f,0.003f*(1-cosA));
+                        float bias=std::max(0.001f,0.008f*(1-cosA));
                         shadow=shadowPCF(casc.sm,u,v,d,bias);
                     }
                 }
