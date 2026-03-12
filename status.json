@@ -1,21 +1,25 @@
 {
-  "date": "2026-03-12",
-  "projectName": "Cascaded Shadow Maps CSM级联阴影",
-  "status": "completed",
-  "attempts": 8,
+  "date": "2026-03-13",
+  "projectName": "SSAO Screen Space Ambient Occlusion",
+  "status": "in-progress",
+  "attempts": 1,
   "progress": {
-    "coreDevCompleted": true,
+    "coreDevCompleted": false,
     "coreDevStage": {
       "planning": true,
-      "coding": true,
-      "compiling": true,
-      "running": true,
-      "validation": true
+      "coding": false,
+      "compiling": false,
+      "running": false,
+      "validation": false
     },
-    "githubUpload": true,
-    "blogPublish": true
+    "githubUpload": false,
+    "blogPublish": false
   },
-  "allCompleted": true,
-  "githubUrl": "https://github.com/chiuhoukazusa/daily-coding-practice/tree/main/2026/03/03-12-csm-cascaded-shadow-maps",
-  "blogUrl": "https://chiuhoukazusa.github.io/2026/03/12/daily-coding-csm-cascaded-shadow-maps-2026-03-12/"
+  "timeline": [
+    {"time": "05:30", "action": "开始每日编程实践 - SSAO Screen Space Ambient Occlusion"},
+    {"time": "05:30", "action": "通过重复项目检查，确认今日项目主题可用"},
+    {"time": "05:31", "action": "规划完成：实现SSAO（屏幕空间环境光遮蔽），包含几何Pass + 遮蔽采样 + 模糊Pass，与无SSAO对比"}
+  ],
+  "lastError": "",
+  "codeBackup": "/root/.openclaw/workspace/daily-coding-practice/temp/"
 }
