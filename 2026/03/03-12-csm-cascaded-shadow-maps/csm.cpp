@@ -394,9 +394,18 @@ void buildLightMatrix(Cascade& casc, std::array<Vec3,8> corners, Vec3 lightDir) 
     minX -= margin; maxX += margin;
     minY -= margin; maxY += margin;
     
-    // Z范围使用固定大值，捕获来自视锥体外的阴影投射体
-    float orthoNear = 0.1f;
-    float orthoFar  = 500.0f;
+    // Z范围：从场景 AABB 的光照空间 Z 计算，并向后延伸捕获投射体
+    float minZ = 1e9f, maxZ = -1e9f;
+    for(auto& c : corners) {
+        Vec3 lp = casc.lightView.transformPoint(c);
+        minZ = std::min(minZ, lp.z);
+        maxZ = std::max(maxZ, lp.z);
+    }
+    // 光照视图是右手系，物体 Z 为负；正交投影 near/far 对应 -maxZ/-minZ
+    // 向后再延伸 80 单位，捕获视锥体外的阴影投射体
+    float orthoNear = -maxZ - 80.0f;
+    float orthoFar  = -minZ + 10.0f;
+    if(orthoNear < 0.1f) orthoNear = 0.1f;
     
     casc.lightProj = orthoProj(minX, maxX, minY, maxY, orthoNear, orthoFar);
     casc.lightVP = casc.lightProj * casc.lightView;
@@ -579,7 +588,7 @@ void renderMain(Image& img, DepthBuf& depthBuf,
                     float d=lz/lw*0.5f+0.5f;
                     if(u>=0&&u<=1&&v>=0&&v<=1&&d>=0&&d<=1){
                         float cosA=std::abs(wNorm.dot(lightDir));
-                        float bias=std::max(0.003f,0.015f*(1-cosA));
+                        float bias=std::max(0.0005f,0.003f*(1-cosA));
                         shadow=shadowPCF(casc.sm,u,v,d,bias);
                     }
                 }
