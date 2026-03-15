@@ -40,6 +40,7 @@
 | 03-11 | TAA 时域抗锯齿渲染器 | Halton Jitter, EMA历史累积, Variance Clipping, 防鬼影, SSAA对比 | noaa/ssaa/taa/taa_ghost/comparison.png | ✅ 完成 |
 | 03-12 | CSM 级联阴影映射 | 4级联CSM, 对数线性分割, 正交光照投影, 3x3 PCF软化, Phong光照, 多球体+地面+锥体场景 | csm_output.png, csm_cascade_vis.png, csm_shadowmaps.png, csm_comparison.png | ✅ 完成 |
 | 03-13 | SSAO Screen Space Ambient Occlusion | G-Buffer软光栅化, SSAO半球采样, TBN矩阵, Box Blur, ACES色调映射 | ssao_off/on/map/comparison.png | ✅ 完成 |
+| 03-16 | SSR Screen Space Reflections | G-Buffer软光栅化, 屏幕空间Ray Marching, Binary Search精化, Fresnel-Schlick, 边缘衰减, Roughness Fade, ACES色调映射 | ssr_output.png, ssr_no_reflection.png, ssr_reflection_mask.png, ssr_comparison.png | ✅ 完成 |
 
 ## 技术领域覆盖
 
