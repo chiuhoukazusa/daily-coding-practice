@@ -41,6 +41,7 @@
 | 03-12 | CSM 级联阴影映射 | 4级联CSM, 对数线性分割, 正交光照投影, 3x3 PCF软化, Phong光照, 多球体+地面+锥体场景 | csm_output.png, csm_cascade_vis.png, csm_shadowmaps.png, csm_comparison.png | ✅ 完成 |
 | 03-13 | SSAO Screen Space Ambient Occlusion | G-Buffer软光栅化, SSAO半球采样, TBN矩阵, Box Blur, ACES色调映射 | ssao_off/on/map/comparison.png | ✅ 完成 |
 | 03-16 | SSR Screen Space Reflections | G-Buffer软光栅化, 屏幕空间Ray Marching, Binary Search精化, Fresnel-Schlick, 边缘衰减, Roughness Fade, ACES色调映射 | ssr_output.png, ssr_no_reflection.png, ssr_reflection_mask.png, ssr_comparison.png | ✅ 完成 |
+| 03-17 | LTC Area Light Rendering | 线性变换余弦(LTC), 矩形面光源, 球面多边形解析积分, GGX BRDF近似, PBR Metallic/Roughness, Fresnel-Schlick, ACES色调映射 | ltc_output.png, ltc_roughness.png, ltc_metallic.png, ltc_comparison.png | ✅ 完成 |
 
 ## 技术领域覆盖
 
