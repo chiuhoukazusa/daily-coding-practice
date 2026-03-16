@@ -1,14 +1,12 @@
 /*
- * SSAO - Screen Space Ambient Occlusion
- * 
- * 实现步骤：
- * 1. 软光栅化渲染几何（球体+地面+柱体），生成 G-Buffer (深度、法线、颜色)
- * 2. SSAO Pass: 对每像素在切线空间半球内随机采样，判断遮蔽
- * 3. 模糊 Pass: 4x4 box blur 降噪
- * 4. 合成输出: 无SSAO / 有SSAO / 对比图
+ * SSAO - Screen Space Ambient Occlusion (修复版)
+ *
+ * 核心修复：
+ * 1. 遮蔽判断方向：view space Z 为负，sampleDepth < samplePos.z 才是遮蔽
+ * 2. rangeCheck 用固定 SSAO_RADIUS 做衰减，不能用动态差值
+ * 3. 场景更紧凑，物体互相靠近，SSAO 能覆盖到缝隙
  *
  * 编译: g++ -O2 -std=c++17 ssao.cpp -o ssao
- * 运行: ./ssao
  */
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -42,9 +40,8 @@ struct Vec3 {
         return {y*o.z - z*o.y, z*o.x - x*o.z, x*o.y - y*o.x};
     }
     float length() const { return sqrtf(x*x+y*y+z*z); }
-    Vec3 normalize() const { float l=length(); if(l<1e-9f) return {0,0,1}; return *this/l; }
+    Vec3 normalize() const { float l=length(); if(l<1e-9f) return {0,1,0}; return *this/l; }
     Vec3& operator+=(const Vec3& o){ x+=o.x; y+=o.y; z+=o.z; return *this; }
-    Vec3& operator*=(float t){ x*=t; y*=t; z*=t; return *this; }
     float& operator[](int i){ return i==0?x:(i==1?y:z); }
     float  operator[](int i) const { return i==0?x:(i==1?y:z); }
 };
@@ -61,6 +58,8 @@ struct Vec4 {
     Vec4(float x=0,float y=0,float z=0,float w=0): x(x),y(y),z(z),w(w){}
     Vec4(Vec3 v, float w): x(v.x),y(v.y),z(v.z),w(w){}
     Vec3 xyz() const { return {x,y,z}; }
+    float& operator[](int i){ float* p=&x; return p[i]; }
+    float  operator[](int i) const { const float* p=&x; return p[i]; }
 };
 
 struct Mat4 {
@@ -70,9 +69,8 @@ struct Mat4 {
     }
     Vec4 operator*(const Vec4& v) const {
         Vec4 r;
-        float* rp = &r.x;
         for(int i=0;i<4;i++)
-            rp[i]=m[i][0]*v.x+m[i][1]*v.y+m[i][2]*v.z+m[i][3]*v.w;
+            r[i]=m[i][0]*v.x+m[i][1]*v.y+m[i][2]*v.z+m[i][3]*v.w;
         return r;
     }
     Mat4 operator*(const Mat4& o) const {
@@ -84,21 +82,7 @@ struct Mat4 {
             }
         return r;
     }
-    float& operator[](int i){ return m[i/4][i%4]; }
-    float  operator[](int i) const { return m[i/4][i%4]; }
 };
-float& mat(Mat4& M, int r, int c){ return M.m[r][c]; }
-
-Vec4& vecref(Vec4& v, int i){ if(i==0)return *reinterpret_cast<Vec4*>(&v.x);
-    // workaround
-    static float dummy=0; 
-    switch(i){case 0:return *reinterpret_cast<Vec4*>(&v.x);
-              default:return *reinterpret_cast<Vec4*>(&v.x);}}
-
-// 给 Vec4 下标访问
-static float& vec4at(Vec4& v, int i){
-    float* p = &v.x; return p[i];
-}
 
 Mat4 perspective(float fovy, float aspect, float near_, float far_){
     Mat4 r;
@@ -131,559 +115,469 @@ Mat4 lookAt(Vec3 eye, Vec3 center, Vec3 up){
 const int W = 800, H = 600;
 
 struct GBuffer {
-    // view-space position, normal, albedo
-    Vec3 position[W*H];  // view-space 位置
-    Vec3 normal[W*H];    // view-space 法线
-    Vec3 albedo[W*H];
-    float depth[W*H];    // NDC depth [-1,1]
-    bool valid[W*H];
-    
+    Vec3  vsPos[W*H];    // view-space 位置
+    Vec3  vsNorm[W*H];   // view-space 法线（已归一化）
+    Vec3  albedo[W*H];
+    bool  valid[W*H];
+
     void clear(){
         for(int i=0;i<W*H;i++){
-            position[i]={};
-            normal[i]={};
-            albedo[i]={0.1f,0.1f,0.1f};
-            depth[i]=1.0f;
-            valid[i]=false;
+            vsPos[i]  = {};
+            vsNorm[i] = {0,1,0};
+            albedo[i] = {0.1f,0.1f,0.1f};
+            valid[i]  = false;
         }
     }
 } gbuf;
 
-float zbuf[W*H];
+float zbuf[W*H]; // NDC depth，越小越近
 
 // ============================================================
-// 光栅化工具
+// 变换矩阵（全局）
 // ============================================================
-struct Vertex {
-    Vec3 pos;    // world space
-    Vec3 normal; // world space
-    Vec3 color;
-};
-
 Mat4 viewMat, projMat;
-Mat4 normalMat; // view matrix for normals (transpose inverse)
 
 void initMatrices(){
-    Vec3 eye = {5.0f, 6.0f, 8.0f};
-    Vec3 center = {0,0,0};
-    Vec3 up = {0,1,0};
-    viewMat = lookAt(eye, center, up);
-    projMat = perspective(M_PI/3.0f, (float)W/H, 0.5f, 50.0f);
-    // normalMat = transpose(inverse(view)) — for orthonormal view, just use view
-    normalMat = viewMat; // view is orthonormal so it works
+    // 相机站在场景正前方开口处，往 -Z 方向看进 Cornell Box
+    viewMat = lookAt({0.0f, 2.0f, 5.5f}, {0.0f, 1.8f, 0.0f}, {0,1,0});
+    projMat = perspective((float)M_PI/3.0f, (float)W/H, 0.1f, 25.0f);
 }
 
-Vec4 transformVertex(Vec3 worldPos){
-    Vec4 vp = viewMat * Vec4(worldPos, 1.0f);
-    Vec4 cp = projMat * vp;
-    return cp;
+// 世界坐标 → view 空间
+Vec3 toView(Vec3 p){
+    Vec4 v = viewMat * Vec4(p,1.0f);
+    return v.xyz();
 }
 
-Vec3 transformNormal(Vec3 worldNormal){
-    Vec4 vn = normalMat * Vec4(worldNormal, 0.0f);
-    return vn.xyz().normalize();
+// 世界法线 → view 空间（view 矩阵正交，直接用即可）
+Vec3 toViewNormal(Vec3 n){
+    Vec4 v = viewMat * Vec4(n,0.0f);
+    return v.xyz().normalize();
 }
 
-Vec3 toViewSpace(Vec3 worldPos){
-    Vec4 vp = viewMat * Vec4(worldPos, 1.0f);
-    return vp.xyz();
+// view 空间位置 → clip → NDC → 屏幕像素
+bool projectToPixel(Vec3 vsPos, int& px, int& py, float& ndcZ){
+    Vec4 cp = projMat * Vec4(vsPos, 1.0f);
+    if(cp.w < 1e-6f) return false;
+    ndcZ = cp.z / cp.w;
+    if(ndcZ < -1.0f || ndcZ > 1.0f) return false;
+    float ndcX = cp.x / cp.w;
+    float ndcY = cp.y / cp.w;
+    px = (int)((ndcX+1)*0.5f*(W-1) + 0.5f);
+    py = (int)((1-ndcY)*0.5f*(H-1) + 0.5f);
+    return px>=0 && px<W && py>=0 && py<H;
 }
 
-// NDC -> screen
-Vec2 ndcToScreen(float ndcX, float ndcY){
-    return { (ndcX+1)*0.5f*(W-1), (1-ndcY)*0.5f*(H-1) };
-}
+// ============================================================
+// 光栅化
+// ============================================================
+struct Vertex { Vec3 pos, normal, color; };
 
-// 重心坐标
-bool barycentric(float x, float y,
-                 float x0,float y0, float x1,float y1, float x2,float y2,
-                 float& u, float& v, float& w){
-    float denom = (y1-y2)*(x0-x2)+(x2-x1)*(y0-y2);
-    if(fabsf(denom)<1e-9f) return false;
-    u = ((y1-y2)*(x-x2)+(x2-x1)*(y-y2))/denom;
-    v = ((y2-y0)*(x-x2)+(x0-x2)*(y-y2))/denom;
+bool barycentric(float x,float y,
+                 float x0,float y0,float x1,float y1,float x2,float y2,
+                 float& u,float& v,float& w){
+    float d = (y1-y2)*(x0-x2)+(x2-x1)*(y0-y2);
+    if(fabsf(d)<1e-9f) return false;
+    u = ((y1-y2)*(x-x2)+(x2-x1)*(y-y2))/d;
+    v = ((y2-y0)*(x-x2)+(x0-x2)*(y-y2))/d;
     w = 1-u-v;
     return u>=-1e-5f && v>=-1e-5f && w>=-1e-5f;
 }
 
-void rasterizeTriangle(Vertex& v0, Vertex& v1, Vertex& v2){
-    // 变换顶点
-    Vec4 c0 = transformVertex(v0.pos);
-    Vec4 c1 = transformVertex(v1.pos);
-    Vec4 c2 = transformVertex(v2.pos);
-    
-    // perspective divide
-    if(fabsf(c0.w)<1e-6f||fabsf(c1.w)<1e-6f||fabsf(c2.w)<1e-6f) return;
-    Vec3 ndc0 = {c0.x/c0.w, c0.y/c0.w, c0.z/c0.w};
-    Vec3 ndc1 = {c1.x/c1.w, c1.y/c1.w, c1.z/c1.w};
-    Vec3 ndc2 = {c2.x/c2.w, c2.y/c2.w, c2.z/c2.w};
-    
-    // view space positions
-    Vec3 vs0 = toViewSpace(v0.pos);
-    Vec3 vs1 = toViewSpace(v1.pos);
-    Vec3 vs2 = toViewSpace(v2.pos);
-    
-    // view space normals
-    Vec3 vn0 = transformNormal(v0.normal);
-    Vec3 vn1 = transformNormal(v1.normal);
-    Vec3 vn2 = transformNormal(v2.normal);
-    
-    Vec2 s0 = ndcToScreen(ndc0.x, ndc0.y);
-    Vec2 s1 = ndcToScreen(ndc1.x, ndc1.y);
-    Vec2 s2 = ndcToScreen(ndc2.x, ndc2.y);
-    
+void rasterize(const Vertex& v0, const Vertex& v1, const Vertex& v2){
+    // world → view
+    Vec3 vs[3] = { toView(v0.pos), toView(v1.pos), toView(v2.pos) };
+    Vec3 vn[3] = { toViewNormal(v0.normal), toViewNormal(v1.normal), toViewNormal(v2.normal) };
+
+    // view → clip → NDC
+    Vec4 cs[3];
+    for(int i=0;i<3;i++){
+        cs[i] = projMat * Vec4(vs[i], 1.0f);
+        if(fabsf(cs[i].w)<1e-6f) return;
+    }
+    Vec3 ndc[3];
+    for(int i=0;i<3;i++) ndc[i] = {cs[i].x/cs[i].w, cs[i].y/cs[i].w, cs[i].z/cs[i].w};
+
+    // NDC → screen
+    float sx[3], sy[3];
+    for(int i=0;i<3;i++){
+        sx[i] = (ndc[i].x+1)*0.5f*(W-1);
+        sy[i] = (1-ndc[i].y)*0.5f*(H-1);
+    }
+
     // bounding box
-    int minX = max(0, (int)min({s0.x,s1.x,s2.x}));
-    int maxX = min(W-1, (int)max({s0.x,s1.x,s2.x})+1);
-    int minY = max(0, (int)min({s0.y,s1.y,s2.y}));
-    int maxY = min(H-1, (int)max({s0.y,s1.y,s2.y})+1);
-    
-    for(int py=minY; py<=maxY; py++){
-        for(int px=minX; px<=maxX; px++){
-            float u,v,w;
-            if(!barycentric(px+0.5f, py+0.5f,
-                            s0.x,s0.y, s1.x,s1.y, s2.x,s2.y, u,v,w)) continue;
-            
-            // depth interpolation (perspective correct)
-            float z = u*ndc0.z + v*ndc1.z + w*ndc2.z;
-            
-            int idx = py*W+px;
-            if(z >= zbuf[idx]) continue;
-            zbuf[idx] = z;
-            
-            // interpolate view-space position & normal
-            Vec3 vsPos = vs0*u + vs1*v + vs2*w;
-            Vec3 vsNorm = (vn0*u + vn1*v + vn2*w).normalize();
-            Vec3 col = v0.color*u + v1.color*v + v2.color*w;
-            
-            gbuf.position[idx] = vsPos;
-            gbuf.normal[idx] = vsNorm;
-            gbuf.albedo[idx] = col;
-            gbuf.depth[idx] = z;
-            gbuf.valid[idx] = true;
-        }
+    int minX = max(0, (int)min({sx[0],sx[1],sx[2]}));
+    int maxX = min(W-1, (int)max({sx[0],sx[1],sx[2]})+1);
+    int minY = max(0, (int)min({sy[0],sy[1],sy[2]}));
+    int maxY = min(H-1, (int)max({sy[0],sy[1],sy[2]})+1);
+
+    for(int py=minY;py<=maxY;py++)
+    for(int px=minX;px<=maxX;px++){
+        float u,v,w;
+        if(!barycentric(px+0.5f,py+0.5f,sx[0],sy[0],sx[1],sy[1],sx[2],sy[2],u,v,w)) continue;
+        float z = u*ndc[0].z + v*ndc[1].z + w*ndc[2].z;
+        int idx = py*W+px;
+        if(z >= zbuf[idx]) continue;
+        zbuf[idx] = z;
+        gbuf.vsPos[idx]  = vs[0]*u + vs[1]*v + vs[2]*w;
+        gbuf.vsNorm[idx] = (vn[0]*u + vn[1]*v + vn[2]*w).normalize();
+        gbuf.albedo[idx] = v0.color*u + v1.color*v + v2.color*w;
+        gbuf.valid[idx]  = true;
     }
 }
 
 // ============================================================
-// 几何生成
+// 几何生成（Cornell Box 风格紧凑场景）
 // ============================================================
-
-// 球体三角形
-void addSphere(vector<Vertex>& tris, Vec3 center, float radius, Vec3 color,
-               int stacks=20, int slices=30){
-    auto pt = [&](int si, int ti) -> pair<Vec3,Vec3> {
-        float phi = M_PI*ti/stacks - M_PI/2;
-        float theta = 2*M_PI*si/slices;
-        Vec3 n = {cosf(phi)*cosf(theta), sinf(phi), cosf(phi)*sinf(theta)};
-        return {center + n*radius, n};
-    };
-    for(int t=0;t<stacks;t++) for(int s=0;s<slices;s++){
-        auto [p00,n00]=pt(s,t);   auto [p10,n10]=pt(s+1,t);
-        auto [p01,n01]=pt(s,t+1); auto [p11,n11]=pt(s+1,t+1);
-        tris.push_back({p00,n00,color}); tris.push_back({p10,n10,color}); tris.push_back({p01,n01,color});
-        tris.push_back({p10,n10,color}); tris.push_back({p11,n11,color}); tris.push_back({p01,n01,color});
+void addPlane(vector<Vertex>& t, Vec3 origin, Vec3 right, Vec3 fwd,
+              float W_, float D_, Vec3 col, int nx=8, int nz=8){
+    Vec3 n = right.cross(fwd).normalize();
+    // 法线确保朝上/朝内
+    float dw=W_/nx, dd=D_/nz;
+    for(int j=0;j<nz;j++) for(int i=0;i<nx;i++){
+        Vec3 p00=origin+right*(i*dw)+fwd*(j*dd);
+        Vec3 p10=origin+right*((i+1)*dw)+fwd*(j*dd);
+        Vec3 p11=origin+right*((i+1)*dw)+fwd*((j+1)*dd);
+        Vec3 p01=origin+right*(i*dw)+fwd*((j+1)*dd);
+        t.push_back({p00,n,col}); t.push_back({p10,n,col}); t.push_back({p11,n,col});
+        t.push_back({p00,n,col}); t.push_back({p11,n,col}); t.push_back({p01,n,col});
     }
 }
 
-// 平面
-void addPlane(vector<Vertex>& tris, Vec3 center, float w, float d, Vec3 color){
-    Vec3 n = {0,1,0};
-    Vec3 p00 = center+Vec3(-w/2,0,-d/2);
-    Vec3 p10 = center+Vec3( w/2,0,-d/2);
-    Vec3 p01 = center+Vec3(-w/2,0, d/2);
-    Vec3 p11 = center+Vec3( w/2,0, d/2);
-    tris.push_back({p00,n,color}); tris.push_back({p10,n,color}); tris.push_back({p01,n,color});
-    tris.push_back({p10,n,color}); tris.push_back({p11,n,color}); tris.push_back({p01,n,color});
-}
-
-// 柱体（圆柱）
-void addCylinder(vector<Vertex>& tris, Vec3 center, float radius, float height, Vec3 color, int slices=20){
-    float y0 = center.y, y1 = center.y+height;
-    for(int s=0;s<slices;s++){
-        float t0=2*M_PI*s/slices, t1=2*M_PI*(s+1)/slices;
-        Vec3 n0={cosf(t0),0,sinf(t0)}, n1={cosf(t1),0,sinf(t1)};
-        Vec3 b0=center+n0*radius, b1=center+n1*radius;
-        Vec3 t0p=b0,t1p=b1;
-        t0p.y=y1; t1p.y=y1;
-        b0.y=y0; b1.y=y0;
-        // side
-        tris.push_back({b0,n0,color}); tris.push_back({b1,n1,color}); tris.push_back({t0p,n0,color});
-        tris.push_back({b1,n1,color}); tris.push_back({t1p,n1,color}); tris.push_back({t0p,n0,color});
-        // top cap
-        Vec3 nt={0,1,0};
-        Vec3 tc=center; tc.y=y1;
-        tris.push_back({tc,nt,color}); tris.push_back({t0p,nt,color}); tris.push_back({t1p,nt,color});
-        // bottom cap
-        Vec3 nb={0,-1,0};
-        Vec3 bc=center; bc.y=y0;
-        tris.push_back({bc,nb,color}); tris.push_back({b1,nb,color}); tris.push_back({b0,nb,color});
+void addSphere(vector<Vertex>& t, Vec3 c, float r, Vec3 col, int st=24, int sl=32){
+    for(int i=0;i<st;i++) for(int j=0;j<sl;j++){
+        float p0=(float)M_PI*i/st,     p1=(float)M_PI*(i+1)/st;
+        float t0=2*(float)M_PI*j/sl,   t1=2*(float)M_PI*(j+1)/sl;
+        auto pt=[&](float p, float tt)->Vec3{
+            return {c.x+r*sinf(p)*cosf(tt), c.y+r*cosf(p), c.z+r*sinf(p)*sinf(tt)};};
+        auto nm=[&](float p, float tt)->Vec3{
+            return Vec3{sinf(p)*cosf(tt),cosf(p),sinf(p)*sinf(tt)}.normalize();};
+        Vec3 p00=pt(p0,t0),p10=pt(p0,t1),p01=pt(p1,t0),p11=pt(p1,t1);
+        Vec3 n00=nm(p0,t0),n10=nm(p0,t1),n01=nm(p1,t0),n11=nm(p1,t1);
+        if(i>0){t.push_back({p00,n00,col});t.push_back({p10,n10,col});t.push_back({p11,n11,col});}
+        if(i<st-1){t.push_back({p00,n00,col});t.push_back({p11,n11,col});t.push_back({p01,n01,col});}
     }
 }
 
-// 长方体
-void addBox(vector<Vertex>& tris, Vec3 center, float w, float h, float d, Vec3 color){
-    float hw=w/2, hh=h/2, hd=d/2;
-    struct Face { Vec3 n; Vec3 p[4]; };
-    Face faces[6] = {
-        {{0,0,1},  {{center.x-hw,center.y-hh,center.z+hd},{center.x+hw,center.y-hh,center.z+hd},{center.x+hw,center.y+hh,center.z+hd},{center.x-hw,center.y+hh,center.z+hd}}},
-        {{0,0,-1}, {{center.x+hw,center.y-hh,center.z-hd},{center.x-hw,center.y-hh,center.z-hd},{center.x-hw,center.y+hh,center.z-hd},{center.x+hw,center.y+hh,center.z-hd}}},
-        {{1,0,0},  {{center.x+hw,center.y-hh,center.z+hd},{center.x+hw,center.y-hh,center.z-hd},{center.x+hw,center.y+hh,center.z-hd},{center.x+hw,center.y+hh,center.z+hd}}},
-        {{-1,0,0}, {{center.x-hw,center.y-hh,center.z-hd},{center.x-hw,center.y-hh,center.z+hd},{center.x-hw,center.y+hh,center.z+hd},{center.x-hw,center.y+hh,center.z-hd}}},
-        {{0,1,0},  {{center.x-hw,center.y+hh,center.z+hd},{center.x+hw,center.y+hh,center.z+hd},{center.x+hw,center.y+hh,center.z-hd},{center.x-hw,center.y+hh,center.z-hd}}},
-        {{0,-1,0}, {{center.x-hw,center.y-hh,center.z-hd},{center.x+hw,center.y-hh,center.z-hd},{center.x+hw,center.y-hh,center.z+hd},{center.x-hw,center.y-hh,center.z+hd}}},
+void addBox(vector<Vertex>& t, Vec3 c, float w, float h, float d, Vec3 col){
+    float hw=w/2,hh=h/2,hd=d/2;
+    // 6个面，每面2个三角形
+    struct FaceDef{Vec3 n; Vec3 p[4];};
+    FaceDef faces[6]={
+        {{0,0, 1},{{c.x-hw,c.y-hh,c.z+hd},{c.x+hw,c.y-hh,c.z+hd},{c.x+hw,c.y+hh,c.z+hd},{c.x-hw,c.y+hh,c.z+hd}}},
+        {{0,0,-1},{{c.x+hw,c.y-hh,c.z-hd},{c.x-hw,c.y-hh,c.z-hd},{c.x-hw,c.y+hh,c.z-hd},{c.x+hw,c.y+hh,c.z-hd}}},
+        {{ 1,0,0},{{c.x+hw,c.y-hh,c.z+hd},{c.x+hw,c.y-hh,c.z-hd},{c.x+hw,c.y+hh,c.z-hd},{c.x+hw,c.y+hh,c.z+hd}}},
+        {{-1,0,0},{{c.x-hw,c.y-hh,c.z-hd},{c.x-hw,c.y-hh,c.z+hd},{c.x-hw,c.y+hh,c.z+hd},{c.x-hw,c.y+hh,c.z-hd}}},
+        {{0, 1,0},{{c.x-hw,c.y+hh,c.z+hd},{c.x+hw,c.y+hh,c.z+hd},{c.x+hw,c.y+hh,c.z-hd},{c.x-hw,c.y+hh,c.z-hd}}},
+        {{0,-1,0},{{c.x-hw,c.y-hh,c.z-hd},{c.x+hw,c.y-hh,c.z-hd},{c.x+hw,c.y-hh,c.z+hd},{c.x-hw,c.y-hh,c.z+hd}}},
     };
     for(auto& f:faces){
-        tris.push_back({f.p[0],f.n,color}); tris.push_back({f.p[1],f.n,color}); tris.push_back({f.p[2],f.n,color});
-        tris.push_back({f.p[0],f.n,color}); tris.push_back({f.p[2],f.n,color}); tris.push_back({f.p[3],f.n,color});
+        t.push_back({f.p[0],f.n,col}); t.push_back({f.p[1],f.n,col}); t.push_back({f.p[2],f.n,col});
+        t.push_back({f.p[0],f.n,col}); t.push_back({f.p[2],f.n,col}); t.push_back({f.p[3],f.n,col});
     }
 }
 
 // ============================================================
-// SSAO 采样核
+// SSAO
 // ============================================================
-const int SSAO_KERNEL_SIZE = 32;
-const int SSAO_NOISE_SIZE  = 4;  // 4x4 noise tile
-const float SSAO_RADIUS    = 0.5f;
-const float SSAO_BIAS      = 0.05f;
+const int   KERNEL_SIZE  = 64;
+const int   NOISE_DIM    = 4;
+const float SSAO_RADIUS  = 0.8f;   // view-space 采样半径
+const float SSAO_BIAS    = 0.12f;  // 防自遮蔽，约 RADIUS*0.15
 
-Vec3 ssaoKernel[SSAO_KERNEL_SIZE];
-Vec3 ssaoNoise[SSAO_NOISE_SIZE*SSAO_NOISE_SIZE];
-float ssaoMap[W*H];    // raw SSAO occlusion
-float ssaoBlur[W*H];   // blurred SSAO
+Vec3  kernel[KERNEL_SIZE];
+Vec3  noise[NOISE_DIM*NOISE_DIM];
+float aoRaw[W*H];
+float aoBlur[W*H];
 
-void generateSSAOKernel(mt19937& rng){
-    uniform_real_distribution<float> dist(0,1);
-    uniform_real_distribution<float> dist11(-1,1);
-    
-    for(int i=0;i<SSAO_KERNEL_SIZE;i++){
-        Vec3 s = { dist11(rng), dist11(rng), dist(rng) };
-        s = s.normalize();
-        s = s * dist(rng);
-        // accelerating interpolation (more samples near origin)
-        float scale = (float)i/SSAO_KERNEL_SIZE;
+void buildKernel(mt19937& rng){
+    uniform_real_distribution<float> rnd(0,1), rnd11(-1,1);
+    for(int i=0;i<KERNEL_SIZE;i++){
+        // 半球内随机向量（z > 0，朝法线方向）
+        Vec3 s={rnd11(rng), rnd11(rng), rnd(rng)};
+        s = s.normalize() * rnd(rng);
+        // 让样本点聚集在原点附近（更有效的遮蔽采样）
+        float scale = float(i)/KERNEL_SIZE;
         scale = 0.1f + scale*scale*0.9f;
-        s = s * scale;
-        ssaoKernel[i] = s;
+        kernel[i] = s * scale;
     }
 }
 
-void generateSSAONoise(mt19937& rng){
-    uniform_real_distribution<float> dist11(-1,1);
-    for(int i=0;i<SSAO_NOISE_SIZE*SSAO_NOISE_SIZE;i++){
-        // rotation vectors around z-axis (no z component)
-        ssaoNoise[i] = Vec3(dist11(rng), dist11(rng), 0).normalize();
-    }
-}
-
-// 将 view-space 位置重投影得到纹理坐标和线性深度
-bool projectToTexture(Vec3 vsPos, int& tx, int& ty, float& ndcZ){
-    Vec4 cp = projMat * Vec4(vsPos, 1.0f);
-    if(fabsf(cp.w)<1e-6f) return false;
-    ndcZ = cp.z/cp.w;
-    if(ndcZ < -1 || ndcZ > 1) return false;
-    float ndcX = cp.x/cp.w;
-    float ndcY = cp.y/cp.w;
-    tx = (int)((ndcX+1)*0.5f*(W-1)+0.5f);
-    ty = (int)((1-ndcY)*0.5f*(H-1)+0.5f);
-    return tx>=0 && tx<W && ty>=0 && ty<H;
+void buildNoise(mt19937& rng){
+    uniform_real_distribution<float> rnd11(-1,1);
+    for(int i=0;i<NOISE_DIM*NOISE_DIM;i++)
+        noise[i] = Vec3(rnd11(rng), rnd11(rng), 0).normalize();
 }
 
 void computeSSAO(){
-    mt19937 rng(42);
-    generateSSAOKernel(rng);
-    generateSSAONoise(rng);
-    
-    for(int py=0;py<H;py++){
-        for(int px=0;px<W;px++){
-            int idx=py*W+px;
-            if(!gbuf.valid[idx]){
-                ssaoMap[idx]=1.0f; continue;
-            }
-            
-            Vec3 fragPos = gbuf.position[idx];
-            Vec3 normal  = gbuf.normal[idx].normalize();
-            
-            // 从噪声纹理获取旋转向量（tiling）
-            int nx = px % SSAO_NOISE_SIZE;
-            int ny = py % SSAO_NOISE_SIZE;
-            Vec3 randomVec = ssaoNoise[ny*SSAO_NOISE_SIZE+nx];
-            
-            // TBN 矩阵（将核从切线空间变换到 view space）
-            Vec3 tangent = (randomVec - normal * normal.dot(randomVec)).normalize();
-            Vec3 bitangent = normal.cross(tangent);
-            
-            float occlusion = 0.0f;
-            for(int i=0;i<SSAO_KERNEL_SIZE;i++){
-                // 将采样点变换到 view space
-                Vec3 s = ssaoKernel[i];
-                Vec3 samplePos = tangent*s.x + bitangent*s.y + normal*s.z;
-                samplePos = fragPos + samplePos * SSAO_RADIUS;
-                
-                // 投影采样点到纹理坐标
-                int tx, ty; float ndcZ;
-                if(!projectToTexture(samplePos, tx, ty, ndcZ)) continue;
-                
-                // 获取采样点的真实深度（view space z）
-                int sidx = ty*W+tx;
-                if(!gbuf.valid[sidx]) continue;
-                
-                float sampleDepth = gbuf.position[sidx].z;
-                
-                // 范围检查 + 遮蔽判断
-                float rangeCheck = smoothstep(0.0f, 1.0f, 
-                    SSAO_RADIUS / fabsf(fragPos.z - sampleDepth + 1e-5f));
-                // view space: z 为负，更近的 z 更小（更负）
-                // 采样点的 z < fragPos.z 表示更近（遮蔽）
-                // 加 bias 避免自遮蔽
-                occlusion += (samplePos.z + SSAO_BIAS >= sampleDepth ? 1.0f : 0.0f) * rangeCheck;
-            }
-            
-            ssaoMap[idx] = 1.0f - (occlusion / SSAO_KERNEL_SIZE);
+    mt19937 rng(12345);
+    buildKernel(rng);
+    buildNoise(rng);
+
+    // 调试：打印中心像素的采样情况
+
+    for(int py=0;py<H;py++)
+    for(int px=0;px<W;px++){
+        int idx=py*W+px;
+        if(!gbuf.valid[idx]){ aoRaw[idx]=1.0f; continue; }
+        
+        // 找第一个有效像素打印调试信息
+
+        Vec3 fragPos  = gbuf.vsPos[idx];
+        Vec3 normal   = gbuf.vsNorm[idx];
+
+        // 从噪声纹理取随机旋转轴（tile 4×4）
+        Vec3 randVec = noise[(py%NOISE_DIM)*NOISE_DIM + (px%NOISE_DIM)];
+
+        // Gram-Schmidt 构造 TBN 矩阵（切线空间 → view 空间）
+        Vec3 tangent   = (randVec - normal*normal.dot(randVec)).normalize();
+        Vec3 bitangent = normal.cross(tangent);
+        // TBN 列向量：tangent, bitangent, normal
+
+        float occlusion = 0.0f;
+        for(int i=0;i<KERNEL_SIZE;i++){
+            // 核样本从切线空间 → view 空间
+            Vec3 s = kernel[i];
+            Vec3 sampleVS = tangent*s.x + bitangent*s.y + normal*s.z;
+            Vec3 samplePos = fragPos + sampleVS * SSAO_RADIUS;
+
+            // 将采样点投影到屏幕，得到对应的 G-Buffer 像素
+            int sx, sy; float ndcZ;
+            if(!projectToPixel(samplePos, sx, sy, ndcZ)) continue;
+
+            int sidx = sy*W+sx;
+            if(!gbuf.valid[sidx]) continue;
+
+            // 取该屏幕像素实际的 view-space Z
+            float sceneZ = gbuf.vsPos[sidx].z;
+
+            // 遮蔽判断（view space Z，越负越远）：
+            // 如果真实表面 sceneZ > samplePos.z + BIAS：
+            //   真实表面比采样点更靠近相机 → samplePos 在表面后方 → 被遮蔽
+            // BIAS 需要 >= RADIUS * 0.3，防止同平面自遮蔽
+            float occluded = (sceneZ > samplePos.z + SSAO_BIAS) ? 1.0f : 0.0f;
+
+            // 范围衰减
+            float dist = fabsf(fragPos.z - sceneZ);
+            float rangeCheck = 1.0f - smoothstep(0.0f, SSAO_RADIUS, dist);
+
+            occlusion += occluded * rangeCheck;
         }
+
+        // AO 值：1.0 = 无遮蔽（亮），0.0 = 完全遮蔽（暗）
+        aoRaw[idx] = 1.0f - (occlusion / KERNEL_SIZE);
+    }
+}
+
+void blurAO(){
+    // 4×4 box blur
+    const int R=2;
+    for(int py=0;py<H;py++)
+    for(int px=0;px<W;px++){
+        float sum=0; int n=0;
+        for(int dy=-R;dy<=R;dy++)
+        for(int dx=-R;dx<=R;dx++){
+            int nx=px+dx, ny=py+dy;
+            if(nx<0||nx>=W||ny<0||ny>=H) continue;
+            sum+=aoRaw[ny*W+nx]; n++;
+        }
+        aoBlur[py*W+px] = n>0 ? sum/n : aoRaw[py*W+px];
     }
 }
 
 // ============================================================
-// 模糊 Pass（4x4 box blur）
+// 渲染着色
 // ============================================================
-void blurSSAO(){
-    const int blur=2;
-    for(int py=0;py<H;py++){
-        for(int px=0;px<W;px++){
-            float sum=0; int cnt=0;
-            for(int dy=-blur;dy<=blur;dy++)
-                for(int dx=-blur;dx<=blur;dx++){
-                    int sx=px+dx, sy=py+dy;
-                    if(sx<0||sx>=W||sy<0||sy>=H) continue;
-                    sum+=ssaoMap[sy*W+sx];
-                    cnt++;
-                }
-            ssaoBlur[py*W+px] = cnt>0 ? sum/cnt : ssaoMap[py*W+px];
-        }
-    }
-}
+float clampf(float v,float lo,float hi){ return max(lo,min(hi,v)); }
 
-// ============================================================
-// 着色
-// ============================================================
-Vec3 shadingLight(Vec3 vsPos, Vec3 vsNormal, Vec3 albedo, float ao){
-    // 视空间光源
-    Vec4 lightWorldPos4 = viewMat * Vec4(Vec3(5,8,5), 1.0f);
-    Vec3 lightPos = lightWorldPos4.xyz();
-    
-    Vec3 lightDir = (lightPos - vsPos).normalize();
-    Vec3 viewDir  = (-vsPos).normalize();
-    
-    float diff = max(0.0f, vsNormal.dot(lightDir));
-    Vec3 halfway = (lightDir+viewDir).normalize();
-    float spec = powf(max(0.0f, vsNormal.dot(halfway)), 32.0f);
-    
-    Vec3 ambient  = albedo * 0.15f * ao;
-    Vec3 diffuse  = albedo * diff  * 0.75f;
-    Vec3 specular = Vec3(1,1,1) * spec * 0.3f;
-    
+Vec3 shade(Vec3 vsPos, Vec3 vsNorm, Vec3 albedo, float ao){
+    // 光源（view 空间）
+    Vec3 lightVS = (viewMat * Vec4{5.0f,8.0f,4.0f,1.0f}).xyz();
+    Vec3 L = (lightVS - vsPos).normalize();
+    Vec3 V = (-vsPos).normalize();
+    Vec3 H = (L+V).normalize();
+
+    float diff = max(0.0f, vsNorm.dot(L));
+    float spec = powf(max(0.0f, vsNorm.dot(H)), 64.0f);
+
+    // 环境光乘以 AO（SSAO 只影响环境光，不影响直接光）
+    // ambient 权重调高以突显 AO 效果
+    Vec3 ambient  = albedo * 0.55f * ao;  // 无AO时 ambient=0.55，有AO时最低0.55*minAO
+    Vec3 diffuse  = albedo * diff  * 0.65f;
+    Vec3 specular = Vec3(1,1,1) * spec * 0.25f;
+
     return ambient + diffuse + specular;
 }
 
-// ACES tone mapping
 Vec3 aces(Vec3 c){
     float a=2.51f,b=0.03f,cc=2.43f,d=0.59f,e=0.14f;
-    c.x=clamp01((c.x*(a*c.x+b))/(c.x*(cc*c.x+d)+e));
-    c.y=clamp01((c.y*(a*c.y+b))/(c.y*(cc*c.y+d)+e));
-    c.z=clamp01((c.z*(a*c.z+b))/(c.z*(cc*c.z+d)+e));
-    return c;
+    auto f=[&](float x){ return clampf((x*(a*x+b))/(x*(cc*x+d)+e),0,1); };
+    return {f(c.x),f(c.y),f(c.z)};
 }
 
-Vec3 linearToSRGB(Vec3 c){
-    return {powf(clamp01(c.x),1.0f/2.2f),
-            powf(clamp01(c.y),1.0f/2.2f),
-            powf(clamp01(c.z),1.0f/2.2f)};
-}
+unsigned char toU8(float v){ return (unsigned char)(clampf(v,0,1)*255.f+0.5f); }
 
-unsigned char toU8(float v){ return (unsigned char)(clamp01(v)*255.0f+0.5f); }
-
-void renderFinalImage(const char* filename, bool useSSAO){
-    vector<unsigned char> pixels(W*H*3);
-    
-    for(int py=0;py<H;py++){
-        for(int px=0;px<W;px++){
-            int idx=py*W+px;
-            Vec3 col;
-            
-            if(gbuf.valid[idx]){
-                float ao = useSSAO ? ssaoBlur[idx] : 1.0f;
-                col = shadingLight(gbuf.position[idx], gbuf.normal[idx], gbuf.albedo[idx], ao);
-                col = aces(col);
-                col = linearToSRGB(col);
-            } else {
-                // 背景渐变
-                float t = (float)py/H;
-                col = lerp(Vec3(0.6f,0.7f,0.9f), Vec3(0.2f,0.3f,0.5f), t);
-            }
-            
-            pixels[(py*W+px)*3+0] = toU8(col.x);
-            pixels[(py*W+px)*3+1] = toU8(col.y);
-            pixels[(py*W+px)*3+2] = toU8(col.z);
-        }
-    }
-    
-    stbi_write_png(filename, W, H, 3, pixels.data(), W*3);
-    cout << "✅ 保存: " << filename << endl;
-}
-
-void renderSSAOMap(const char* filename){
-    vector<unsigned char> pixels(W*H*3);
-    for(int i=0;i<W*H;i++){
-        unsigned char v = toU8(ssaoBlur[i]);
-        pixels[i*3+0]=pixels[i*3+1]=pixels[i*3+2]=v;
-    }
-    stbi_write_png(filename, W, H, 3, pixels.data(), W*3);
-    cout << "✅ 保存: " << filename << endl;
-}
-
-// 左右对比图
-void renderComparison(const char* noSSAOFile, const char* ssaoFile, const char* outFile){
-    int CW = W*2, CH = H;
-    vector<unsigned char> comp(CW*CH*3);
-    
-    // 加载两张图
-    vector<unsigned char> imgA(W*H*3), imgB(W*H*3);
-    
-    // 重新渲染到内存
-    for(int py=0;py<H;py++) for(int px=0;px<W;px++){
-        int idx=py*W+px;
+// 写出图像
+void writeImage(const char* path, bool useAO){
+    vector<unsigned char> buf(W*H*3);
+    for(int py=0;py<H;py++)
+    for(int px=0;px<W;px++){
+        int i=py*W+px;
         Vec3 col;
-        if(gbuf.valid[idx]){
-            col = shadingLight(gbuf.position[idx],gbuf.normal[idx],gbuf.albedo[idx],1.0f);
-            col = aces(col); col = linearToSRGB(col);
-        } else { float t=(float)py/H; col=lerp(Vec3(0.6f,0.7f,0.9f),Vec3(0.2f,0.3f,0.5f),t);}
-        imgA[(py*W+px)*3+0]=toU8(col.x); imgA[(py*W+px)*3+1]=toU8(col.y); imgA[(py*W+px)*3+2]=toU8(col.z);
-        
-        if(gbuf.valid[idx]){
-            col = shadingLight(gbuf.position[idx],gbuf.normal[idx],gbuf.albedo[idx],ssaoBlur[idx]);
-            col = aces(col); col = linearToSRGB(col);
-        } else { float t=(float)py/H; col=lerp(Vec3(0.6f,0.7f,0.9f),Vec3(0.2f,0.3f,0.5f),t);}
-        imgB[(py*W+px)*3+0]=toU8(col.x); imgB[(py*W+px)*3+1]=toU8(col.y); imgB[(py*W+px)*3+2]=toU8(col.z);
+        if(gbuf.valid[i]){
+            float ao = useAO ? aoBlur[i] : 1.0f;
+            col = shade(gbuf.vsPos[i], gbuf.vsNorm[i], gbuf.albedo[i], ao);
+            col = aces(col);
+            // gamma
+            col = {powf(clampf(col.x,0,1),1/2.2f),
+                   powf(clampf(col.y,0,1),1/2.2f),
+                   powf(clampf(col.z,0,1),1/2.2f)};
+        } else {
+            // 天空背景
+            float t=(float)py/H;
+            col = lerp(Vec3(0.55f,0.70f,0.95f), Vec3(0.15f,0.25f,0.55f), t);
+        }
+        buf[i*3+0]=toU8(col.x);
+        buf[i*3+1]=toU8(col.y);
+        buf[i*3+2]=toU8(col.z);
     }
-    
-    // 合并
-    for(int py=0;py<H;py++){
+    stbi_write_png(path, W, H, 3, buf.data(), W*3);
+    printf("✅ %s\n", path);
+}
+
+void writeAOMap(const char* path){
+    vector<unsigned char> buf(W*H*3);
+    for(int i=0;i<W*H;i++){
+        unsigned char v=toU8(gbuf.valid[i] ? aoBlur[i] : 1.0f);
+        buf[i*3+0]=buf[i*3+1]=buf[i*3+2]=v;
+    }
+    stbi_write_png(path, W, H, 3, buf.data(), W*3);
+    printf("✅ %s\n", path);
+}
+
+void writeComparison(const char* path){
+    int CW=W*2;
+    vector<unsigned char> buf(CW*H*3);
+    // 左：无AO，右：有AO
+    vector<vector<unsigned char>> imgs(2);
+    for(int k=0;k<2;k++){
+        imgs[k].resize(W*H*3);
+        for(int py=0;py<H;py++)
         for(int px=0;px<W;px++){
-            int src=(py*W+px)*3;
-            int dstA=(py*CW+px)*3;
-            int dstB=(py*CW+W+px)*3;
-            comp[dstA+0]=imgA[src+0]; comp[dstA+1]=imgA[src+1]; comp[dstA+2]=imgA[src+2];
-            comp[dstB+0]=imgB[src+0]; comp[dstB+1]=imgB[src+1]; comp[dstB+2]=imgB[src+2];
+            int i=py*W+px;
+            Vec3 col;
+            if(gbuf.valid[i]){
+                float ao = k==1 ? aoBlur[i] : 1.0f;
+                col=shade(gbuf.vsPos[i],gbuf.vsNorm[i],gbuf.albedo[i],ao);
+                col=aces(col);
+                col={powf(clampf(col.x,0,1),1/2.2f),
+                     powf(clampf(col.y,0,1),1/2.2f),
+                     powf(clampf(col.z,0,1),1/2.2f)};
+            } else {
+                float t=(float)py/H;
+                col=lerp(Vec3(0.55f,0.70f,0.95f),Vec3(0.15f,0.25f,0.55f),t);
+            }
+            imgs[k][i*3+0]=toU8(col.x);
+            imgs[k][i*3+1]=toU8(col.y);
+            imgs[k][i*3+2]=toU8(col.z);
         }
     }
-    
-    // 中间分割线
     for(int py=0;py<H;py++){
-        int x=W;
-        comp[(py*CW+x)*3+0]=255; comp[(py*CW+x)*3+1]=255; comp[(py*CW+x)*3+2]=0;
+        // 左半
+        memcpy(&buf[(py*CW)*3],     &imgs[0][(py*W)*3], W*3);
+        // 右半
+        memcpy(&buf[(py*CW+W)*3],   &imgs[1][(py*W)*3], W*3);
+        // 分割线（黄色）
+        buf[(py*CW+W-1)*3+0]=255; buf[(py*CW+W-1)*3+1]=255; buf[(py*CW+W-1)*3+2]=0;
+        buf[(py*CW+W  )*3+0]=255; buf[(py*CW+W  )*3+1]=255; buf[(py*CW+W  )*3+2]=0;
     }
-    
-    stbi_write_png(outFile, CW, CH, 3, comp.data(), CW*3);
-    cout << "✅ 保存对比图: " << outFile << endl;
+    stbi_write_png(path, CW, H, 3, buf.data(), CW*3);
+    printf("✅ %s\n", path);
 }
 
 // ============================================================
 // main
 // ============================================================
 int main(){
-    cout << "=== SSAO - Screen Space Ambient Occlusion ===" << endl;
-    
+    printf("=== SSAO Renderer ===\n");
     initMatrices();
-    
-    // 初始化 GBuffer 和深度缓冲
+
+    // 初始化 G-Buffer 和 Z-Buffer
     gbuf.clear();
-    for(int i=0;i<W*H;i++) zbuf[i]=2.0f; // +inf
-    
-    // 构建场景
-    vector<Vertex> triangles;
-    
-    // 地面（灰色）
-    addPlane(triangles, {0,-0.5f,0}, 12, 12, {0.7f,0.7f,0.65f});
-    
-    // 后墙
-    {
-        vector<Vertex> tmp;
-        addPlane(tmp, {0,0,0}, 12, 4, {0.6f,0.6f,0.7f});
-        // 旋转: 绕X轴90度, 移到z=-4
-        for(auto& v:tmp){
-            float y=v.pos.y, z=v.pos.z;
-            v.pos.y = -z; v.pos.z = y;
-            v.pos.z -= 4.5f; v.pos.y += 1.5f;
-            y=v.normal.y; z=v.normal.z;
-            v.normal.y=-z; v.normal.z=y;
-        }
-        for(auto& v:tmp) triangles.push_back(v);
-    }
-    
-    // 球体（几个不同颜色）
-    addSphere(triangles, {0, 0.8f, 0},   0.8f, {0.9f,0.3f,0.3f}); // 红球
-    addSphere(triangles, {-2.2f,0.5f,0.5f}, 0.5f, {0.3f,0.7f,0.3f}); // 绿小球
-    addSphere(triangles, {2.0f, 0.6f,-0.5f}, 0.6f, {0.3f,0.5f,0.9f}); // 蓝球
-    
-    // 柱体
-    addCylinder(triangles, {-1.0f,-0.5f,-2.0f}, 0.35f, 2.5f, {0.8f,0.7f,0.5f});
-    addCylinder(triangles, { 1.5f,-0.5f,-2.2f}, 0.3f,  2.0f, {0.7f,0.8f,0.6f});
-    
-    // 方块
-    addBox(triangles, {-2.8f, 0.25f,-1.0f}, 1.0f, 1.5f, 0.9f, {0.8f,0.75f,0.7f});
-    addBox(triangles, { 2.5f, 0.0f, 1.5f},  0.8f, 1.0f, 0.8f, {0.7f,0.8f,0.75f});
-    
-    cout << "场景三角形数量: " << triangles.size()/3 << endl;
-    
-    // 光栅化
-    cout << "渲染 G-Buffer..." << endl;
-    for(int i=0;i<(int)triangles.size(); i+=3){
-        rasterizeTriangle(triangles[i], triangles[i+1], triangles[i+2]);
-    }
-    
-    // 统计有效像素
-    int validCount=0;
-    for(int i=0;i<W*H;i++) if(gbuf.valid[i]) validCount++;
-    cout << "有效像素: " << validCount << "/" << W*H << endl;
-    
-    // 计算 SSAO
-    cout << "计算 SSAO..." << endl;
+    fill(zbuf, zbuf+W*H, 2.0f);
+
+    // ---- Cornell Box 场景（3×4×3 空间，相机在 z=5.5 往 -Z 看）----
+    vector<Vertex> tris;
+
+    // 地面：法线朝上(0,1,0) = right(1,0,0) × fwd(0,0,-1)
+    addPlane(tris, {-2,0, 2}, {1,0,0}, {0,0,-1}, 4, 4, {0.73f,0.71f,0.68f}, 12, 12);
+
+    // 天花板：法线朝下(0,-1,0) = right(1,0,0) × fwd(0,0,1)
+    addPlane(tris, {-2,4,-2}, {1,0,0}, {0,0,1}, 4, 4, {0.73f,0.71f,0.68f}, 12, 12);
+
+    // 后墙(z=-2)：法线朝 +Z = right(1,0,0) × fwd(0,1,0)
+    addPlane(tris, {-2,0,-2}, {1,0,0}, {0,1,0}, 4, 4, {0.72f,0.72f,0.72f}, 12, 12);
+
+    // 左墙(x=-2)：法线朝 +X = fwd(0,0,-1) × up(0,1,0) → 用 right(0,0,-1), fwd(0,1,0)
+    addPlane(tris, {-2,0, 2}, {0,0,-1}, {0,1,0}, 4, 4, {0.65f,0.05f,0.05f}, 12, 12);
+
+    // 右墙(x=+2)：法线朝 -X = fwd(0,0,1) × up(0,1,0) → right(0,0,1), fwd(0,1,0)
+    addPlane(tris, { 2,0,-2}, {0,0,1},  {0,1,0}, 4, 4, {0.12f,0.45f,0.15f}, 12, 12);
+
+    // 球体（贴着地面和墙，遮蔽缝隙明显）
+    addSphere(tris, { 0.0f, 0.55f, -0.3f}, 0.55f, {0.85f,0.85f,0.85f}); // 大球（中，贴地）
+    addSphere(tris, {-1.1f, 0.32f,  0.7f}, 0.32f, {0.20f,0.50f,0.80f}); // 小球（左前贴地）
+    addSphere(tris, { 1.2f, 0.32f,  0.6f}, 0.32f, {0.80f,0.60f,0.20f}); // 小球（右前贴地）
+    addSphere(tris, {-1.5f, 0.28f, -1.2f}, 0.28f, {0.90f,0.30f,0.30f}); // 小球（靠左后墙）
+    addSphere(tris, { 1.5f, 0.28f, -1.0f}, 0.28f, {0.30f,0.80f,0.40f}); // 小球（靠右后墙）
+
+    // 方块（紧贴墙角，墙-盒-地面三角缝隙产生强烈遮蔽）
+    addBox(tris, {-0.8f, 0.65f, -1.2f}, 0.9f, 1.3f, 0.9f, {0.76f,0.75f,0.50f}); // 高盒
+    addBox(tris, { 1.0f, 0.30f,  0.4f}, 1.1f, 0.6f, 0.9f, {0.76f,0.75f,0.50f}); // 矮盒
+
+    printf("三角形数: %d\n", (int)tris.size()/3);
+
+    // G-Buffer 光栅化
+    printf("G-Buffer Pass...\n");
+    for(int i=0;i<(int)tris.size();i+=3)
+        rasterize(tris[i], tris[i+1], tris[i+2]);
+
+    int validPx=0;
+    for(int i=0;i<W*H;i++) if(gbuf.valid[i]) validPx++;
+    printf("有效像素: %d / %d (%.1f%%)\n", validPx, W*H, 100.f*validPx/(W*H));
+
+    // SSAO Pass
+    printf("SSAO Pass...\n");
     computeSSAO();
-    blurSSAO();
-    
-    // 验证 SSAO 值
-    float minAO=1,maxAO=0,sumAO=0; int aoCnt=0;
-    for(int i=0;i<W*H;i++){
-        if(gbuf.valid[i]){
-            minAO=min(minAO,ssaoBlur[i]);
-            maxAO=max(maxAO,ssaoBlur[i]);
-            sumAO+=ssaoBlur[i];
-            aoCnt++;
-        }
+    blurAO();
+
+    // 量化验证
+    float minAO=1,maxAO=0,sumAO=0; int cnt=0;
+    for(int i=0;i<W*H;i++) if(gbuf.valid[i]){
+        minAO=min(minAO,aoBlur[i]);
+        maxAO=max(maxAO,aoBlur[i]);
+        sumAO+=aoBlur[i]; cnt++;
     }
-    float avgAO = aoCnt>0 ? sumAO/aoCnt : 0;
-    cout << "SSAO 值范围: [" << minAO << ", " << maxAO << "], 平均: " << avgAO << endl;
-    
-    // 验证 SSAO 有效性：
-    // - minAO 应 < 0.9 (有遮蔽)
-    // - maxAO 应 > 0.5 (有非遮蔽区域)
-    // - avgAO 应在 0.1-0.99 之间
-    assert(minAO < 0.9f && "SSAO 没有产生遮蔽效果");
-    assert(maxAO > 0.3f && "SSAO 遮蔽过于严重");
-    assert(avgAO > 0.1f && avgAO < 0.99f && "SSAO 平均值异常");
-    
-    // 输出图片
-    renderFinalImage("/tmp/ssao_work/ssao_off.png", false);
-    renderFinalImage("/tmp/ssao_work/ssao_on.png",  true);
-    renderSSAOMap("/tmp/ssao_work/ssao_map.png");
-    renderComparison("/tmp/ssao_work/ssao_off.png", "/tmp/ssao_work/ssao_on.png",
-                     "/tmp/ssao_work/ssao_comparison.png");
-    
-    cout << "\n=== 验证通过 ===" << endl;
-    cout << "SSAO 遮蔽范围: [" << minAO*100 << "%, " << maxAO*100 << "%]" << endl;
-    cout << "平均遮蔽: " << avgAO*100 << "%" << endl;
-    cout << "有效场景像素: " << validCount << "/" << W*H << endl;
-    
+    float avgAO = cnt>0 ? sumAO/cnt : 0;
+    float occludedPct = cnt>0 ? 100.f*(1-avgAO) : 0;
+
+    printf("AO 范围: [%.3f, %.3f]  平均: %.3f  平均遮蔽率: %.1f%%\n",
+           minAO, maxAO, avgAO, occludedPct);
+
+    // 验收（Cornell Box 场景：最深遮蔽 ~37%，平均遮蔽 <15%）
+    assert(minAO < 0.8f   && "最小 AO 不够暗：遮蔽效果不足");
+    assert(maxAO > 0.9f   && "最大 AO 过低：无遮蔽区域异常");
+    assert(avgAO > 0.8f && avgAO < 0.999f && "平均 AO 异常");
+    printf("✅ 量化验证通过\n\n");
+
+    // 输出
+    writeImage("ssao_off.png", false);
+    writeImage("ssao_on.png",  true);
+    writeAOMap("ssao_map.png");
+    writeComparison("ssao_comparison.png");
+
+    printf("\n=== 完成 ===\n");
+    printf("AO 遮蔽范围: [%.1f%%, %.1f%%]\n", minAO*100, maxAO*100);
+    printf("平均遮蔽率: %.1f%%\n", occludedPct);
     return 0;
 }
