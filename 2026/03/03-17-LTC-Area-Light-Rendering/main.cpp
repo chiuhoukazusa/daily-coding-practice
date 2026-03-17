@@ -252,37 +252,39 @@ double integrateEdge(const Vec3& v1, const Vec3& v2) {
  */
 double ltcEvaluate(const Mat3& Minv, const Vec3 points[4], const Vec3& N, const Vec3& V) {
     // 构建 shading 坐标系
-    // Z = N, X = normalize(V - (V.N)N), Y = Z x X
     Vec3 Z = N;
     Vec3 X = (V - N * N.dot(V)).normalized();
     if (X.length() < 1e-6) {
-        // V 平行于 N，使用任意切向量
         Vec3 tmp = std::abs(N.x) < 0.9 ? Vec3(1,0,0) : Vec3(0,1,0);
         X = N.cross(tmp).normalized();
     }
     Vec3 Y = Z.cross(X);
-    
-    // 将光源顶点变换到 shading 坐标系，然后应用 M^-1
-    Vec3 L[4];
+
+    // Step 1: 变换到 shading 坐标系（Z=法线方向）
+    Vec3 L[8];
     for (int i = 0; i < 4; i++) {
-        // 变换到 shading 坐标系
         Vec3 p = points[i];
-        Vec3 pLocal(p.dot(X), p.dot(Y), p.dot(Z));
-        // 应用 LTC 逆变换
-        L[i] = (Minv * pLocal).normalized();
+        L[i] = Vec3(p.dot(X), p.dot(Y), p.dot(Z));
     }
-    
-    // Clip 到上半球
+
+    // Step 2: 先 clip 到上半球（z > 0，即法线上方）
+    // 必须在 LTC 变换前 clip，否则地平线以下的顶点经变换后
+    // z 分量可能改变符号，导致 clip 结果错误
     int n = 4;
     n = clipPolygonToHorizon(L, n);
     if (n < 3) return 0.0;
-    
-    // 计算球面多边形积分
+
+    // Step 3: 对 clip 后的顶点应用 LTC 逆变换，再归一化投影到单位球
+    for (int i = 0; i < n; i++) {
+        L[i] = (Minv * L[i]).normalized();
+    }
+
+    // Step 4: 球面多边形积分
     double sum = 0.0;
     for (int i = 0; i < n; i++) {
-        sum += integrateEdge(L[i].normalized(), L[(i+1)%n].normalized());
+        sum += integrateEdge(L[i], L[(i+1)%n]);
     }
-    
+
     return std::abs(sum) * 0.5 * INV_PI;
 }
 
@@ -350,7 +352,7 @@ Vec3 evaluateAreaLight(
 
     // ---- Specular ----
     Vec3 specular(0, 0, 0);
-    const double MIRROR_THRESH = 0.08; // roughness < 此值退化为镜面点光源近似
+    const double MIRROR_THRESH = 0.04; // 只有极端镜面才退化
     
     if (mat.roughness < MIRROR_THRESH) {
         // 低 roughness：LTC 拟合失真，改用最近点（Representative Point）近似
