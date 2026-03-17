@@ -402,7 +402,8 @@ bool ssrTrace(
     Vec3 refVS,   // 反射方向（视空间，已归一化）
     const GBuffer& gb,
     const Mat4& proj,
-    float& hitU, float& hitV)
+    float& hitU, float& hitV,
+    float startDepthNDC)  // 起点的 NDC 深度，用于自交检测
 {
     const int LINEAR_STEPS=64;
     const int BINARY_STEPS=8;
@@ -433,6 +434,15 @@ bool ssrTrace(
         }
         float depthDiff=ndcZ-gbDepth; // >0 表示光线在物体后面
         if(depthDiff>0 && depthDiff<thickness){
+            // 自交过滤：命中点深度不能与起点深度太接近
+            // startDepthNDC 是着色点自身的 NDC 深度（负值，越大越近相机）
+            // gbDepth 是命中处 G-Buffer 的深度
+            // 如果命中点深度与起点深度差值 < 0.05，说明是自身表面，跳过
+            if(std::abs(gbDepth - startDepthNDC) < 0.05f){
+                lastU=u; lastV=v;
+                curPos=curPos+step;
+                continue;
+            }
             // 命中！做 Binary Search 精化
             Vec3 lo=curPos-step, hi=curPos;
             for(int b=0;b<BINARY_STEPS;b++){
@@ -601,15 +611,12 @@ int main(){
         Vec3 reflVS=(-viewVS).reflect(normVS);
         if(reflVS.dot(normVS)<0) continue; // 背面反射跳过
 
-        // 只对"水平或接近水平的表面"做 SSR
-        // 视空间中 Y 轴朝上：法线的视空间 Y 分量 > 0.5 才是近乎水平的面（地面/桌面）
-        // 球体表面法线各方向都有，球体侧面和顶部不应产生 SSR（会自交产生亮斑）
-        // 阈值 0.3：允许轻微倾斜的平面也做反射
-        Vec3 worldNormApprox = normVS; // 视空间法线近似
-        if(worldNormApprox.y < 0.3f) continue; // 非水平面跳过
+        // 获取起点的 NDC 深度，用于自交过滤
+        float startU0, startV0, startNdcZ;
+        projectToScreen(posVS, proj, gb.W, gb.H, startU0, startV0, startNdcZ);
 
         float hitU,hitV;
-        if(ssrTrace(posVS,reflVS,gb,proj,hitU,hitV)){
+        if(ssrTrace(posVS,reflVS,gb,proj,hitU,hitV,startNdcZ)){
             // 采样击中点颜色
             int hx=clamp(hitU*W,0.f,(float)(W-1));
             int hy=clamp(hitV*H,0.f,(float)(H-1));
