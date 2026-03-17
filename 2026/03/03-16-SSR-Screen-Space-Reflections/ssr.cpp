@@ -406,13 +406,14 @@ bool ssrTrace(
 {
     const int LINEAR_STEPS=64;
     const int BINARY_STEPS=8;
-    const float maxDist=10.f;  // 视空间最大步进距离
-    const float thickness=0.15f; // 厚度检测阈值
+    const float maxDist=10.f;
+    const float thickness=0.12f; // 厚度：比球体半径小一个量级
 
     float stepLen=maxDist/(float)LINEAR_STEPS;
     Vec3  step=refVS*stepLen;
 
-    Vec3  curPos=posVS+refVS*0.1f; // 偏移避免自交
+    // 起点偏移：固定偏移改为步长的1.5倍，避免自交同时与场景尺度适配
+    Vec3  curPos=posVS+refVS*(stepLen*1.5f);
 
     float lastU=0, lastV=0;
     (void)lastU; (void)lastV;
@@ -594,11 +595,18 @@ int main(){
 
         Vec3 posVS=gb.posVS[id];
         Vec3 normVS=gb.normal[id];
-        Vec3 viewVS=(Vec3(0,0,0)-posVS).normalize(); // 指向相机
+        Vec3 viewVS=(Vec3(0,0,0)-posVS).normalize();
 
         // 反射方向（视空间）
         Vec3 reflVS=(-viewVS).reflect(normVS);
         if(reflVS.dot(normVS)<0) continue; // 背面反射跳过
+
+        // 只对"水平或接近水平的表面"做 SSR
+        // 视空间中 Y 轴朝上：法线的视空间 Y 分量 > 0.5 才是近乎水平的面（地面/桌面）
+        // 球体表面法线各方向都有，球体侧面和顶部不应产生 SSR（会自交产生亮斑）
+        // 阈值 0.3：允许轻微倾斜的平面也做反射
+        Vec3 worldNormApprox = normVS; // 视空间法线近似
+        if(worldNormApprox.y < 0.3f) continue; // 非水平面跳过
 
         float hitU,hitV;
         if(ssrTrace(posVS,reflVS,gb,proj,hitU,hitV)){
