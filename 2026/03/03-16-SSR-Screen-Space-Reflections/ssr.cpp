@@ -434,12 +434,11 @@ bool ssrTrace(
         }
         float depthDiff=ndcZ-gbDepth;
         if(depthDiff>0 && depthDiff<thickness){
-            // 自交过滤：命中点的屏幕坐标离起点太近，说明是自身表面
-            // 用 UV 距离判断（比深度差更可靠）
-            // 球体半径约0.8，投影到屏幕约0.1~0.15的UV范围
+            // 自交过滤：命中点 UV 离起点极近（< 0.03），才跳过
+            // 主要防护：命中后的法线一致性检测（见 ssrPass 中）
             float du = u - startU, dv = v - startV;
             float uvDist = std::sqrt(du*du + dv*dv);
-            if(uvDist < 0.08f){
+            if(uvDist < 0.03f){
                 lastU=u; lastV=v;
                 curPos=curPos+step;
                 continue;
@@ -617,10 +616,34 @@ int main(){
 
         float hitU,hitV;
         if(ssrTrace(posVS,reflVS,gb,proj,hitU,hitV,startU0,startV0)){
-            // 采样击中点颜色
-            int hx=clamp(hitU*W,0.f,(float)(W-1));
-            int hy=clamp(hitV*H,0.f,(float)(H-1));
-            Vec3 reflColor=litNoSSR.at((int)hx,(int)hy);
+            // 命中后自交检测：
+            int hx=clamp((int)(hitU*W), 0, W-1);
+            int hy=clamp((int)(hitV*H), 0, H-1);
+            int hitId = gb.idx(hx, hy);
+            Vec3 hitNorm = gb.normal[hitId];
+            Vec3 hitPosVS = gb.posVS[hitId];
+
+            // 1. 法线方向相近（> 0.3）且视空间距离 < 1.5，判为同一物体自交
+            Vec3 posDiff = hitPosVS - posVS;
+            float dist2 = posDiff.x*posDiff.x + posDiff.y*posDiff.y + posDiff.z*posDiff.z;
+            bool sameNormal = normVS.dot(hitNorm) > 0.3f;
+            bool tooClose   = dist2 < 1.5f * 1.5f;
+            if(sameNormal && tooClose){
+                goto skip_hit;
+            }
+            // 2. 反射方向和法线方向夹角：反射光线打到的面，其法线应朝向着色点（反面检测）
+            // 如果命中点法线和从命中点到着色点的方向同向（> 0），说明打到了背面，丢弃
+            Vec3 hitToShading = posVS - hitPosVS;
+            float hitToShadingLen = std::sqrt(hitToShading.x*hitToShading.x + hitToShading.y*hitToShading.y + hitToShading.z*hitToShading.z);
+            if(hitToShadingLen > 1e-4f){
+                hitToShading = hitToShading * (1.f/hitToShadingLen);
+                if(hitNorm.dot(hitToShading) < 0.0f){
+                    goto skip_hit; // 背面命中
+                }
+            }
+
+            {
+            Vec3 reflColor=litNoSSR.at(hx, hy);
 
             // Fresnel
             float F0=lerp(0.04f,0.95f,gb.metalness[id]);
@@ -640,6 +663,8 @@ int main(){
             ssrBuffer.at(x,y)=reflColor;
             ssrMask.at(x,y)=Vec3(weight,weight,weight);
             hitCount++;
+            }
+            skip_hit:;
         }
     }
     printf("  SSR hits: %d pixels\n",hitCount);
