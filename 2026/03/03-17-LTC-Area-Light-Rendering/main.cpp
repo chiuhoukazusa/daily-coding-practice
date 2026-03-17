@@ -140,41 +140,35 @@ LTCParams computeLTCParams(double roughness, double NoV) {
     // alpha = roughness^2 (GGX 粗糙度参数)
     double alpha = roughness * roughness;
     
-    // 通过插值近似 LTC 参数（简化拟合）
-    // 基于 Heitz 2016 supplemental material 中的近似
-    
-    // 当 roughness=1 时，BRDF 退化为 Lambertian（LTC 矩阵 = 单位矩阵）
-    // 当 roughness=0 时，BRDF 为镜面反射（LTC 矩阵为拉伸矩阵）
-    
     LTCParams p;
+    double a = alpha;
     
-    // 简化近似（参考 The fitLTC.py 和实时实现）
-    // m11, m22 控制椭圆形状，m13 控制各向异性/偏斜
-    
-    // 菲涅尔项的近似（Schlick）
-    // double F0 = 0.04; // 非金属默认 (used per-light in evaluateAreaLight)
-    // fresnel unused here, computed later per-light
-    // double fresnel = F0 + (1.0 - F0) * std::pow(1.0 - NoV, 5.0);
-    
-    // LTC 矩阵参数随 roughness 变化
-    // roughness=0: 接近镜面，矩阵压缩方向分布
-    // roughness=1: 接近 Lambertian，矩阵为单位矩阵
-    
-    // 使用参数化近似
-    double a = alpha; // GGX alpha
-    (void)NoV; // used for m13
-    
-    // Heitz 2016 fit (simplified)
-    // 真实实现需要64x64 LUT，这里用多项式拟合
+    // m11, m22 控制椭圆形状（宽度）：
+    //   roughness→0: m11→1 (lobe 极窄，但拟合退化到余弦，只靠 amplitude 放大)
+    //   roughness→1: m11→1 (退化为 Lambertian，单位矩阵)
+    // 注：LTC 的精确做法是查 64×64 LUT，这里用多项式近似
+    // 中间 roughness（0.3~0.7）拟合最准，极端值有误差
     p.m11 = 1.0 + a * (0.5 + a * (-1.0 + a * 1.5));
     p.m22 = 1.0 + a * (0.5 + a * (-0.5));
-    p.m13 = -a * (1.0 - NoV) * 0.5; // 随视角变化的偏斜
+    
+    // m13 是偏斜项（只在 [0][2] 位置，不对称）：
+    //   表示视角倾斜时 BRDF lobe 前倾（掠射角前向散射）
+    //   roughness 越高、NoV 越小时偏斜越明显
+    p.m13 = -a * (1.0 - NoV) * 0.5;
+    
+    // amplitude 控制 BRDF 的总能量缩放
+    // 低 roughness 时 GGX 形成极窄的镜面峰，amplitude 补偿拟合误差
     p.amplitude = 1.0 - a * (0.5 - a * 0.3);
     
-    // 低粗糙度下放大镜面峰值
-    if (alpha < 0.1) {
-        double t = alpha / 0.1;
-        p.amplitude = mix(2.5, 1.0, t * t);
+    // 低粗糙度特殊处理：GGX 趋向 delta 函数，
+    // 此时 LTC 拟合误差大，用更高 amplitude + 更小矩阵补偿
+    if (alpha < 0.25) {
+        double t = alpha / 0.25;  // [0,1]
+        // amplitude 从高到低平滑过渡（roughness=0时约4.0，roughness=0.5时约1.0）
+        p.amplitude = mix(4.0, 1.0, t * t);
+        // 同时压缩矩阵让 lobe 更窄
+        p.m11 = mix(0.5, p.m11, t);
+        p.m22 = mix(0.5, p.m22, t);
     }
     
     return p;
@@ -184,15 +178,18 @@ LTCParams computeLTCParams(double roughness, double NoV) {
 // LTC 变换：将余弦分布变换到 GGX 分布
 // 我们直接存储 M^-1 用于积分计算
 Mat3 buildLTCMatrix(const LTCParams& p) {
-    // M = [[m11, 0, m13], [0, m22, 0], [0, 0, 1]]
-    // 这是在 shading 坐标系中（法线为 Z 轴）
+    // LTC 标准矩阵（Heitz 2016）：
+    // M = [[m11, 0, m13],
+    //      [0, m22,   0],
+    //      [0,   0,   1]]
+    // m13 只在 [0][2] 位置（非对称），表示前倾偏斜
+    // 注：不是对称矩阵，[2][0] 应为 0
     Mat3 M;
     M.m[0][0] = p.m11;
     M.m[1][1] = p.m22;
     M.m[2][2] = 1.0;
-    M.m[0][2] = p.m13;
-    // 对称项
-    M.m[2][0] = p.m13;
+    M.m[0][2] = p.m13;   // 正确：只设 [0][2]
+    // M.m[2][0] = 0.0;  // 这里保持 0，不设对称项
     return M;
 }
 
@@ -340,29 +337,67 @@ Vec3 evaluateAreaLight(
     
     double NoV = clamp(normal.dot(viewDir), 0.0, 1.0);
     
-    // ---- Diffuse (Lambertian) ----
-    // Diffuse LTC = 单位矩阵（Lambertian 对应余弦分布，不需要变换）
-    Mat3 Minv_diff = Mat3::identity();
-    double diffuseIntegral = ltcEvaluate(Minv_diff, relCorners, normal, viewDir);
-    
-    // ---- Specular (GGX via LTC) ----
-    LTCParams params = computeLTCParams(mat.roughness, NoV);
-    Mat3 M_spec = buildLTCMatrix(params);
-    Mat3 Minv_spec = M_spec.inverse();
-    double specularIntegral = ltcEvaluate(Minv_spec, relCorners, normal, viewDir) * params.amplitude;
-    
-    // Fresnel 近似（Schlick）
+    // Fresnel（先算，后面两路都要用）
     Vec3 F0 = mix(Vec3(0.04, 0.04, 0.04), mat.albedo, mat.metallic);
     Vec3 fresnel = F0 + (Vec3(1,1,1) - F0) * std::pow(1.0 - NoV, 5.0);
-    
-    // 能量守恒
     Vec3 kS = fresnel;
     Vec3 kD = (Vec3(1,1,1) - kS) * (1.0 - mat.metallic);
-    
-    // 合并 Diffuse + Specular
+
+    // ---- Diffuse (Lambertian LTC = 单位矩阵) ----
+    Mat3 Minv_diff = Mat3::identity();
+    double diffuseIntegral = ltcEvaluate(Minv_diff, relCorners, normal, viewDir);
     Vec3 diffuse = kD * mat.albedo * INV_PI * diffuseIntegral;
-    Vec3 specular = kS * specularIntegral;
+
+    // ---- Specular ----
+    Vec3 specular(0, 0, 0);
+    const double MIRROR_THRESH = 0.08; // roughness < 此值退化为镜面点光源近似
     
+    if (mat.roughness < MIRROR_THRESH) {
+        // 低 roughness：LTC 拟合失真，改用最近点（Representative Point）近似
+        // 找面光源上离反射方向最近的点，当作一个"最亮的点光"
+        Vec3 rv = (-viewDir);
+        Vec3 reflDir = rv - normal * (2.0 * rv.dot(normal)); // 手写 reflect
+        // 在光源平面上找反射射线最近交点
+        Vec3 corners[4]; light.getCorners(corners);
+        Vec3 lightNorm = light.right.cross(light.up).normalized();
+        double denom = reflDir.dot(lightNorm);
+        Vec3 repPoint = light.position; // 默认用光源中心
+        if (std::abs(denom) > 1e-6) {
+            double t = (light.position - pos).dot(lightNorm) / denom;
+            if (t > 0) {
+                Vec3 hit = pos + reflDir * t;
+                // clip 到光源范围内
+                Vec3 local = hit - light.position;
+                double u = clamp(local.dot(light.right), -light.halfWidth, light.halfWidth);
+                double v = clamp(local.dot(light.up),    -light.halfHeight, light.halfHeight);
+                repPoint = light.position + light.right * u + light.up * v;
+            }
+        }
+        Vec3 toRep = repPoint - pos;
+        double dist2 = toRep.dot(toRep);
+        Vec3 L = toRep / std::sqrt(dist2 + 1e-8);
+        double NoL = clamp(normal.dot(L), 0.0, 1.0);
+        Vec3 H = (viewDir + L).normalized();
+        double NoH = clamp(normal.dot(H), 0.0, 1.0);
+        double alpha = mat.roughness * mat.roughness;
+        // GGX NDF（简化，无分母归一化，只取形状）
+        double denom2 = NoH * NoH * (alpha * alpha - 1.0) + 1.0;
+        double D = alpha * alpha / (PI * denom2 * denom2 + 1e-8);
+        // 混合因子：低roughness全用此路，向LTC平滑过渡
+        double blend = 1.0 - mat.roughness / MIRROR_THRESH;
+        blend = blend * blend; // 二次曲线，收敛更自然
+        specular = kS * D * NoL * blend * (1.0 / (dist2 + 1.0));
+    } else {
+        // 普通 roughness：LTC 积分有效
+        LTCParams params = computeLTCParams(mat.roughness, NoV);
+        Mat3 M_spec = buildLTCMatrix(params);
+        Mat3 Minv_spec = M_spec.inverse();
+        double specularIntegral = ltcEvaluate(Minv_spec, relCorners, normal, viewDir) * params.amplitude;
+        // 在 MIRROR_THRESH 处做平滑过渡，避免硬跳变
+        double blendLTC = clamp((mat.roughness - MIRROR_THRESH) / (MIRROR_THRESH * 0.5), 0.0, 1.0);
+        specular = kS * specularIntegral * blendLTC;
+    }
+
     Vec3 Lo = (diffuse + specular) * light.color * light.intensity;
     return Lo;
 }
@@ -570,23 +605,23 @@ int main() {
     
     // 面光源（矩形）
     AreaLight mainLight;
-    mainLight.position = Vec3(0, 4.5, 0);
+    mainLight.position = Vec3(0, 7.0, 0);    // 拉高到 y=7，增大距离减弱立体角差异
     mainLight.right = Vec3(1, 0, 0);
     mainLight.up = Vec3(0, 0, 1);
-    mainLight.halfWidth = 1.5;
-    mainLight.halfHeight = 1.0;
+    mainLight.halfWidth = 1.2;               // 稍微缩小
+    mainLight.halfHeight = 0.8;
     mainLight.color = Vec3(1.0, 0.95, 0.8);
-    mainLight.intensity = 6.0;
-    
+    mainLight.intensity = 18.0;              // 拉高补偿距离平方
+
     // 辅助光源（蓝色，侧面）
     AreaLight fillLight;
-    fillLight.position = Vec3(-5, 3.0, 1.0);
+    fillLight.position = Vec3(-7, 4.0, 1.0); // 同样拉远
     fillLight.right = Vec3(0, 0, 1);
     fillLight.up = Vec3(0, 1, 0);
     fillLight.halfWidth = 0.8;
-    fillLight.halfHeight = 1.2;
+    fillLight.halfHeight = 1.0;
     fillLight.color = Vec3(0.4, 0.6, 1.0);
-    fillLight.intensity = 2.5;
+    fillLight.intensity = 8.0;
     
     // 地面平面
     Plane ground;
