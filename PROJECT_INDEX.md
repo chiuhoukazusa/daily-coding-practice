@@ -42,6 +42,7 @@
 | 03-13 | SSAO Screen Space Ambient Occlusion | G-Buffer软光栅化, SSAO半球采样, TBN矩阵, Box Blur, ACES色调映射 | ssao_off/on/map/comparison.png | ✅ 完成 |
 | 03-16 | SSR Screen Space Reflections | G-Buffer软光栅化, 屏幕空间Ray Marching, Binary Search精化, Fresnel-Schlick, 边缘衰减, Roughness Fade, ACES色调映射 | ssr_output.png, ssr_no_reflection.png, ssr_reflection_mask.png, ssr_comparison.png | ✅ 完成 |
 | 03-17 | LTC Area Light Rendering | 线性变换余弦(LTC), 矩形面光源, 球面多边形解析积分, GGX BRDF近似, PBR Metallic/Roughness, Fresnel-Schlick, ACES色调映射 | ltc_output.png, ltc_roughness.png, ltc_metallic.png, ltc_comparison.png | ✅ 完成 |
+| 03-18 | Deferred Shading Renderer | 延迟渲染管线, G-Buffer(Albedo/Normal/Depth/Position), 8点光源, Blinn-Phong, 硬阴影, 距离衰减, ACES色调映射 | deferred_output.png, gbuffer_albedo.png, gbuffer_normals.png, gbuffer_depth.png, deferred_comparison.png | ✅ 完成 |
 
 ## 技术领域覆盖
 
