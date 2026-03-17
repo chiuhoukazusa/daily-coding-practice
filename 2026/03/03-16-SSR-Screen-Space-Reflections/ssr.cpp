@@ -398,12 +398,12 @@ float sampleDepth(const GBuffer& gb, float u, float v){
 // 线性步进 + Binary Search精化
 // 返回：是否击中，以及击中的屏幕UV
 bool ssrTrace(
-    Vec3 posVS,   // 起点（视空间）
-    Vec3 refVS,   // 反射方向（视空间，已归一化）
+    Vec3 posVS,
+    Vec3 refVS,
     const GBuffer& gb,
     const Mat4& proj,
     float& hitU, float& hitV,
-    float startDepthNDC)  // 起点的 NDC 深度，用于自交检测
+    float startU, float startV)  // 起点屏幕坐标，用于自交检测
 {
     const int LINEAR_STEPS=64;
     const int BINARY_STEPS=8;
@@ -432,18 +432,19 @@ bool ssrTrace(
             curPos=curPos+step;
             continue;
         }
-        float depthDiff=ndcZ-gbDepth; // >0 表示光线在物体后面
+        float depthDiff=ndcZ-gbDepth;
         if(depthDiff>0 && depthDiff<thickness){
-            // 自交过滤：命中点深度不能与起点深度太接近
-            // startDepthNDC 是着色点自身的 NDC 深度（负值，越大越近相机）
-            // gbDepth 是命中处 G-Buffer 的深度
-            // 如果命中点深度与起点深度差值 < 0.05，说明是自身表面，跳过
-            if(std::abs(gbDepth - startDepthNDC) < 0.05f){
+            // 自交过滤：命中点的屏幕坐标离起点太近，说明是自身表面
+            // 用 UV 距离判断（比深度差更可靠）
+            // 球体半径约0.8，投影到屏幕约0.1~0.15的UV范围
+            float du = u - startU, dv = v - startV;
+            float uvDist = std::sqrt(du*du + dv*dv);
+            if(uvDist < 0.08f){
                 lastU=u; lastV=v;
                 curPos=curPos+step;
                 continue;
             }
-            // 命中！做 Binary Search 精化
+            // 命中，做 Binary Search 精化
             Vec3 lo=curPos-step, hi=curPos;
             for(int b=0;b<BINARY_STEPS;b++){
                 Vec3 mid=(lo+hi)*0.5f;
@@ -611,12 +612,11 @@ int main(){
         Vec3 reflVS=(-viewVS).reflect(normVS);
         if(reflVS.dot(normVS)<0) continue; // 背面反射跳过
 
-        // 获取起点的 NDC 深度，用于自交过滤
-        float startU0, startV0, startNdcZ;
-        projectToScreen(posVS, proj, gb.W, gb.H, startU0, startV0, startNdcZ);
+        float startU0, startV0, startNdcZ0;
+        projectToScreen(posVS, proj, gb.W, gb.H, startU0, startV0, startNdcZ0);
 
         float hitU,hitV;
-        if(ssrTrace(posVS,reflVS,gb,proj,hitU,hitV,startNdcZ)){
+        if(ssrTrace(posVS,reflVS,gb,proj,hitU,hitV,startU0,startV0)){
             // 采样击中点颜色
             int hx=clamp(hitU*W,0.f,(float)(W-1));
             int hy=clamp(hitV*H,0.f,(float)(H-1));
