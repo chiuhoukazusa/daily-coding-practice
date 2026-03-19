@@ -1,851 +1,181 @@
 ---
 name: daily-coding-practice
-description: 每日编程实践 - 每天一个可运行的小项目，持续迭代修复直到编译通过、运行成功、结果符合预期，并自动上传GitHub和博客。包含重复项目检测和博客部署验证功能。
+description: 每日编程实践的【开发阶段】Skill。负责选题、编码、编译、调试，直到代码跑通输出正确为止。完成后交棒给 daily-coding-verification 做发布前验证。
 ---
 
-# Daily Coding Practice - 每日编程实践
+# Daily Coding Practice — 开发阶段
 
-## 目标
+## 定位
 
-每天完成一个可运行的小项目，**自动迭代修复问题**，直到编译通过、运行成功、输出符合预期，并自动完成代码上传和博客发布。
+**这个 Skill 只负责一件事：让代码跑通，输出正确。**
 
-## ⚠️ 强制性前置检查（防止重复项目）
+流程编排关系：
 
-**在开始任何项目之前，必须执行以下检查**：
+```
+[daily-coding-practice]  ← 你在这里
+         ↓ 代码跑通、输出验证通过
+[daily-coding-verification]
+         ↓ 四层验证全部通过
+[blog-code-workflow]
+         ↓ 博客发布上线
+         ✅ 完成
+```
 
-### 1. 检查今日是否已有项目
+**不要在这个 Skill 里做任何发布操作。**
+
+---
+
+## Step 0：防重复检查（必须先做）
 
 ```bash
 cd /root/.openclaw/workspace/daily-coding-practice
+
+# 检查今日是否已有项目
 TODAY=$(date +%m-%d)
-if grep -q "| $TODAY |" PROJECT_INDEX.md; then
-    echo "❌ 今天已有项目！"
+if grep -q "| $TODAY |" PROJECT_INDEX.md 2>/dev/null; then
+    echo "❌ 今天已有项目，禁止重复！"
+    cat PROJECT_INDEX.md | grep "$TODAY"
     exit 1
 fi
+
+# 检查近 30 天是否有相似主题
+echo "近期项目列表（检查主题是否重复）："
+tail -35 PROJECT_INDEX.md
 ```
 
-### 2. 检查是否与近期项目重复
+**如果发现重复 → 停止，从 PROJECT_INDEX.md 的"待探索领域"中重新选题。**
 
-使用本 skill 自带的 `check_duplicate.sh` 脚本：
+---
+
+## Step 1：选题
+
+从以下方向选择（优先未做过的技术点）：
+
+**图形学**：光线追踪、软光栅、着色模型（PBR/NPR）、后处理效果、体积渲染、粒子系统  
+**游戏开发**：物理模拟、AI 寻路、程序化生成、碰撞检测  
+**算法可视化**：排序/图算法动画、数据结构演示、数值方法  
+
+选好后在 PROJECT_INDEX.md 中**立即预占今日条目**（防止后续流程中忘记）：
+
+```bash
+echo "| $TODAY | <项目名> | <技术标签> | in-progress |" >> PROJECT_INDEX.md
+git add PROJECT_INDEX.md && git commit -m "Reserve: $TODAY - <项目名>"
+```
+
+---
+
+## Step 2：开发迭代
+
+```
+循环（最多 30 分钟）：
+  编写代码
+    ↓
+  编译 (g++ -std=c++17 -O2 -Wall -Wextra)
+    ↓ 失败 → 读编译日志 → 定位错误行 → 修复 → 回到编译
+  运行
+    ↓ 崩溃 → 分析日志/gdb → 找根因 → 修复 → 回到编译
+  输出验证（见 Step 3）
+    ↓ 不符合预期 → 调整逻辑 → 回到编译
+  全部通过 → 进入 Step 4
+```
+
+**编译命令**：
+```bash
+g++ main.cpp -o output -std=c++17 -O2 -Wall -Wextra
+# 目标：0 errors, 0 warnings
+```
+
+---
+
+## Step 3：输出验证（必须量化，不能靠眼睛）
+
+### 图形学项目
+
+```bash
+# 检查文件存在且非空
+ls -lh *.png && [ $(stat -c%s *.png | head -1) -gt 10240 ] || { echo "❌ 图片太小或不存在"; exit 1; }
+
+# 像素采样检查（需要 ImageMagick）
+python3 << 'EOF'
+from PIL import Image
+import numpy as np, sys
+
+img = Image.open(sorted(__import__('glob').glob('*.png'))[0])
+pixels = np.array(img).astype(float)
+
+mean = pixels.mean()
+std  = pixels.std()
+print(f"像素均值: {mean:.1f}  标准差: {std:.1f}")
+
+if mean < 5:
+    print("❌ 图像过暗，可能全黑"); sys.exit(1)
+if mean > 250:
+    print("❌ 图像过亮，可能全白"); sys.exit(1)
+if std < 5:
+    print("❌ 图像几乎无变化，可能渲染错误"); sys.exit(1)
+
+print("✅ 像素统计正常")
+EOF
+```
+
+**必须验证的项目（逐条检查）**：
+- [ ] 文件大小 > 10KB
+- [ ] 像素均值在 10~240 之间（非全黑/全白）
+- [ ] 像素标准差 > 5（图像有内容变化）
+- [ ] 坐标系正确：天空在上、地面在下（图形学项目）
+
+> **历史教训**：2026-02-18 反射 Bug——代码跑通、文件存在，但中心球纯黑。  
+> 2026-02-20 坐标系 Bug——上下颠倒，只靠眼看没发现。  
+> **量化检查不可省略。**
+
+### 数值/算法项目
+
+```bash
+# 检查输出范围
+./output | python3 -c "
+import sys, statistics
+vals = [float(x) for x in sys.stdin.read().split() if x.strip()]
+print(f'均值={statistics.mean(vals):.3f}  范围=[{min(vals):.3f}, {max(vals):.3f}]')
+assert min(vals) >= EXPECTED_MIN and max(vals) <= EXPECTED_MAX, '❌ 值超出预期范围'
+print('✅ 数值范围正常')
+"
+```
+
+---
+
+## Step 4：更新 PROJECT_INDEX.md
 
 ```bash
 cd /root/.openclaw/workspace/daily-coding-practice
-./scripts/check_duplicate.sh "项目名称"
-```
-
-**如果检测到重复**：
-- 停止当前流程
-- 从 PROJECT_INDEX.md 的"待探索领域"中选择其他项目
-- 重新运行重复检查
-
-**只有通过重复检查后，才能继续项目创建。**
-
-## 核心流程
-
-### 1. 项目规划阶段
-- 根据用户兴趣和当前技术栈选择项目主题
-- 设计项目目标和验收标准
-- 确保项目难度合理（预计完成时间 1-3 小时）
-
-### 2. 开发迭代阶段（核心）
-```
-循环直到成功或超时（最多 30 分钟）：
-  ├─ 编写/修改代码
-  ├─ 编译检查
-  │   └─ 如果失败 → 分析错误 → 修复 → 回到编译
-  ├─ 运行测试
-  │   └─ 如果崩溃/错误 → 分析日志 → 修复 → 回到编译
-  ├─ 验证输出
-  │   └─ 如果不符合预期 → 调整逻辑 → 回到编译
-  └─ 全部通过 → 进入下一阶段
-```
-
-**关键点：**
-- ✅ 允许多次迭代修复
-- ✅ 每次失败后分析根因
-- ✅ 自动调整代码直到成功
-- ✅ 记录迭代次数和修复历史
-
-**阶段划分和依赖关系：**
-
-**阶段 1: 核心开发阶段（不可分割）**
-- planning (规划)
-- coding (编写代码)
-- compiling (编译)
-- running (运行)
-- validation (输出验证)
-
-**这 5 个阶段是强依赖的，必须一起重做：**
-- ❌ 如果 validation 失败 → 需要改代码 → 重新编译运行
-- ❌ 如果 running 失败 → 可能需要改代码 → 重新编译
-- ❌ 如果 compiling 失败 → **必须改代码** → 重新编译
-
-**所以：这 5 个阶段只有两种状态**
-- 全部 true：代码完全正常，可以进入上传阶段
-- 任何一个 false：**从 coding 重新开始**
-
-**阶段 2: 发布阶段（可独立重试）**
-- githubUpload (GitHub 上传)
-- blogPublish (博客发布)
-
-**这 2 个阶段可以独立重试：**
-- ✅ 如果 githubUpload 失败 → 只需重新上传，代码不变
-- ✅ 如果 blogPublish 失败 → 只需重新发布，代码和仓库都不变
-
-**新的 progress 结构：**
-```json
-"progress": {
-  "coreDevCompleted": false,  // 核心开发是否完成（编译+运行+验证都通过）
-  "coreDevStage": {
-    "planning": true,
-    "coding": true,
-    "compiling": false,      // 卡在这里
-    "running": false,
-    "validation": false
-  },
-  "githubUpload": false,     // 只有 coreDevCompleted=true 才能尝试
-  "blogPublish": false       // 只有 githubUpload=true 才能尝试
-}
-```
-
-**恢复逻辑：**
-
-```
-如果 coreDevCompleted == false:
-  → 从 coding 阶段重新开始（不管卡在 compiling/running/validation 哪里）
-  → 因为这些问题通常都需要改代码才能解决
-  
-如果 coreDevCompleted == true 但 githubUpload == false:
-  → 只重新尝试 GitHub 上传
-  → 代码和编译结果都保留
-  
-如果 githubUpload == true 但 blogPublish == false:
-  → 只重新尝试博客发布
-  → 代码和 GitHub 仓库都保留
-```
-
-### 3. 代码上传阶段
-```bash
-# 创建项目目录（如果不存在）
-cd /root/.openclaw/workspace
-mkdir -p daily-coding-practice/2026/02
-
-# 创建今日项目目录
-DATE=$(date +%m-%d)
-PROJECT_NAME="今日项目名称"
-PROJECT_DIR="daily-coding-practice/2026/02/${DATE}-${PROJECT_NAME}"
-mkdir -p $PROJECT_DIR
-
-# 复制代码文件
-cp *.cpp *.h output.png $PROJECT_DIR/
-
-# 编写 README.md
-cat > $PROJECT_DIR/README.md <<EOF
-# ${PROJECT_NAME}
-
-## 项目描述
-[自动生成的项目描述]
-
-## 编译运行
-\`\`\`bash
-g++ main.cpp -o output
-./output
-\`\`\`
-
-## 输出结果
-![结果](output.png)
-
-## 技术要点
-- [关键技术1]
-- [关键技术2]
-
-## 迭代历史
-- 迭代 1: [初始版本]
-- 迭代 2: [修复编译错误]
-- 迭代 3: [修复运行时崩溃]
-- 最终版本: ✅ 成功
-EOF
-
-# Git 提交
-cd daily-coding-practice
-git add .
-git commit -m "Daily Practice: ${DATE} - ${PROJECT_NAME}"
+# 将 in-progress 改为 dev-done
+sed -i "s/| $TODAY | \(.*\) | in-progress |/| $TODAY | \1 | dev-done |/" PROJECT_INDEX.md
+git add PROJECT_INDEX.md && git commit -m "Dev done: $TODAY - <项目名>"
 git push origin main
 ```
 
-### 4. 图片上传阶段（blog_img）
-
-**⚠️ 关键要求**：必须先上传图片到 blog_img 仓库，再发布博客！
-
-```bash
-# 图片托管仓库路径
-BLOG_IMG_DIR="/root/.openclaw/workspace/blog_img"
-
-# 验证路径存在
-if [ ! -d "$BLOG_IMG_DIR" ]; then
-    echo "❌ 错误：图片仓库不存在: $BLOG_IMG_DIR"
-    exit 1
-fi
-
-# 创建项目图片目录
-IMG_PROJECT_DIR="$BLOG_IMG_DIR/2026/02/${DATE}-${PROJECT_NAME}"
-mkdir -p "$IMG_PROJECT_DIR"
-
-# 复制输出图片
-cp $PROJECT_DIR/*.png "$IMG_PROJECT_DIR/"
-
-# 提交并推送到 GitHub
-cd $BLOG_IMG_DIR
-git add .
-git commit -m "Add: ${PROJECT_NAME} 输出图片 - $(date +%Y-%m-%d)"
-git push origin main
-
-# 验证图片可访问性（等待 GitHub 更新）
-sleep 3
-IMG_URL="https://raw.githubusercontent.com/chiuhoukazusa/blog_img/main/2026/02/${DATE}-${PROJECT_NAME}/output.png"
-HTTP_CODE=$(curl -o /dev/null -s -w "%{http_code}" "$IMG_URL")
-
-if [ "$HTTP_CODE" != "200" ]; then
-    echo "⚠️ 警告：图片尚未可访问 (HTTP $HTTP_CODE)，等待 GitHub CDN 刷新..."
-    sleep 5
-fi
-
-echo "✅ 图片已上传：$IMG_URL"
-```
-
-### 5. 博客发布阶段（Hexo）
-
-**⚠️ 关键要求**：必须使用正确的 Hexo 源码仓库路径！
-
-```bash
-# ✅ 正确的博客仓库路径
-BLOG_SOURCE_DIR="/root/.openclaw/workspace/chiuhou-blog-source"
-
-# 验证路径存在
-if [ ! -d "$BLOG_SOURCE_DIR" ]; then
-    echo "❌ 错误：Hexo 源码仓库不存在: $BLOG_SOURCE_DIR"
-    exit 1
-fi
-
-# 切换到 Hexo 源码仓库
-cd $BLOG_SOURCE_DIR
-
-# 创建博客文章（Hexo Markdown 格式）
-BLOG_FILE="source/_posts/daily-coding-${PROJECT_NAME}-$(date +%Y-%m-%d).md"
-cat > $BLOG_FILE <<EOF
----
-title: "每日编程实践: ${PROJECT_NAME}"
-date: $(date +"%Y-%m-%d %H:%M:%S")
-tags:
-  - 每日一练
-  - 图形学
-  - 算法
-  - C++
-categories:
-  - 编程实践
-cover: https://raw.githubusercontent.com/chiuhoukazusa/blog_img/main/${PROJECT_DIR}/output.png
 ---
 
-# ${PROJECT_NAME}
+## Step 5：交棒
 
-## 项目目标
-[描述今日目标]
-
-## 实现过程
-
-### 迭代历史
-1. **初始版本**: [描述]
-2. **问题 1**: 编译错误 - [如何修复]
-3. **问题 2**: 运行崩溃 - [如何修复]
-4. **最终版本**: ✅ 所有测试通过
-
-## 核心代码
-\`\`\`cpp
-[关键代码片段]
-\`\`\`
-
-## 运行结果
-![输出结果](https://raw.githubusercontent.com/chiuhoukazusa/blog_img/main/${PROJECT_DIR}/output.png)
-
-## 技术总结
-- [学到的技术点1]
-- [学到的技术点2]
-- [遇到的坑和解决方案]
-
-## 代码仓库
-GitHub: https://github.com/chiuhoukazusa/daily-coding-practice/tree/main/${PROJECT_DIR}
+开发阶段完成。**现在读取并执行 `daily-coding-verification` Skill。**
 
 ---
-**完成时间**: $(date +"%Y-%m-%d %H:%M")  
-**迭代次数**: [N] 次  
-**编译器**: g++ 12.3.1
-EOF
 
-# Hexo 生成和部署
-hexo clean
-hexo generate
-hexo deploy
+## 失败处理
 
-# 验证部署成功
-if [ $? -eq 0 ]; then
-    echo "✅ 博客发布成功"
-else
-    echo "❌ 博客发布失败"
-    exit 1
-fi
-```
+超时（30分钟）仍未跑通：
 
-**关键变更说明**：
-1. ✅ 使用正确路径：`chiuhou-blog-source`（Hexo）而非 `chiuhoukazusa.github.io`（Jekyll 老博客）
-2. ✅ 使用 Hexo 命令：`hexo clean && hexo generate && hexo deploy`
-3. ✅ 正确的 Front Matter 格式（YAML 列表格式）
-4. ✅ 图片路径使用 GitHub raw URL（已上传到 blog_img 仓库）
-5. ✅ 添加路径验证：发布前检查仓库是否存在
-
-**常见错误对比**：
-
-| 错误做法 | 正确做法 | 说明 |
-|---------|---------|------|
-| ❌ `chiuhoukazusa.github.io` | ✅ `chiuhou-blog-source` | Jekyll vs Hexo |
-| ❌ `_posts/` | ✅ `source/_posts/` | Hexo 源码路径 |
-| ❌ `layout: post` | ✅ `title: xxx` | Hexo Front Matter |
-| ❌ `git push` 直接推送 | ✅ `hexo deploy` | Hexo 部署命令 |
-| ❌ 不验证路径 | ✅ `if [ ! -d ... ]` | 执行前检查 |
-
-**为什么会犯这个错误**：
-- SKILL.md 中的示例代码是为 Jekyll 博客编写的
-- 没有适配 Hexo 博客系统
-- 缺少环境检测和路径验证
-
-**如何避免**：
-- 执行前必须验证博客仓库路径
-- 检查是否存在 `_config.yml`（Hexo）或 `_config.yml`（Jekyll）
-- 使用对应的部署命令（`hexo deploy` vs `git push`）
-
-## 验收标准
-
-所有以下条件**必须同时满足**才算成功：
-
-### ✅ 编译阶段
-- [ ] 代码编译通过（0 错误，0 警告）
-- [ ] 跨平台兼容（至少在 Linux g++ 下通过）
-
-### ✅ 运行阶段
-- [ ] 程序正常运行，无崩溃
-- [ ] 无内存泄漏（如果使用 valgrind 检查）
-- [ ] 运行时间合理（不能超过 1 分钟）
-
-### ✅ 输出验证（必须量化检查）
-- [ ] 生成预期的输出文件（图片/数据/动画）
-- [ ] **量化验证**：不能仅凭"肉眼看"或"文件存在"就判断成功
-- [ ] **图片输出**：必须检查关键区域的实际像素值
-  ```bash
-  # 示例：检查图片中心区域颜色
-  convert output.png -crop 100x100+350+250 +repage -scale 1x1\! -format "%[pixel:u]" info:-
-  # 输出类似: srgb(50.9%,75.8%,65.4%)
-  # 验证 RGB 是否在预期范围内
-  ```
-- [ ] **数值输出**：验证计算结果的数量级和范围
-- [ ] **文本输出**：检查关键字段/格式是否正确
-- [ ] 视觉效果/数值结果符合**量化的预期标准**
-
-**反面教材（2026-02-18 递归光线追踪 Bug）：**
-- ❌ 错误做法：只检查 `reflection_output.png` 文件是否存在
-- ❌ 错误做法：只看 HTML 页面中图片链接是否存在
-- ✅ 正确做法：提取中心球区域像素，验证 RGB 值是否为黑色 (0,0,0)
-- 教训：即使代码运行无崩溃，输出结果可能完全错误（如反射向量计算Bug导致黑球）
-
-### ✅ 代码质量
-- [ ] 代码有适当注释
-- [ ] README 清晰说明用法
-- [ ] 目录结构清晰
-
-### ✅ 上传完成
-- [ ] GitHub 代码仓库已更新
-- [ ] **图片已上传到 blog_img 仓库**（必须在博客发布前完成）
-- [ ] **验证图片 URL 可访问**（HTTP 200）
-- [ ] 博客文章已发布到 **正确的 Hexo 仓库**（`chiuhou-blog-source`）
-- [ ] **验证博客路径**：必须是 `chiuhou-blog-source/source/_posts/` 而非老博客
-- [ ] **验证封面图和文章图片链接正确**
-
-## 项目主题库
-
-### 图形学系列 🎨
-1. **光线追踪器** - 基础球体光追
-2. **软光栅化器** - 三角形光栅化
-3. **贝塞尔曲线** - 参数曲线绘制
-4. **分形生成** - Mandelbrot/Julia 集
-5. **噪声生成** - Perlin/Simplex Noise
-6. **程序化纹理** - 木纹/大理石
-7. **Voronoi 图** - 空间划分算法
-8. **阴影映射** - Shadow Mapping 实现
-
-### 游戏开发 🎮
-1. **粒子系统** - 火焰/爆炸效果
-2. **物理引擎** - 简单刚体碰撞
-3. **A* 寻路可视化** - 动态演示
-4. **行为树编辑器** - AI 决策系统
-5. **关卡生成** - Roguelike 地图
-6. **摄像机系统** - 第三人称视角
-
-### 算法可视化 📊
-1. **排序算法动画** - 快排/归并
-2. **图算法可视化** - Dijkstra/BFS
-3. **树结构可视化** - BST/AVL
-4. **动态规划演示** - 背包问题
-5. **矩阵运算可视化** - SVD/PCA
-
-### SIGGRAPH 复现 📚
-1. **Gaussian Splatting** - 简化版
-2. **Poisson Disk Sampling** - 蓝噪声
-3. **Marching Cubes** - 等值面提取
-4. **屏幕空间反射** - SSR 基础
-5. **体积光** - God Rays
-
-## 迭代策略
-
-### 编译错误处理
-```
-检测到编译错误：
-1. 读取完整编译日志
-2. 识别错误类型（语法/类型/链接）
-3. 定位错误代码行
-4. 分析根本原因
-5. 修复代码
-6. 重新编译验证
-```
-
-### 运行时错误处理
-```
-检测到运行时错误：
-1. 读取崩溃日志/输出
-2. 使用 gdb 或日志分析
-3. 识别崩溃位置
-4. 检查：
-   - 空指针
-   - 数组越界
-   - 内存泄漏
-   - 除零错误
-5. 添加边界检查/防御代码
-6. 重新测试
-```
-
-### 输出不符合预期
-```
-输出错误时：
-1. 对比预期 vs 实际输出
-2. 检查算法逻辑
-3. 验证数学公式
-4. 添加调试输出定位问题
-5. 修正逻辑
-6. 清理调试代码
-7. 验证最终输出
-```
-
-## 🔍 输出验证最佳实践（核心原则）
-
-**关键原则：永远不要相信"看起来对"或"文件存在"**
-
-### 为什么需要量化验证？
-
-**案例：2026-02-18 递归光线追踪 Bug**
-```
-问题：中心镜面球渲染为纯黑色
-原因：反射向量计算错误 (ray.direction * -1.0).reflect(normal)
-症状：
-  ✅ 编译通过
-  ✅ 运行无崩溃
-  ✅ 生成 PNG 文件
-  ❌ 但实际内容完全错误！
-
-错误验证方法：
-  ❌ 只检查 reflection_output.png 是否存在
-  ❌ 只检查 HTML 中图片链接是否 404
-  ❌ 只看图片"好像有颜色"
-
-正确验证方法：
-  ✅ 提取中心球区域像素值
-  ✅ 验证 RGB 是否为黑色 (0,0,0)
-  ✅ 检查是否符合预期的颜色范围
-
-修复后验证：
-  中心球 RGB(50.9%, 75.8%, 65.4%) ← 明亮的青绿色 ✅
-```
-
-### 图形学项目验证方法
-
-#### 1. 像素级验证（最严格）
 ```bash
-# 检查特定区域的颜色
-# 参数：中心点 (x,y) 和采样区域大小
-check_region_color() {
-    local img=$1 x=$2 y=$3 size=$4
-    convert "$img" -crop ${size}x${size}+$((x-size/2))+$((y-size/2)) +repage \
-            -scale 1x1\! -format "RGB(%[fx:int(255*r)],%[fx:int(255*g)],%[fx:int(255*b)])" info:-
-}
-
-# 示例：检查 800x600 图片的中心球（假设在 400,300）
-COLOR=$(check_region_color reflection_output.png 400 300 100)
-echo "中心球颜色: $COLOR"
-
-# 验证不是纯黑
-if [[ "$COLOR" == "RGB(0,0,0)" ]] || [[ "$COLOR" =~ RGB\([0-9],.*\) ]]; then
-    echo "❌ 中心球是黑色！验证失败"
-    exit 1
-fi
-```
-
-#### 2. 统计验证（检查颜色分布）
-```bash
-# 检查图片的颜色统计信息
-identify -verbose output.png | grep -A 3 "Channel statistics"
-
-# 示例输出：
-#   Red:
-#     min: 10  (0.0392)
-#     max: 255 (1.0)
-#     mean: 139.787 (0.548)
-
-# 如果 min=max=0 → 全黑图片
-# 如果 mean < 0.1 → 整体太暗
-```
-
-#### 3. 直方图验证（检测异常）
-```bash
-# 生成直方图并检查是否存在颜色变化
-convert output.png -format "%c" histogram:info:- | head -20
-
-# 如果只有 1-2 种颜色 → 可能有问题
-# 如果全是黑色 (0,0,0) → 明显错误
-```
-
-### 数值计算项目验证方法
-
-#### 1. 边界值检查
-```cpp
-// 检查输出是否在合理范围内
-assert(result >= min_expected && result <= max_expected);
-
-// 示例：Perlin 噪声应该在 [-1, 1]
-double noise_val = perlin(x, y);
-assert(noise_val >= -1.0 && noise_val <= 1.0);
-```
-
-#### 2. 统计特性验证
-```cpp
-// 检查平均值、方差等统计特性
-vector<double> samples;
-for (int i = 0; i < 1000; i++) {
-    samples.push_back(compute());
-}
-double mean = accumulate(samples.begin(), samples.end(), 0.0) / samples.size();
-cout << "平均值: " << mean << " (预期: " << expected_mean << ")" << endl;
-
-// 如果偏差过大 → 有 Bug
-assert(abs(mean - expected_mean) < tolerance);
-```
-
-#### 3. 单调性/对称性验证
-```cpp
-// 检查函数性质
-assert(func(x) <= func(x+1));  // 单调递增
-assert(func(x) == func(-x));   // 对称性
-assert(func(0) == 0);          // 边界条件
-```
-
-### 算法可视化项目验证方法
-
-#### 1. 关键帧检查
-```bash
-# 检查动画的关键帧
-for frame in 0 50 100; do
-    echo "Frame $frame:"
-    check_region_color "animation_${frame}.png" 400 300 50
-done
-
-# 验证动画是否有变化（不是静态图）
-FRAME0=$(md5sum animation_0.png | cut -d' ' -f1)
-FRAME50=$(md5sum animation_50.png | cut -d' ' -f1)
-if [[ "$FRAME0" == "$FRAME50" ]]; then
-    echo "❌ 动画没有变化！"
-    exit 1
-fi
-```
-
-#### 2. 轨迹验证
-```cpp
-// 记录并验证算法轨迹
-vector<Point> visited;
-algorithm(start, goal, visited);
-
-// 检查起点和终点
-assert(visited.front() == start);
-assert(visited.back() == goal);
-
-// 检查路径连续性
-for (size_t i = 1; i < visited.size(); i++) {
-    assert(is_adjacent(visited[i-1], visited[i]));
-}
-```
-
-### Python 辅助验证脚本示例
-
-```python
-#!/usr/bin/env python3
-"""
-图像验证工具 - 用于检查渲染输出是否正确
-用法: ./validate_output.py reflection_output.png --center 400,300 --size 100
-"""
-from PIL import Image
-import numpy as np
-import sys
-
-def validate_region(img_path, center_x, center_y, size):
-    img = Image.open(img_path)
-    pixels = np.array(img)
-    
-    # 提取中心区域
-    half_size = size // 2
-    region = pixels[
-        center_y-half_size:center_y+half_size,
-        center_x-half_size:center_x+half_size
-    ]
-    
-    # 统计
-    mean_color = region.mean(axis=(0,1))
-    min_color = region.min(axis=(0,1))
-    max_color = region.max(axis=(0,1))
-    
-    print(f"区域 ({center_x},{center_y}) 大小 {size}x{size}:")
-    print(f"  平均颜色: RGB({mean_color[0]:.1f}, {mean_color[1]:.1f}, {mean_color[2]:.1f})")
-    print(f"  最小值: RGB({min_color[0]}, {min_color[1]}, {min_color[2]})")
-    print(f"  最大值: RGB({max_color[0]}, {max_color[1]}, {max_color[2]})")
-    
-    # 检查是否是黑色
-    is_black = (mean_color < 10).all()
-    if is_black:
-        print("❌ 该区域是纯黑色！")
-        return False
-    else:
-        print("✅ 该区域有颜色")
-        return True
-
-if __name__ == "__main__":
-    # 示例用法
-    validate_region(sys.argv[1], 400, 300, 100)
-```
-
-### 验证清单（必须全部通过）
-
-**图形学项目：**
-- [ ] 输出文件存在且非空（文件大小 > 1KB）
-- [ ] 关键区域像素值检查（非全黑/全白/纯色）
-- [ ] 颜色统计正常（min/max/mean 在合理范围）
-- [ ] 视觉效果符合预期（人工检查，但不能只靠这个）
-
-**数值计算项目：**
-- [ ] 输出值在预期范围内（边界检查）
-- [ ] 统计特性正确（均值/方差/分布）
-- [ ] 边界条件/特殊情况测试通过
-- [ ] 与已知正确结果对比（如果有参考实现）
-
-**算法项目：**
-- [ ] 算法正确性验证（输出路径/结果正确）
-- [ ] 性能指标达标（时间/空间复杂度）
-- [ ] 边界情况测试（空输入/极端值）
-- [ ] 可视化输出清晰（如果有）
-
-### 何时可以跳过量化验证？
-
-**只有以下情况可以适当简化验证：**
-1. 交互式工具（需要人工操作才能看到结果）
-2. 随机生成内容（每次结果不同，只能检查统计特性）
-3. 性能测试（主要关注时间/内存，而非输出内容）
-
-**但即使在这些情况下，也应该：**
-- 检查输出格式正确
-- 验证统计特性在合理范围
-- 测试边界情况不会崩溃
-
-### 教训总结
-
-> **"It works on my machine" 是不够的**
-> **"The file exists" 是不够的**
-> **"Looks good to me" 是不够的**
-> 
-> **唯一可靠的验证：量化检查实际输出内容**
-
-记住 2026-02-18 的教训：
-- 代码编译通过 ✅
-- 程序运行无崩溃 ✅
-- 生成了 PNG 文件 ✅
-- 图片链接返回 200 ✅
-- **但中心球是纯黑的** ❌
-
-如果当时做了量化验证（检查中心球 RGB 值），能立即发现问题！
-
-
-
-## 时间管理
-
-- **单次尝试时间**: 30 分钟（可在 cron 中配置）
-- **规划阶段**: 5 分钟
-- **开发迭代**: 20 分钟（允许多次迭代）
-- **上传发布**: 5 分钟
-- **尝试次数**: 无限制，**只要任务未完成就继续**
-
-### 超时后的处理流程
-
-**第一步：保存进度状态**
-```bash
-# 写入状态文件
-cat > /root/.openclaw/workspace/daily-coding-practice/status.json <<EOF
+# 记录状态，下次继续
+cat > /root/.openclaw/workspace/daily-coding-practice/status.json << EOF
 {
   "date": "$(date +%Y-%m-%d)",
-  "projectName": "[项目名称]",
-  "status": "in-progress",
-  "attempts": 1,
-  "progress": {
-    "planning": true,
-    "coding": true,
-    "compiling": false,
-    "running": false,
-    "validation": false,
-    "githubUpload": false,
-    "blogPublish": false
-  },
-  "allCompleted": false,
-  "lastError": "[错误描述]",
-  "lastAttemptTime": "$(date -Iseconds)",
-  "estimatedNextStep": "[下一步计划]",
-  "codeBackup": "/root/.openclaw/workspace/daily-coding-practice/temp/",
-  "iterationHistory": [
-    {"iteration": 1, "time": "10:05", "action": "...", "result": "..."}
-  ]
+  "project": "<项目名>",
+  "stage": "dev",
+  "lastError": "<错误描述>",
+  "time": "$(date -Iseconds)"
 }
 EOF
 ```
 
-**第二步：发送进度报告**
-使用 `message` tool 发送当前进度和下一步计划（见 STATUS_FORMAT.md）
-
-**第三步：等待检查任务**
-- 检查任务会在 5 分钟后运行
-- 读取 status.json
-- **继续条件**：任何一个阶段未完成（progress 中有 false）
-  - 如果所有阶段都是 true → status="completed"，发送成功报告，结束
-  - 如果还有 false → status="in-progress"，启动新 sub-agent 继续
-- **无次数限制**：只要 allCompleted != true，就会一直尝试
-
-## 成功报告模板
-
-```markdown
-# ✅ 每日编程实践完成 - YYYY-MM-DD
-
-## 📋 项目信息
-- **项目名称**: [名称]
-- **类型**: 图形学/游戏开发/算法
-- **完成时间**: [HH:MM]
-- **迭代次数**: [N] 次
-
-## 🔄 迭代历史
-1. **初始版本**: [简述]
-2. **修复 1**: 编译错误 - [问题和解决]
-3. **修复 2**: 运行崩溃 - [问题和解决]
-4. **最终版本**: ✅ 全部通过
-
-## 📊 验收结果
-- ✅ 编译通过
-- ✅ 运行成功
-- ✅ 输出符合预期
-- ✅ 代码已上传 GitHub
-- ✅ 博客已发布
-
-## 🔗 链接
-- **GitHub**: [仓库链接]
-- **博客**: [文章链接]
-- **输出图片**: [图片链接]
-
-## 💡 技术总结
-[今天学到的技术点和经验]
-```
-
-## 失败报告模板
-
-```markdown
-# ❌ 每日编程实践失败 - YYYY-MM-DD
-
-## 📋 项目信息
-- **项目名称**: [名称]
-- **失败原因**: [编译错误/运行崩溃/输出错误/超时]
-- **尝试时间**: [分钟]
-- **迭代次数**: [N] 次
-
-## 🐛 最后的错误
-[错误日志或描述]
-
-## 🔍 问题分析
-[为什么失败，问题的根本原因]
-
-## 📝 下次改进
-[明天如何避免同样的问题]
-```
-
-## 使用示例
-
-### Cron 任务配置
-```json
-{
-  "name": "每日编程实践 - 10:00",
-  "schedule": {
-    "kind": "cron",
-    "expr": "0 10 * * *",
-    "tz": "Asia/Shanghai"
-  },
-  "sessionTarget": "isolated",
-  "payload": {
-    "kind": "agentTurn",
-    "message": "执行每日编程实践。\n\n使用 daily-coding-practice-iterative skill：\n1. 根据我的兴趣（图形学、游戏开发）选择今日项目\n2. 编写代码并自动迭代修复，直到：\n   - 编译通过（0错误0警告）\n   - 运行成功（无崩溃）\n   - 输出符合预期（生成图片/数据）\n3. 上传代码到 GitHub（daily-coding-practice 仓库）\n4. 发布博客文章到 chiuhoukazusa.github.io\n5. 使用 message tool 发送完成报告到企业微信群（channel: openclaw-wecom-bot, target: wrkSFfCgAAcbmEwnmd7GIXQrwCRssi_A）\n\n如果 30 分钟内未完成，发送失败报告并记录原因。",
-    "timeoutSeconds": 1800
-  }
-}
-```
-
-## 注意事项
-
-### 文件路径
-- 代码仓库：`/root/.openclaw/workspace/daily-coding-practice`
-- 博客仓库：`/root/.openclaw/workspace/chiuhoukazusa.github.io`
-- 如果仓库不存在，需要先 clone
-
-### Git 配置
-确保 Git 已配置用户信息：
-```bash
-git config --global user.name "Your Name"
-git config --global user.email "your@email.com"
-```
-
-### GitHub 认证
-确保 SSH key 已配置，能够 push 到远程仓库。
-
-### 依赖工具
-- `g++` (C++ 编译器)
-- `git` (版本控制)
-- `ImageMagick` 或 `stb_image` (图片处理，可选)
-
-## 调试技巧
-
-如果迭代失败：
-1. 检查编译器输出
-2. 添加更多日志
-3. 使用 `gdb` 调试
-4. 简化问题复现
-5. 参考类似项目
-
-## 持续改进
-
-根据每日实践结果：
-- 调整项目难度
-- 优化迭代策略
-- 改进错误处理
-- 扩展项目主题库
+通知用户后停止，不要强行进入验证/发布阶段。

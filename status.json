@@ -1,31 +1,24 @@
 {
-  "date": "2026-03-19",
-  "projectName": "Forward+ Rendering",
+  "date": "2026-03-20",
+  "projectName": "Spherical Harmonics Environment Lighting",
   "status": "in-progress",
-  "attempts": 2,
+  "attempts": 1,
   "progress": {
-    "coreDevCompleted": true,
+    "coreDevCompleted": false,
     "coreDevStage": {
       "planning": true,
-      "coding": true,
-      "compiling": true,
-      "running": true,
-      "validation": true
+      "coding": false,
+      "compiling": false,
+      "running": false,
+      "validation": false
     },
     "githubUpload": false,
     "blogPublish": false
   },
   "timeline": [
-    {"time": "05:30", "action": "开始每日编程实践 - Forward+ Rendering"},
-    {"time": "05:30", "action": "通过重复项目检查，确认今日项目主题可用"},
-    {"time": "05:30", "action": "规划完成：Forward+ Rendering（Z Pre-pass深度预渲染、Tile-based光源分类、Per-tile光源列表、多光源Blinn-Phong着色、ACES色调映射）"},
-    {"time": "05:31", "action": "代码编写完成（约900行C++），开始编译"},
-    {"time": "05:32", "action": "编译失败：view.transformDir用法错误，光线方向计算有误（光线全部朝错误方向）"},
-    {"time": "05:33", "action": "修复：从lookAt矩阵提取right/up/forward轴向量，直接构建世界空间光线方向"},
-    {"time": "05:35", "action": "编译通过（0错误0警告）✅"},
-    {"time": "05:36", "action": "运行成功：4张PNG全部生成，耗时0.527秒 ✅"},
-    {"time": "05:36", "action": "量化验证通过：中心球RGB(170,169,88)，G-Buffer覆盖65%，Tile剔除节省52.5%计算量 ✅"}
+    {"time": "05:30", "action": "开始项目规划 - 选题: Spherical Harmonics Environment Lighting"},
+    {"time": "05:30", "action": "规划完成，开始编写代码"}
   ],
   "lastError": "",
-  "codeBackup": "/tmp/forward_plus/"
+  "codeBackup": "/root/.openclaw/workspace/daily-coding-practice/2026-03-20-spherical-harmonics/"
 }
