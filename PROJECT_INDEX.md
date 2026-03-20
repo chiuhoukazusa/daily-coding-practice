@@ -156,4 +156,4 @@
 **创建日期**：2026-02-17
 **创建原因**：避免重复项目，确保持续进步
 | 03-20 | Spherical Harmonics Environment Lighting | 球谐函数, 环境光照, L2 SH投影, Phong着色, 程序化天空光 | sh_output.png | published |
-| 03-21 | SPPM Stochastic Progressive Photon Mapping | SPPM, 光子映射, 全局光照, Cornell Box, kd树, 渐进密度估计 | sppm_output.png | verified |
+| 03-21 | SPPM Stochastic Progressive Photon Mapping | SPPM, 光子映射, 全局光照, Cornell Box, kd树, 渐进密度估计 | sppm_output.png | published |
