@@ -1,24 +1,11 @@
 {
-  "date": "2026-03-20",
-  "projectName": "Spherical Harmonics Environment Lighting",
-  "status": "in-progress",
-  "attempts": 1,
+  "date": "2026-03-21",
+  "projectName": "SPPM Stochastic Progressive Photon Mapping",
+  "status": "completed",
+  "attempts": 3,
   "progress": {
-    "coreDevCompleted": false,
-    "coreDevStage": {
-      "planning": true,
-      "coding": false,
-      "compiling": false,
-      "running": false,
-      "validation": false
-    },
-    "githubUpload": false,
-    "blogPublish": false
-  },
-  "timeline": [
-    {"time": "05:30", "action": "开始项目规划 - 选题: Spherical Harmonics Environment Lighting"},
-    {"time": "05:30", "action": "规划完成，开始编写代码"}
-  ],
-  "lastError": "",
-  "codeBackup": "/root/.openclaw/workspace/daily-coding-practice/2026-03-20-spherical-harmonics/"
+    "coreDevCompleted": true,
+    "githubUpload": true,
+    "blogPublish": true
+  }
 }
