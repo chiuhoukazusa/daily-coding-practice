@@ -157,4 +157,4 @@
 **创建原因**：避免重复项目，确保持续进步
 | 03-20 | Spherical Harmonics Environment Lighting | 球谐函数, 环境光照, L2 SH投影, Phong着色, 程序化天空光 | sh_output.png | published |
 | 03-21 | SPPM Stochastic Progressive Photon Mapping | SPPM, 光子映射, 全局光照, Cornell Box, kd树, 渐进密度估计 | sppm_output.png | published |
-| 03-22 | Bidirectional Path Tracing | BDPT, 双向路径追踪, MIS多重重要性采样, Cornell Box, 焦散 | bdpt_output.png | dev-done |
+| 03-22 | Bidirectional Path Tracing | BDPT, 双向路径追踪, MIS多重重要性采样, Cornell Box, 焦散 | bdpt_output.png | verified |
