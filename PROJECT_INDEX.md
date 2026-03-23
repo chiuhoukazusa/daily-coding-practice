@@ -159,3 +159,4 @@
 | 03-21 | SPPM Stochastic Progressive Photon Mapping | SPPM, 光子映射, 全局光照, Cornell Box, kd树, 渐进密度估计 | sppm_output.png | published |
 | 03-22 | Bidirectional Path Tracing | BDPT, 双向路径追踪, MIS多重重要性采样, Cornell Box, 焦散 | bdpt_output.png | published |
 | 03-23 | Voxel Cone Tracing | 体素化, 锥形追踪, 近似全局光照, Mipmap, 间接光照 | vct_output.png | published |
+| 03-24 | Subsurface Scattering Renderer | 次表面散射, Jensen偶极子模型, 漫射剖面, BSSRDF, 皮肤/蜡烛/玉石材质, Monte Carlo积分 | sss_output.png | in-progress |
