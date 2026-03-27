@@ -163,3 +163,4 @@
 | 03-25 | Screen Space Ambient Occlusion | SSAO, 屏幕空间, 半球采样, 深度缓冲, 实时渲染近似, 法线偏置 | ssao_output.png | published |
 | 03-26 | Temporal Anti-Aliasing (TAA) | TAA, 时序抗锯齿, 抖动采样, 重投影, 历史混合, 图像稳定性 | taa_output.png | published |
 | 03-27 | Motion Blur Renderer | 运动模糊, 速度缓冲, 每像素运动矢量, 后处理模糊, 旋转物体, 相机运动 | motion_blur_output.png | published |
+| 03-28 | Depth of Field Renderer | 薄透镜模型, 景深, 散景Bokeh, 光圈模拟, 焦平面, 路径追踪 | dof_output.png | in-progress |
