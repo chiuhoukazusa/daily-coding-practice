@@ -164,4 +164,4 @@
 | 03-26 | Temporal Anti-Aliasing (TAA) | TAA, 时序抗锯齿, 抖动采样, 重投影, 历史混合, 图像稳定性 | taa_output.png | published |
 | 03-27 | Motion Blur Renderer | 运动模糊, 速度缓冲, 每像素运动矢量, 后处理模糊, 旋转物体, 相机运动 | motion_blur_output.png | published |
 | 03-28 | Depth of Field Renderer | 薄透镜模型, 景深, 散景Bokeh, 光圈模拟, 焦平面, 路径追踪 | dof_output.png | published |
-| 03-29 | HDR Tone Mapping & Color Grading | HDR, 色调映射, Reinhard, ACES Filmic, Uncharted2, 色彩分级, LUT | dev-done |
+| 03-29 | HDR Tone Mapping & Color Grading | HDR, 色调映射, Reinhard, ACES Filmic, Uncharted2, 色彩分级, LUT | verified |
