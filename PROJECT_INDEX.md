@@ -166,4 +166,4 @@
 | 03-28 | Depth of Field Renderer | 薄透镜模型, 景深, 散景Bokeh, 光圈模拟, 焦平面, 路径追踪 | dof_output.png | published |
 | 03-29 | HDR Tone Mapping & Color Grading | HDR, 色调映射, Reinhard, ACES Filmic, Uncharted2, 色彩分级, LUT | published |
 | 03-30 | Procedural Texture Synthesis | Worley噪声, 细胞纹理, 分形布朗运动, 大理石/木纹, 程序化生成 | procedural_texture_output.png | published |
-| 03-31 | Caustics Renderer | 焦散, 光子映射, 折射, 斯涅尔定律, 水面/玻璃, Monte Carlo | caustics_output.png | in-progress |
+| 03-31 | Caustics Renderer | 焦散, 光子映射, 折射, 斯涅尔定律, 水面/玻璃, Monte Carlo | caustics_output.png | dev-done |
