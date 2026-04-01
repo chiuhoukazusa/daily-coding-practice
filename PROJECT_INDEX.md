@@ -168,3 +168,4 @@
 | 03-30 | Procedural Texture Synthesis | Worley噪声, 细胞纹理, 分形布朗运动, 大理石/木纹, 程序化生成 | procedural_texture_output.png | published |
 | 03-31 | Caustics Renderer | 焦散, 光子映射, 折射, 斯涅尔定律, 水面/玻璃, Monte Carlo | caustics_output.png | published |
 | 04-01 | SDF Ray Marching Renderer | SDF有向距离场, Ray Marching光线步进, 软阴影, AO环境光遮蔽, 法线估计, Blinn-Phong, 隐式曲面, 程序化场景 | sdf_output.png | published |
+| 04-02 | BVH Accelerated Triangle Mesh Renderer | BVH加速结构, 三角形网格, Möller–Trumbore, 法线插值, Phong着色, Cornell Box, 实时渲染加速 | bvh_output.png | in-progress |
