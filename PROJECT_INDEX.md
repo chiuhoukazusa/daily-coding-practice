@@ -170,4 +170,4 @@
 | 04-01 | SDF Ray Marching Renderer | SDF有向距离场, Ray Marching光线步进, 软阴影, AO环境光遮蔽, 法线估计, Blinn-Phong, 隐式曲面, 程序化场景 | sdf_output.png | published |
 | 04-02 | BVH Accelerated Triangle Mesh Renderer | BVH加速结构, 三角形网格, Möller–Trumbore, 法线插值, Phong着色, Cornell Box, 实时渲染加速 | bvh_output.png | published |
 | 04-03 | Disney Principled BRDF Renderer | PBR, Disney BRDF, Microfacet, GGX, Fresnel, 金属度, 粗糙度, 材质球阵列 | disney_brdf_output.png | published |
-| 04-04 | Atmosphere Scattering Renderer | Rayleigh散射, Mie散射, 大气层模型, 天空渲染, 日落效果, 单次散射 | atmosphere_output.png | verified |
+| 04-04 | Atmosphere Scattering Renderer | Rayleigh散射, Mie散射, 大气层模型, 天空渲染, 日落效果, 单次散射 | atmosphere_output.png | published |
