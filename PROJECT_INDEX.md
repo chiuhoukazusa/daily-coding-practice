@@ -171,4 +171,4 @@
 | 04-02 | BVH Accelerated Triangle Mesh Renderer | BVH加速结构, 三角形网格, Möller–Trumbore, 法线插值, Phong着色, Cornell Box, 实时渲染加速 | bvh_output.png | published |
 | 04-03 | Disney Principled BRDF Renderer | PBR, Disney BRDF, Microfacet, GGX, Fresnel, 金属度, 粗糙度, 材质球阵列 | disney_brdf_output.png | published |
 | 04-04 | Atmosphere Scattering Renderer | Rayleigh散射, Mie散射, 大气层模型, 天空渲染, 日落效果, 单次散射 | atmosphere_output.png | published |
-| 04-05 | Water Wave Simulation & Rendering | Gerstner波, 海面模拟, Fresnel反射, 次表面散射近似, 程序化波浪, 软光栅化 | water_output.png | dev-done |
+| 04-05 | Water Wave Simulation & Rendering | Gerstner波, 海面模拟, Fresnel反射, 次表面散射近似, 程序化波浪, 软光栅化 | water_output.png | verified |
