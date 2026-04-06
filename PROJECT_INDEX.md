@@ -173,4 +173,4 @@
 | 04-04 | Atmosphere Scattering Renderer | Rayleigh散射, Mie散射, 大气层模型, 天空渲染, 日落效果, 单次散射 | atmosphere_output.png | published |
 | 04-05 | Water Wave Simulation & Rendering | Gerstner波, 海面模拟, Fresnel反射, 次表面散射近似, 程序化波浪, 软光栅化 | water_output.png | published |
 | 04-06 | Procedural Terrain Renderer | Perlin噪声, 高度图, 法线计算, LOD, 程序化地形, Phong光照, 软光栅化 | terrain_output.png | published |
-| 04-07 | Fur Hair Rendering Kajiya-Kay | Kajiya-Kay, 毛发着色, 各向异性, 透射, 程序化毛发几何, 软光栅化 | fur_hair_output.png | dev-done |
+| 04-07 | Fur Hair Rendering Kajiya-Kay | Kajiya-Kay, 毛发着色, 各向异性, 透射, 程序化毛发几何, 软光栅化 | fur_hair_output.png | verified |
