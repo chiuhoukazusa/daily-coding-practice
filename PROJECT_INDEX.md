@@ -174,4 +174,4 @@
 | 04-05 | Water Wave Simulation & Rendering | Gerstner波, 海面模拟, Fresnel反射, 次表面散射近似, 程序化波浪, 软光栅化 | water_output.png | published |
 | 04-06 | Procedural Terrain Renderer | Perlin噪声, 高度图, 法线计算, LOD, 程序化地形, Phong光照, 软光栅化 | terrain_output.png | published |
 | 04-07 | Fur Hair Rendering Kajiya-Kay | Kajiya-Kay, 毛发着色, 各向异性, 透射, 程序化毛发几何, 软光栅化 | fur_hair_output.png | published |
-| 04-08 | Particle System Simulation | 粒子系统, 力场模拟, 烟花爆炸, 运动学, 软光栅化, 时序动画合成 | particle_output.png | verified |
+| 04-08 | Particle System Simulation | 粒子系统, 力场模拟, 烟花爆炸, 运动学, 软光栅化, 时序动画合成 | particle_output.png | published |
