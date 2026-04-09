@@ -176,4 +176,4 @@
 | 04-07 | Fur Hair Rendering Kajiya-Kay | Kajiya-Kay, 毛发着色, 各向异性, 透射, 程序化毛发几何, 软光栅化 | fur_hair_output.png | published |
 | 04-08 | Particle System Simulation | 粒子系统, 力场模拟, 烟花爆炸, 运动学, 软光栅化, 时序动画合成 | particle_output.png | published |
 | 04-09 | SPH Fluid Simulation | SPH光滑粒子流体, Navier-Stokes, 压力场, 粘性力, 表面张力, 核函数, 密度估计, 软光栅化 | sph_output.png | published |
-| 04-10 | Rigid Body Dynamics 2D | 刚体动力学, 碰撞检测, 脉冲解算, SAT分离轴, AABB, 软光栅化 | in-progress |
+| 04-10 | Rigid Body Dynamics 2D | 刚体动力学, 碰撞检测, 脉冲解算, SAT分离轴, AABB, 软光栅化 | dev-done |
