@@ -179,4 +179,4 @@
 | 04-10 | Rigid Body Dynamics 2D | 刚体动力学, 碰撞检测, 脉冲解算, SAT分离轴, AABB, 软光栅化 | published |
 | 04-11 | PBD Soft Body Deformation | PBD位置约束, 弹性形变, SDF碰撞, 软光栅化 | pbd_softbody_output.png | published |
 | 04-12 | Volumetric Light Scattering God Rays | 体积光, God Rays, 光线步进, Mie散射相位函数, 遮挡采样, 光轴衰减, 软光栅化 | god_rays_output.png | published |
-| 04-13 | Spectral Dispersion Ray Tracer | 光谱色散, Snell定律, 折射, 色差, 三棱柱, 波长依赖折射率, 软光栅化 | spectral_dispersion_output.png | verified |
+| 04-13 | Spectral Dispersion Ray Tracer | 光谱色散, Snell定律, 折射, 色差, 三棱柱, 波长依赖折射率, 软光栅化 | spectral_dispersion_output.png | published |

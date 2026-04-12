@@ -1,8 +1,8 @@
 {
-  "date": "2026-04-09",
-  "projectName": "SPH Fluid Simulation",
+  "date": "2026-04-13",
+  "projectName": "Spectral Dispersion Ray Tracer",
   "status": "in-progress",
-  "attempts": 2,
+  "attempts": 1,
   "progress": {
     "coreDevCompleted": true,
     "coreDevStage": {
@@ -16,18 +16,22 @@
     "blogPublish": false
   },
   "timeline": [
-    {"time": "05:30", "action": "开始项目 - 选题：SPH Fluid Simulation（光滑粒子流体动力学）"},
-    {"time": "05:30", "action": "防重复检查通过，预占 PROJECT_INDEX.md 条目"},
-    {"time": "05:31", "action": "规划完成：2D SPH流体模拟，dam-break场景，Poly6/Spiky核函数"},
-    {"time": "05:32", "action": "代码编写完成（v1），开始编译"},
-    {"time": "05:32", "action": "编译失败：3个未使用变量警告（render_frame函数遗留代码）"},
-    {"time": "05:33", "action": "修复：清理死代码，重写为干净版本，编译通过（0 errors, 0 warnings）"},
-    {"time": "05:33", "action": "运行v1 - 发现模拟不稳定：速度爆炸到inf，参数需要调整"},
-    {"time": "05:34", "action": "修复参数：降低K_GAS(2000→8), 增加粘性, 减小DT, 添加速度截断(V_MAX=500)"},
-    {"time": "05:35", "action": "编译通过（0 errors, 0 warnings），运行成功"},
-    {"time": "05:35", "action": "验证通过：文件46KB, 像素均值28.9, 标准差34.4, 帧间差异最大21.91"},
-    {"time": "05:35", "action": "可视化检查：6帧清晰展示dam-break流体扩散，颜色正确反映速度变化"}
+    {"time": "05:30", "action": "开始每日编程实践，选题：Spectral Dispersion Ray Tracer（光谱色散光线追踪）"},
+    {"time": "05:31", "action": "防重复检查通过，预占PROJECT_INDEX.md条目"},
+    {"time": "05:32", "action": "v1代码编写完成（约350行C++），编译通过（0错误0警告，stb警告用pragma抑制）"},
+    {"time": "05:32", "action": "v1运行成功2s，但验证发现RGB差值=0（图像全灰），色散未生效"},
+    {"time": "05:33", "action": "问题分析：v1每像素RGB相同折射率，真正色散需要彩色背景+分通道折射"},
+    {"time": "05:34", "action": "v2重新设计：彩虹天空盒+按通道分别追踪RGB不同波长，代码编写完成"},
+    {"time": "05:35", "action": "v2编译通过（0错误0警告），运行2.1秒，生成3张图"},
+    {"time": "05:36", "action": "验证发现IOR曲线图5.7KB < 10KB；主图RGB色散差值36.4，效果很好"},
+    {"time": "05:37", "action": "修复：IOR曲线图分辨率改为800x500，重新编译运行"},
+    {"time": "05:37", "action": "所有验证通过：3图均>10KB，均值/标准差正常，RGB色散差=36.4，天空在上"}
   ],
   "lastError": null,
-  "codeBackup": "/root/.openclaw/workspace/daily-coding-practice/projects/2026-04-09-sph-fluid/"
+  "outputFiles": [
+    "spectral_dispersion_output.png",
+    "spectral_no_dispersion.png",
+    "spectral_ior_curve.png"
+  ],
+  "codeBackup": null
 }
