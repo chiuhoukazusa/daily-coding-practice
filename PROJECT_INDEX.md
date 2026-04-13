@@ -180,4 +180,4 @@
 | 04-11 | PBD Soft Body Deformation | PBD位置约束, 弹性形变, SDF碰撞, 软光栅化 | pbd_softbody_output.png | published |
 | 04-12 | Volumetric Light Scattering God Rays | 体积光, God Rays, 光线步进, Mie散射相位函数, 遮挡采样, 光轴衰减, 软光栅化 | god_rays_output.png | published |
 | 04-13 | Spectral Dispersion Ray Tracer | 光谱色散, Snell定律, 折射, 色差, 三棱柱, 波长依赖折射率, 软光栅化 | spectral_dispersion_output.png | published |
-| 04-14 | Volumetric Cloud Renderer | FBM噪声, 体积云, 光线步进, 前向散射, Beer-Lambert, Henyey-Greenstein, 程序化云体, 软光栅化 | volumetric_cloud_output.png | dev-done |
+| 04-14 | Volumetric Cloud Renderer | FBM噪声, 体积云, 光线步进, 前向散射, Beer-Lambert, Henyey-Greenstein, 程序化云体, 软光栅化 | volumetric_cloud_output.png | verified |
