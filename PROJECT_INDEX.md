@@ -182,4 +182,4 @@
 | 04-13 | Spectral Dispersion Ray Tracer | 光谱色散, Snell定律, 折射, 色差, 三棱柱, 波长依赖折射率, 软光栅化 | spectral_dispersion_output.png | published |
 | 04-14 | Volumetric Cloud Renderer | FBM噪声, 体积云, 光线步进, 前向散射, Beer-Lambert, Henyey-Greenstein, 程序化云体, 软光栅化 | volumetric_cloud_output.png | published |
 | 04-15 | Cloth Simulation Mass-Spring | 布料模拟, 质点弹簧, Verlet积分, 碰撞检测, 风力, 软光栅化 | published |
-| 04-16 | Inverse Kinematics CCD Solver | IK逆运动学, CCD算法, 骨骼链, 关节约束, 动画系统, 软光栅化 | ik_output.png | verified |
+| 04-16 | Inverse Kinematics CCD Solver | IK逆运动学, CCD算法, 骨骼链, 关节约束, 动画系统, 软光栅化 | ik_output.png | published |
