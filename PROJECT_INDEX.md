@@ -184,4 +184,4 @@
 | 04-15 | Cloth Simulation Mass-Spring | 布料模拟, 质点弹簧, Verlet积分, 碰撞检测, 风力, 软光栅化 | published |
 | 04-16 | Inverse Kinematics CCD Solver | IK逆运动学, CCD算法, 骨骼链, 关节约束, 动画系统, 软光栅化 | ik_output.png | published |
 | 04-17 | Marching Cubes Isosurface Extraction | Marching Cubes, 等值面提取, 三角形网格, 标量场, 程序化SDF, Phong着色, 软光栅化 | marching_cubes_output.png | published |
-| 04-18 | Screen Space Reflections (SSR) | SSR, 屏幕空间反射, G-Buffer, 光线步进, 反射矢量, 实时渲染, 软光栅化 | ssr_output.png | dev-done |
+| 04-18 | Screen Space Reflections (SSR) | SSR, 屏幕空间反射, G-Buffer, 光线步进, 反射矢量, 实时渲染, 软光栅化 | ssr_output.png | verified |
