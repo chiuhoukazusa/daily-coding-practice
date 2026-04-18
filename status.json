@@ -1,42 +1,28 @@
 {
-  "date": "2026-04-13",
-  "projectName": "Spectral Dispersion Ray Tracer",
-  "status": "completed",
-  "attempts": 1,
+  "date": "2026-04-19",
+  "projectName": "Ambient Light Probes & Irradiance Caching",
+  "status": "in-progress",
+  "attempts": 2,
   "progress": {
-    "coreDevCompleted": true,
+    "coreDevCompleted": false,
     "coreDevStage": {
       "planning": true,
       "coding": true,
       "compiling": true,
-      "running": true,
-      "validation": true
+      "running": false,
+      "validation": false
     },
-    "githubUpload": true,
-    "blogPublish": true
+    "githubUpload": false,
+    "blogPublish": false
   },
   "timeline": [
-    {"time": "05:30", "action": "开始每日编程实践，选题：Spectral Dispersion Ray Tracer（光谱色散光线追踪）"},
-    {"time": "05:31", "action": "防重复检查通过，预占PROJECT_INDEX.md条目，git commit"},
-    {"time": "05:32", "action": "v1代码编写完成（约350行C++），编译通过（0错误0警告）"},
-    {"time": "05:32", "action": "v1运行成功2s，验证发现RGB差值=0（全灰），色散未生效"},
-    {"time": "05:33", "action": "Bug分析：背景全白/灰时折射位置差异不产生颜色差"},
-    {"time": "05:34", "action": "v2重新设计：彩虹天空盒+分通道权重追踪，代码编写完成"},
-    {"time": "05:35", "action": "v2编译通过（0错误0警告），运行2.1秒，生成3张图"},
-    {"time": "05:36", "action": "验证：IOR曲线图5.7KB<10KB不达标；主图RGB差值36.4"},
-    {"time": "05:37", "action": "修复IOR图分辨率800x500，重新编译运行，所有验证通过"},
-    {"time": "05:37", "action": "Layer1:代码上传GitHub，Layer2:图片上传blog_img，Layer3:链接验证通过"},
-    {"time": "05:38", "action": "Layer4:PROJECT_INDEX.md更新为verified，开始博客撰写"},
-    {"time": "05:39", "action": "博客文章写完，557行，7个章节全部达标"},
-    {"time": "05:40", "action": "hexo generate + hexo deploy 成功，博客上线"},
-    {"time": "05:40", "action": "PROJECT_INDEX.md更新为published，status.json设为completed"}
+    {"time": "05:30", "action": "开始项目规划，选题：Ambient Light Probes & Irradiance Caching"},
+    {"time": "05:31", "action": "规划完成，技术方案确定：光探针+球谐SH2辐照度+场景插值渲染"},
+    {"time": "05:33", "action": "代码编写完成（18539字节），开始编译"},
+    {"time": "05:34", "action": "编译失败：4个警告，IrradianceSH/LightProbe成员缺少默认初始化"},
+    {"time": "05:35", "action": "修复：添加默认初始化器 {}，重新编译"},
+    {"time": "05:35", "action": "编译成功：0 errors, 0 warnings，开始运行"}
   ],
   "lastError": null,
-  "outputFiles": [
-    "spectral_dispersion_output.png",
-    "spectral_no_dispersion.png",
-    "spectral_ior_curve.png"
-  ],
-  "blogUrl": "https://chiuhoukazusa.github.io/chiuhou-tech-blog/2026/04/13/daily-coding-spectral-dispersion-2026-04-13/",
-  "codeUrl": "https://github.com/chiuhoukazusa/daily-coding-practice/tree/main/2026-04-13-spectral-dispersion"
+  "codeBackup": null
 }
