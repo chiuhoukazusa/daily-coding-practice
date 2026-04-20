@@ -1,7 +1,7 @@
 {
   "date": "2026-04-21",
   "projectName": "Physically Based Bloom & Lens Flare",
-  "status": "in-progress",
+  "status": "completed",
   "attempts": 2,
   "progress": {
     "coreDevCompleted": true,
@@ -12,20 +12,29 @@
       "running": true,
       "validation": true
     },
-    "githubUpload": false,
-    "blogPublish": false
+    "githubUpload": true,
+    "blogPublish": true
   },
   "timeline": [
     {"time": "05:30", "action": "开始项目规划 - 选题：Physically Based Bloom & Lens Flare"},
     {"time": "05:30", "action": "防重复检查通过，今日无重复项目"},
     {"time": "05:30", "action": "PROJECT_INDEX.md 预占完成，git commit"},
-    {"time": "05:31", "action": "代码编写完成 (main.cpp, 17KB)"},
+    {"time": "05:31", "action": "代码编写完成 (main.cpp, 17KB, ~400行)"},
     {"time": "05:32", "action": "首次编译失败：std::max 3参数调用错误（hexAperture函数）"},
-    {"time": "05:32", "action": "修复：拆分多步 std::max 调用"},
-    {"time": "05:32", "action": "添加 #pragma GCC diagnostic 抑制第三方库警告"},
-    {"time": "05:33", "action": "编译成功：0 errors, 0 warnings"},
-    {"time": "05:33", "action": "运行成功：0.07s，输出 bloom_output.png (105KB)"},
-    {"time": "05:33", "action": "验证通过：均值59.1, 标准差33.1, 坐标系正确，天空暗/光源亮"}
+    {"time": "05:32", "action": "修复：拆分多步 std::max 调用，添加 pragma GCC diagnostic"},
+    {"time": "05:32", "action": "编译成功：0 errors, 0 warnings"},
+    {"time": "05:33", "action": "运行成功：0.07s，输出 bloom_output.png (105KB, 512x512)"},
+    {"time": "05:33", "action": "像素验证通过：均值59.1, 标准差33.1, 坐标系正确"},
+    {"time": "05:33", "action": "开发阶段完成，更新 PROJECT_INDEX.md 为 dev-done"},
+    {"time": "05:34", "action": "Layer 1: 代码上传 GitHub - daily-coding-practice/2026/04/04-21-bloom-lens-flare"},
+    {"time": "05:34", "action": "Layer 2: 图片上传 blog_img - 2026/04/04-21-bloom-lens-flare/bloom_output.png"},
+    {"time": "05:35", "action": "Layer 3: HTTP 200 验证通过，MD5 一致性通过"},
+    {"time": "05:35", "action": "Layer 4: PROJECT_INDEX.md 更新为 verified"},
+    {"time": "05:36", "action": "博客撰写完成：613行，涵盖7个必要章节"},
+    {"time": "05:37", "action": "行数检查通过：613行 ≥ 500行要求"},
+    {"time": "05:38", "action": "chiuhou-blog-source git push 成功"},
+    {"time": "05:39", "action": "hexo clean + generate + deploy 成功：Deploy done: git"},
+    {"time": "05:39", "action": "PROJECT_INDEX.md 更新为 published，全流程完成"}
   ],
   "lastError": null,
   "codeBackup": null
