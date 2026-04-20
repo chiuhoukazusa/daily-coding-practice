@@ -1,7 +1,7 @@
 {
-  "date": "2026-04-19",
-  "projectName": "Ambient Light Probes & Irradiance Caching",
-  "status": "completed",
+  "date": "2026-04-21",
+  "projectName": "Physically Based Bloom & Lens Flare",
+  "status": "in-progress",
   "attempts": 2,
   "progress": {
     "coreDevCompleted": true,
@@ -12,26 +12,20 @@
       "running": true,
       "validation": true
     },
-    "githubUpload": true,
-    "blogPublish": true
+    "githubUpload": false,
+    "blogPublish": false
   },
   "timeline": [
-    {"time": "05:30", "action": "开始项目规划，选题：Ambient Light Probes & Irradiance Caching"},
-    {"time": "05:31", "action": "规划完成，技术方案确定：光探针+球谐SH2辐照度+场景插值渲染"},
-    {"time": "05:33", "action": "代码编写完成（18539字节），开始编译"},
-    {"time": "05:34", "action": "编译失败：4个警告，IrradianceSH/LightProbe成员缺少默认初始化"},
-    {"time": "05:35", "action": "修复：添加默认初始化器 {}，重新编译"},
-    {"time": "05:35", "action": "编译成功：0 errors, 0 warnings"},
-    {"time": "05:35", "action": "运行成功：9探针烘焙+双侧渲染，像素均值152，标准差42，✅"},
-    {"time": "05:35", "action": "PNG转换：ppm2png.py script，195KB"},
-    {"time": "05:36", "action": "Layer1：代码上传GitHub成功"},
-    {"time": "05:36", "action": "Layer2：图片上传blog_img成功"},
-    {"time": "05:36", "action": "Layer3：图片链接HTTP 200验证通过"},
-    {"time": "05:36", "action": "Layer4：PROJECT_INDEX.md更新为verified"},
-    {"time": "05:37", "action": "博客撰写完成（508行），通过质量门控"},
-    {"time": "05:37", "action": "博客提交并push到chiuhou-blog-source"},
-    {"time": "05:38", "action": "hexo generate + deploy成功，Deploy done: git"},
-    {"time": "05:38", "action": "PROJECT_INDEX.md更新为published，全流程完成"}
+    {"time": "05:30", "action": "开始项目规划 - 选题：Physically Based Bloom & Lens Flare"},
+    {"time": "05:30", "action": "防重复检查通过，今日无重复项目"},
+    {"time": "05:30", "action": "PROJECT_INDEX.md 预占完成，git commit"},
+    {"time": "05:31", "action": "代码编写完成 (main.cpp, 17KB)"},
+    {"time": "05:32", "action": "首次编译失败：std::max 3参数调用错误（hexAperture函数）"},
+    {"time": "05:32", "action": "修复：拆分多步 std::max 调用"},
+    {"time": "05:32", "action": "添加 #pragma GCC diagnostic 抑制第三方库警告"},
+    {"time": "05:33", "action": "编译成功：0 errors, 0 warnings"},
+    {"time": "05:33", "action": "运行成功：0.07s，输出 bloom_output.png (105KB)"},
+    {"time": "05:33", "action": "验证通过：均值59.1, 标准差33.1, 坐标系正确，天空暗/光源亮"}
   ],
   "lastError": null,
   "codeBackup": null

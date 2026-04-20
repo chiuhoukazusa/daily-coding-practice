@@ -187,4 +187,4 @@
 | 04-18 | Screen Space Reflections (SSR) | SSR, 屏幕空间反射, G-Buffer, 光线步进, 反射矢量, 实时渲染, 软光栅化 | ssr_output.png | published |
 | 04-19 | Ambient Light Probes & Irradiance Caching | 光探针, 辐照度缓存, 球谐函数, 环境光照, GI近似, 软光栅化 | irradiance_probe_output.png | published |
 | 04-20 | PCSS Percentage Closer Soft Shadows | PCSS软阴影, Shadow Map, 半影, 遮挡搜索, 软光栅化, 实时渲染 | pcss_output.png | published |
-| 04-21 | Physically Based Bloom & Lens Flare | Bloom, 泛光, 镜头光晕, 高斯模糊, 阈值提取, HDR, 后处理, 软光栅化 | bloom_output.png | verified |
+| 04-21 | Physically Based Bloom & Lens Flare | Bloom, 泛光, 镜头光晕, 高斯模糊, 阈值提取, HDR, 后处理, 软光栅化 | bloom_output.png | published |
