@@ -190,3 +190,4 @@
 | 04-21 | Physically Based Bloom & Lens Flare | Bloom, 泛光, 镜头光晕, 高斯模糊, 阈值提取, HDR, 后处理, 软光栅化 | bloom_output.png | published |
 | 04-22 | Marschner Hair Rendering | Marschner模型, R/TT/TRT散射, 头发渲染, 纵向散射M, 方位散射N, 折射率, 软光栅化 | published |
 | 04-23 | L-System Procedural Tree Renderer | L-System, 程序化生成, 分形树, 龟形图形学, 3D软光栅化, 递归语法重写 | lsystem_tree_output.png | published |
+| 04-24 | Bent Normal Ambient Occlusion | 弯曲法线, AO, 半球采样, 环境光照, 遮蔽方向, 软光栅化 | in-progress |
