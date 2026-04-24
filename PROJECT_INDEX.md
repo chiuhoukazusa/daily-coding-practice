@@ -191,4 +191,4 @@
 | 04-22 | Marschner Hair Rendering | Marschner模型, R/TT/TRT散射, 头发渲染, 纵向散射M, 方位散射N, 折射率, 软光栅化 | published |
 | 04-23 | L-System Procedural Tree Renderer | L-System, 程序化生成, 分形树, 龟形图形学, 3D软光栅化, 递归语法重写 | lsystem_tree_output.png | published |
 | 04-24 | Bent Normal Ambient Occlusion | 弯曲法线, AO, 半球采样, 环境光照, 遮蔽方向, 软光栅化 | bent_normal_ao_output.png | published |
-| 04-25 | SDF Font Rendering | SDF字体渲染, Signed Distance Field, 位图字体, 矢量文字, 描边/阴影/发光效果, 软光栅化 | sdf_font_output.png | in-progress |
+| 04-25 | SDF Font Rendering | SDF字体渲染, Signed Distance Field, 位图字体, 矢量文字, 描边/阴影/发光效果, 软光栅化 | sdf_font_output.png | dev-done |
