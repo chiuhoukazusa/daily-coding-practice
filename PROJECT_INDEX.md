@@ -194,4 +194,4 @@
 | 04-25 | SDF Font Rendering | SDF字体渲染, Signed Distance Field, 位图字体, 矢量文字, 描边/阴影/发光效果, 软光栅化 | sdf_font_output.png | published |
 | 04-26 | Screen Space Refraction | SSR折射, G-Buffer, 折射偏移, Fresnel混合, 色散, 实时渲染, 软光栅化 | ssr_refraction_output.png | published |
 | 04-27 | Order-Independent Transparency (OIT) | 顺序无关透明度, Weighted Blended OIT, 透明渲染, 混合, 软光栅化 | oit_output.png | published |
-| 04-28 | Cel Shading & Outline Renderer | NPR卡通渲染, 色阶量化, 轮廓描边, 法线膨胀, Phong分级, 软光栅化 | cel_shading_output.png | in-progress |
+| 04-28 | Cel Shading & Outline Renderer | NPR卡通渲染, 色阶量化, 轮廓描边, 法线膨胀, Phong分级, 软光栅化 | cel_shading_output.png | verified |
