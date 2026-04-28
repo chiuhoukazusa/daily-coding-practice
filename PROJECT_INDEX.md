@@ -195,3 +195,4 @@
 | 04-26 | Screen Space Refraction | SSR折射, G-Buffer, 折射偏移, Fresnel混合, 色散, 实时渲染, 软光栅化 | ssr_refraction_output.png | published |
 | 04-27 | Order-Independent Transparency (OIT) | 顺序无关透明度, Weighted Blended OIT, 透明渲染, 混合, 软光栅化 | oit_output.png | published |
 | 04-28 | Cel Shading & Outline Renderer | NPR卡通渲染, 色阶量化, 轮廓描边, 法线膨胀, Phong分级, 软光栅化 | cel_shading_output.png | published |
+| 04-29 | Subsurface Scattering (SSS) Renderer | 次表面散射, SSS, 皮肤渲染, 漫反射剖面, 双向散射BSSRDF, 多层散射, 深度模拟, 软光栅化 | sss_output.png | in-progress |
