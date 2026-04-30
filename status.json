@@ -1,7 +1,7 @@
 {
   "date": "2026-05-01",
   "projectName": "ReSTIR Direct Illumination Renderer",
-  "status": "in-progress",
+  "status": "completed",
   "attempts": 3,
   "progress": {
     "coreDevCompleted": true,
@@ -12,24 +12,30 @@
       "running": true,
       "validation": true
     },
-    "githubUpload": false,
-    "blogPublish": false
+    "githubUpload": true,
+    "blogPublish": true
   },
   "timeline": [
     {"time": "05:30", "action": "开始执行每日编程实践"},
     {"time": "05:30", "action": "防重复检查通过，今日无项目"},
     {"time": "05:30", "action": "选题：ReSTIR Direct Illumination Renderer（Reservoir采样, 空间重用, 多光源采样）"},
     {"time": "05:31", "action": "预占 PROJECT_INDEX.md 条目，git commit 成功"},
-    {"time": "05:31", "action": "开始编写代码（约570行C++）"},
+    {"time": "05:31", "action": "开始编写代码（约570行C++，含完整ReSTIR实现）"},
     {"time": "05:32", "action": "编译失败：stb未使用函数警告，p_hat参数未使用警告"},
     {"time": "05:32", "action": "修复：移除stb声明，将scene参数标注为/*scene*/"},
     {"time": "05:32", "action": "编译通过（0 errors, 0 warnings）"},
-    {"time": "05:32", "action": "运行成功：640x480，9个光源，M=32，5轮空间重用"},
-    {"time": "05:33", "action": "输出验证：图像偏暗（mean=11.6），增加光源亮度"},
-    {"time": "05:33", "action": "增加光源亮度7x，重新编译运行"},
-    {"time": "05:33", "action": "仍偏暗（mean=27），增加采样数量（M=64, passes=5, spatial=8）"},
-    {"time": "05:34", "action": "最终运行成功（17.3秒）：mean=25.9, std=43.0, 337KB PNG"},
-    {"time": "05:34", "action": "输出验证通过：✅ 文件>10KB ✅ 均值25.9 ✅ 标准差43.0"}
+    {"time": "05:32", "action": "运行成功：640x480，9个光源，M=32，3轮空间重用，8.8秒"},
+    {"time": "05:33", "action": "输出验证：图像偏暗（mean=11.6），增加光源亮度7x"},
+    {"time": "05:33", "action": "第2次编译通过，运行mean=27，增加采样数量（M=64, passes=5, spatial=8）"},
+    {"time": "05:34", "action": "第3次编译通过，最终运行成功（17.3秒）：mean=25.9, std=43.0"},
+    {"time": "05:34", "action": "PIL转换PPM→PNG，输出验证通过：337KB ✅ 均值25.9 ✅ 标准差43.0 ✅"},
+    {"time": "05:34", "action": "Layer 1: 代码+README上传GitHub，commit: 4f92aa9"},
+    {"time": "05:35", "action": "Layer 2: 图片上传blog_img图床，commit: 9483ed3"},
+    {"time": "05:35", "action": "Layer 3: 图片链接验证 HTTP 200，MD5一致"},
+    {"time": "05:35", "action": "Layer 4: PROJECT_INDEX.md 更新为 verified"},
+    {"time": "05:36", "action": "撰写博客文章 535 行（含7个部分，≥500行要求通过）"},
+    {"time": "05:38", "action": "hexo generate && hexo deploy 成功（Deploy done: git）"},
+    {"time": "05:40", "action": "PROJECT_INDEX.md 更新为 published，全部流程完成！"}
   ],
   "lastError": null,
   "codeBackup": "/root/.openclaw/workspace/daily-coding-practice/2026/05/05-01-restir-direct-illumination/"
