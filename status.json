@@ -1,8 +1,8 @@
 {
-  "date": "2026-04-26",
-  "projectName": "Screen Space Refraction",
+  "date": "2026-05-01",
+  "projectName": "ReSTIR Direct Illumination Renderer",
   "status": "in-progress",
-  "attempts": 2,
+  "attempts": 3,
   "progress": {
     "coreDevCompleted": true,
     "coreDevStage": {
@@ -16,17 +16,21 @@
     "blogPublish": false
   },
   "timeline": [
-    {"time": "05:30", "action": "开始每日编程实践 - 防重复检查通过"},
-    {"time": "05:30", "action": "选题：Screen Space Refraction（SSR折射 + 色散 + Fresnel混合）"},
-    {"time": "05:30", "action": "PROJECT_INDEX.md 预占条目，git commit 完成"},
-    {"time": "05:31", "action": "编写 main.cpp（660行）：G-Buffer构建 + 背景渲染 + SSR折射后处理"},
-    {"time": "05:32", "action": "编译失败：2 warnings（未使用参数 W/H）"},
-    {"time": "05:32", "action": "修复：将 W/H 改为 /*W*/ /*H*/ 注释掉，重新编译"},
-    {"time": "05:32", "action": "✅ 编译成功 0 errors 0 warnings"},
-    {"time": "05:32", "action": "✅ 运行成功：4-pass渲染，glass pixels=12732（4.1%），生成 ssr_refraction_output.png"},
-    {"time": "05:33", "action": "像素验证：mean=65.7, std=22.4 ✅，但场景偏暗，调整灯光强度 6→12，环境光 0.06→0.12"},
-    {"time": "05:33", "action": "✅ 重新编译+运行成功，最终验证：mean=90.3, std=30.6, size=900KB ✅ ALL PASSED"}
+    {"time": "05:30", "action": "开始执行每日编程实践"},
+    {"time": "05:30", "action": "防重复检查通过，今日无项目"},
+    {"time": "05:30", "action": "选题：ReSTIR Direct Illumination Renderer（Reservoir采样, 空间重用, 多光源采样）"},
+    {"time": "05:31", "action": "预占 PROJECT_INDEX.md 条目，git commit 成功"},
+    {"time": "05:31", "action": "开始编写代码（约570行C++）"},
+    {"time": "05:32", "action": "编译失败：stb未使用函数警告，p_hat参数未使用警告"},
+    {"time": "05:32", "action": "修复：移除stb声明，将scene参数标注为/*scene*/"},
+    {"time": "05:32", "action": "编译通过（0 errors, 0 warnings）"},
+    {"time": "05:32", "action": "运行成功：640x480，9个光源，M=32，5轮空间重用"},
+    {"time": "05:33", "action": "输出验证：图像偏暗（mean=11.6），增加光源亮度"},
+    {"time": "05:33", "action": "增加光源亮度7x，重新编译运行"},
+    {"time": "05:33", "action": "仍偏暗（mean=27），增加采样数量（M=64, passes=5, spatial=8）"},
+    {"time": "05:34", "action": "最终运行成功（17.3秒）：mean=25.9, std=43.0, 337KB PNG"},
+    {"time": "05:34", "action": "输出验证通过：✅ 文件>10KB ✅ 均值25.9 ✅ 标准差43.0"}
   ],
   "lastError": null,
-  "codeBackup": "/root/.openclaw/workspace/daily-coding-practice/projects/2026-04-26-screen-space-refraction/"
+  "codeBackup": "/root/.openclaw/workspace/daily-coding-practice/2026/05/05-01-restir-direct-illumination/"
 }
