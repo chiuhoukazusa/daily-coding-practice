@@ -199,4 +199,4 @@
 | 04-30 | Shadow Volume Renderer | Shadow Volume, Stencil Buffer, Z-Fail Carmack, 轮廓边检测, 硬阴影, 软光栅化 | shadow_volume_output.png | published |
 | 05-01 | ReSTIR Direct Illumination Renderer | ReSTIR, Reservoir采样, 时序重用, 空间重用, 多光源采样, 软光栅化 | restir_output.png | published |
 | 05-02 | Radiance Cascade Global Illumination | 辐射级联, 全局光照, GI, 多级探针, 间接光照, 软光栅化, Lumen思路 | published |
-| 05-03 | Precomputed Radiance Transfer (PRT) | 球谐函数, 辐射传输, 预计算光照, 低频环境光, SH投影, SH旋转, 软光栅化 | prt_output.png | dev-done |
+| 05-03 | Precomputed Radiance Transfer (PRT) | 球谐函数, 辐射传输, 预计算光照, 低频环境光, SH投影, SH旋转, 软光栅化 | prt_output.png | verified |
