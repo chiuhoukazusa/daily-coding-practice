@@ -200,3 +200,4 @@
 | 05-01 | ReSTIR Direct Illumination Renderer | ReSTIR, Reservoir采样, 时序重用, 空间重用, 多光源采样, 软光栅化 | restir_output.png | published |
 | 05-02 | Radiance Cascade Global Illumination | 辐射级联, 全局光照, GI, 多级探针, 间接光照, 软光栅化, Lumen思路 | published |
 | 05-03 | Precomputed Radiance Transfer (PRT) | 球谐函数, 辐射传输, 预计算光照, 低频环境光, SH投影, SH旋转, 软光栅化 | prt_output.png | published |
+| 05-04 | Light Field Renderer | 光场渲染, 双平面参数化, Lumigraph, 4D光场, 视角插值, 软光栅化 | light_field_output.png | in-progress |
