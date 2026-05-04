@@ -201,4 +201,4 @@
 | 05-02 | Radiance Cascade Global Illumination | 辐射级联, 全局光照, GI, 多级探针, 间接光照, 软光栅化, Lumen思路 | published |
 | 05-03 | Precomputed Radiance Transfer (PRT) | 球谐函数, 辐射传输, 预计算光照, 低频环境光, SH投影, SH旋转, 软光栅化 | prt_output.png | published |
 | 05-04 | Light Field Renderer | 光场渲染, 双平面参数化, Lumigraph, 4D光场, 视角插值, 软光栅化 | light_field_output.png | published |
-| 05-05 | Path Guiding Renderer | 路径引导, 空间缓存, 重要性采样, SD-Tree, 方向分布学习, 蒙特卡洛, 自适应采样, 软光栅化 | path_guiding_output.png | verified |
+| 05-05 | Path Guiding Renderer | 路径引导, 空间缓存, 重要性采样, SD-Tree, 方向分布学习, 蒙特卡洛, 自适应采样, 软光栅化 | path_guiding_output.png | published |
