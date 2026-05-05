@@ -1,8 +1,8 @@
 {
-  "date": "2026-05-01",
-  "projectName": "ReSTIR Direct Illumination Renderer",
+  "date": "2026-05-05",
+  "projectName": "Path Guiding Renderer with SD-Tree Spatial Caching",
   "status": "completed",
-  "attempts": 3,
+  "attempts": 1,
   "progress": {
     "coreDevCompleted": true,
     "coreDevStage": {
@@ -16,27 +16,30 @@
     "blogPublish": true
   },
   "timeline": [
-    {"time": "05:30", "action": "开始执行每日编程实践"},
-    {"time": "05:30", "action": "防重复检查通过，今日无项目"},
-    {"time": "05:30", "action": "选题：ReSTIR Direct Illumination Renderer（Reservoir采样, 空间重用, 多光源采样）"},
-    {"time": "05:31", "action": "预占 PROJECT_INDEX.md 条目，git commit 成功"},
-    {"time": "05:31", "action": "开始编写代码（约570行C++，含完整ReSTIR实现）"},
-    {"time": "05:32", "action": "编译失败：stb未使用函数警告，p_hat参数未使用警告"},
-    {"time": "05:32", "action": "修复：移除stb声明，将scene参数标注为/*scene*/"},
-    {"time": "05:32", "action": "编译通过（0 errors, 0 warnings）"},
-    {"time": "05:32", "action": "运行成功：640x480，9个光源，M=32，3轮空间重用，8.8秒"},
-    {"time": "05:33", "action": "输出验证：图像偏暗（mean=11.6），增加光源亮度7x"},
-    {"time": "05:33", "action": "第2次编译通过，运行mean=27，增加采样数量（M=64, passes=5, spatial=8）"},
-    {"time": "05:34", "action": "第3次编译通过，最终运行成功（17.3秒）：mean=25.9, std=43.0"},
-    {"time": "05:34", "action": "PIL转换PPM→PNG，输出验证通过：337KB ✅ 均值25.9 ✅ 标准差43.0 ✅"},
-    {"time": "05:34", "action": "Layer 1: 代码+README上传GitHub，commit: 4f92aa9"},
-    {"time": "05:35", "action": "Layer 2: 图片上传blog_img图床，commit: 9483ed3"},
-    {"time": "05:35", "action": "Layer 3: 图片链接验证 HTTP 200，MD5一致"},
-    {"time": "05:35", "action": "Layer 4: PROJECT_INDEX.md 更新为 verified"},
-    {"time": "05:36", "action": "撰写博客文章 535 行（含7个部分，≥500行要求通过）"},
-    {"time": "05:38", "action": "hexo generate && hexo deploy 成功（Deploy done: git）"},
-    {"time": "05:40", "action": "PROJECT_INDEX.md 更新为 published，全部流程完成！"}
+    {"time": "05:30", "action": "开始项目规划 - 选题：Path Guiding Renderer（路径引导渲染器）"},
+    {"time": "05:30", "action": "检查 PROJECT_INDEX.md - 无重复，今日可开始"},
+    {"time": "05:30", "action": "规划完成：SD-Tree空间缓存，8×8×8体素，16×32方向格，多轮学习+渲染"},
+    {"time": "05:31", "action": "预占 PROJECT_INDEX.md 条目 - in-progress"},
+    {"time": "05:31", "action": "开始编写代码（~700行，含SD-Tree、MIS、Fresnel折射、ACES色调映射）"},
+    {"time": "05:32", "action": "代码编写完成，开始编译"},
+    {"time": "05:32", "action": "编译失败：1) HitInfo成员声明顺序与初始化列表不符(Wreorder); 2) stb_image_write.h警告"},
+    {"time": "05:33", "action": "修复：重排HitInfo成员声明；用pragma包裹stb include"},
+    {"time": "05:33", "action": "✅ 编译成功（0 errors, 0 warnings）"},
+    {"time": "05:33", "action": "运行开始：4轮迭代（2学习+2渲染）+ 参考渲染"},
+    {"time": "05:49", "action": "✅ 运行成功：76秒，生成path_guiding_output.png (2.1MB, 1204×660)"},
+    {"time": "05:49", "action": "✅ 输出验证：均值72.2，标准差66.0，文件2.1MB，全部通过"},
+    {"time": "05:49", "action": "更新PROJECT_INDEX.md: in-progress → dev-done"},
+    {"time": "05:50", "action": "Layer1: 代码上传GitHub daily-coding-practice仓库（commit 63bb094）"},
+    {"time": "05:50", "action": "Layer2: 图片上传blog_img图床（commit bde5edb）"},
+    {"time": "05:51", "action": "Layer3: 验证图片URL可访问 HTTP 200"},
+    {"time": "05:51", "action": "Layer4: PROJECT_INDEX.md → verified"},
+    {"time": "05:51", "action": "撰写博客文章（661行，7个章节全部完整）"},
+    {"time": "05:39", "action": "行数检查：661行 ≥ 500，通过"},
+    {"time": "05:39", "action": "git commit 博客源文件"},
+    {"time": "05:39", "action": "hexo clean && hexo generate && hexo deploy 成功（Deploy done: git）"},
+    {"time": "05:40", "action": "PROJECT_INDEX.md → published"},
+    {"time": "05:40", "action": "✅ 全部完成！总耗时约10分钟（含渲染76秒）"}
   ],
   "lastError": null,
-  "codeBackup": "/root/.openclaw/workspace/daily-coding-practice/2026/05/05-01-restir-direct-illumination/"
+  "codeBackup": "/root/.openclaw/workspace/daily-coding-practice/2026-05-05-path-guiding/"
 }

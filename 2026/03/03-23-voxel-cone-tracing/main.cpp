@@ -510,11 +510,13 @@ Vec3 directLight(const Vec3& point, const Vec3& normal, const Material& mat,
         return Vec3(0);
     }
     
-    // Light attenuation
-    float lightNdotL = std::max(0.0f, -lightDir.y);  // light faces down
-    float attenuation = lightNdotL / (distSq + 0.01f);
+    // Light attenuation: area light (facing down), use solid-angle style attenuation
+    // lightNdotL: cosine of angle between light's emit direction (down) and direction to surface
+    // For an area light facing downward, we want to illuminate all surfaces below it,
+    // not just horizontal ones. Use 1/distance^2 falloff only.
+    float attenuation = 1.0f / (distSq + 0.01f);
     
-    Vec3 radiance = scene.lightColor * attenuation * 3.0f;
+    Vec3 radiance = scene.lightColor * attenuation * 20.0f;
     
     // Diffuse BRDF
     Vec3 diffuse = mat.albedo / float(M_PI) * (1.0f - mat.metallic);
@@ -637,7 +639,7 @@ Vec3 indirectDiffuse(const VoxelGrid& grid, const Vec3& point, const Vec3& norma
     if (totalWeight > 0) indirect = indirect / totalWeight;
     
     // Modulate by albedo
-    return indirect * albedo / float(M_PI);
+    return indirect * albedo * 2.0f;
 }
 
 // Specular indirect lighting via single narrow cone
@@ -783,7 +785,7 @@ int main() {
                 if (hit.hit) {
                     if (hit.mat.isLight) {
                         // Light source - use emission
-                        directColor += hit.mat.emission * 0.05f;
+                        directColor += hit.mat.emission * 0.3f;
                     } else {
                         // Direct lighting
                         Vec3 direct = directLight(hit.point, hit.normal, hit.mat, scene, rng);

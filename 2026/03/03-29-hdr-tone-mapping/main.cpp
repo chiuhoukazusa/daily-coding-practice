@@ -464,8 +464,8 @@ int main() {
     }
 
     std::cout << "\n[3/4] Building comparison grid...\n";
-    // 拼接比较图（3列 × 3行）
-    int cols = 3;
+    // 拼接比较图（4列 × 2行，7个变体最后一格留空但视觉更均衡）
+    int cols = 4;
     int rows = ((int)panels.size() + cols - 1) / cols;
     int labelH = 4;  // 标签空间（像素分隔线）
     int totalW = W * cols;
