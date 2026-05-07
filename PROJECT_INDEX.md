@@ -204,4 +204,4 @@
 | 05-05 | Path Guiding Renderer | 路径引导, 空间缓存, 重要性采样, SD-Tree, 方向分布学习, 蒙特卡洛, 自适应采样, 软光栅化 | path_guiding_output.png | published |
 | 05-06 | IBL Split-Sum PBR Renderer | IBL图像光照, 预滤波环境贴图, BRDF LUT, Split-Sum近似, GGX重要性采样, Cook-Torrance, 金属度粗糙度, 球阵列, 软光栅化 | ibl_output.png | published |
 | 05-07 | Photon Mapping Renderer | 光子映射, 全局光照, kd-tree, 光子发射, 辐射估计, caustics, 软光栅化 | published |
-| 05-08 | Cascaded Shadow Maps (CSM) Renderer | CSM级联阴影, Shadow Map, 视锥分割, PCF软阴影, 透视失真, 稳定化, 软光栅化 | csm_output.png | dev-done |
+| 05-08 | Cascaded Shadow Maps (CSM) Renderer | CSM级联阴影, Shadow Map, 视锥分割, PCF软阴影, 透视失真, 稳定化, 软光栅化 | csm_output.png | verified |
