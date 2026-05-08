@@ -205,3 +205,4 @@
 | 05-06 | IBL Split-Sum PBR Renderer | IBL图像光照, 预滤波环境贴图, BRDF LUT, Split-Sum近似, GGX重要性采样, Cook-Torrance, 金属度粗糙度, 球阵列, 软光栅化 | ibl_output.png | published |
 | 05-07 | Photon Mapping Renderer | 光子映射, 全局光照, kd-tree, 光子发射, 辐射估计, caustics, 软光栅化 | published |
 | 05-08 | Cascaded Shadow Maps (CSM) Renderer | CSM级联阴影, Shadow Map, 视锥分割, PCF软阴影, 透视失真, 稳定化, 软光栅化 | csm_output.png | published |
+| 05-09 | OBJ Mesh PBR Renderer | OBJ文件解析, MTL材质, PBR渲染, 网格加载, BVH加速, 软光栅化 | obj_pbr_output.png | in-progress |
