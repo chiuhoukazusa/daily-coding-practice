@@ -207,4 +207,4 @@
 | 05-08 | Cascaded Shadow Maps (CSM) Renderer | CSM级联阴影, Shadow Map, 视锥分割, PCF软阴影, 透视失真, 稳定化, 软光栅化 | csm_output.png | published |
 | 05-09 | OBJ Mesh PBR Renderer | OBJ文件解析, MTL材质, PBR渲染, 网格加载, BVH加速, 软光栅化 | obj_pbr_output.png | published |
 | 05-10 | Toon Water Shader | NPR卡通水面, 深度泡沫, Voronoi噪声, Fresnel, 折射扭曲, 程序化波纹, 软光栅化 | toon_water_output.png | published |
-| 05-11 | ACES Filmic Tone Mapping & HDR Rendering | HDR高动态范围渲染, ACES Filmic, Reinhard, Uncharted2, 曝光控制, 色调映射曲线, 多光源, 软光栅化 | aces_hdr_output.png | dev-done |
+| 05-11 | ACES Filmic Tone Mapping & HDR Rendering | HDR高动态范围渲染, ACES Filmic, Reinhard, Uncharted2, 曝光控制, 色调映射曲线, 多光源, 软光栅化 | aces_hdr_output.png | verified |
