@@ -1,7 +1,7 @@
 {
-  "date": "2026-05-05",
-  "projectName": "Path Guiding Renderer with SD-Tree Spatial Caching",
-  "status": "completed",
+  "date": "2026-05-12",
+  "projectName": "Deferred Shading Multi-Light Renderer",
+  "status": "in-progress",
   "attempts": 1,
   "progress": {
     "coreDevCompleted": true,
@@ -12,34 +12,19 @@
       "running": true,
       "validation": true
     },
-    "githubUpload": true,
-    "blogPublish": true
+    "githubUpload": false,
+    "blogPublish": false
   },
   "timeline": [
-    {"time": "05:30", "action": "开始项目规划 - 选题：Path Guiding Renderer（路径引导渲染器）"},
-    {"time": "05:30", "action": "检查 PROJECT_INDEX.md - 无重复，今日可开始"},
-    {"time": "05:30", "action": "规划完成：SD-Tree空间缓存，8×8×8体素，16×32方向格，多轮学习+渲染"},
-    {"time": "05:31", "action": "预占 PROJECT_INDEX.md 条目 - in-progress"},
-    {"time": "05:31", "action": "开始编写代码（~700行，含SD-Tree、MIS、Fresnel折射、ACES色调映射）"},
-    {"time": "05:32", "action": "代码编写完成，开始编译"},
-    {"time": "05:32", "action": "编译失败：1) HitInfo成员声明顺序与初始化列表不符(Wreorder); 2) stb_image_write.h警告"},
-    {"time": "05:33", "action": "修复：重排HitInfo成员声明；用pragma包裹stb include"},
-    {"time": "05:33", "action": "✅ 编译成功（0 errors, 0 warnings）"},
-    {"time": "05:33", "action": "运行开始：4轮迭代（2学习+2渲染）+ 参考渲染"},
-    {"time": "05:49", "action": "✅ 运行成功：76秒，生成path_guiding_output.png (2.1MB, 1204×660)"},
-    {"time": "05:49", "action": "✅ 输出验证：均值72.2，标准差66.0，文件2.1MB，全部通过"},
-    {"time": "05:49", "action": "更新PROJECT_INDEX.md: in-progress → dev-done"},
-    {"time": "05:50", "action": "Layer1: 代码上传GitHub daily-coding-practice仓库（commit 63bb094）"},
-    {"time": "05:50", "action": "Layer2: 图片上传blog_img图床（commit bde5edb）"},
-    {"time": "05:51", "action": "Layer3: 验证图片URL可访问 HTTP 200"},
-    {"time": "05:51", "action": "Layer4: PROJECT_INDEX.md → verified"},
-    {"time": "05:51", "action": "撰写博客文章（661行，7个章节全部完整）"},
-    {"time": "05:39", "action": "行数检查：661行 ≥ 500，通过"},
-    {"time": "05:39", "action": "git commit 博客源文件"},
-    {"time": "05:39", "action": "hexo clean && hexo generate && hexo deploy 成功（Deploy done: git）"},
-    {"time": "05:40", "action": "PROJECT_INDEX.md → published"},
-    {"time": "05:40", "action": "✅ 全部完成！总耗时约10分钟（含渲染76秒）"}
+    {"time": "05:30", "action": "开始项目规划 - Deferred Shading Multi-Light Renderer"},
+    {"time": "05:30", "action": "规划完成：延迟渲染管线，G-Buffer (albedo/normal/position)，16个彩色点光源，Phong着色"},
+    {"time": "05:31", "action": "代码编写完成（main.cpp, ~550行），开始编译"},
+    {"time": "05:32", "action": "编译失败：1个error（Vec3/Vec3除法运算符未定义），2个warning（未使用变量）"},
+    {"time": "05:32", "action": "修复：改用逐分量Reinhard色调映射，删除未使用变量hw/hh"},
+    {"time": "05:32", "action": "编译通过 ✅ 0 errors 0 warnings"},
+    {"time": "05:32", "action": "运行成功 ✅ G-Buffer像素24.8%，17个光源，输出deferred_shading_output.png"},
+    {"time": "05:33", "action": "PPM转PNG完成，验证通过：均值40.6，标准差54.9，大小77.9KB ✅"}
   ],
   "lastError": null,
-  "codeBackup": "/root/.openclaw/workspace/daily-coding-practice/2026-05-05-path-guiding/"
+  "codeBackup": null
 }
