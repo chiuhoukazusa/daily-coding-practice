@@ -208,4 +208,4 @@
 | 05-09 | OBJ Mesh PBR Renderer | OBJ文件解析, MTL材质, PBR渲染, 网格加载, BVH加速, 软光栅化 | obj_pbr_output.png | published |
 | 05-10 | Toon Water Shader | NPR卡通水面, 深度泡沫, Voronoi噪声, Fresnel, 折射扭曲, 程序化波纹, 软光栅化 | toon_water_output.png | published |
 | 05-11 | ACES Filmic Tone Mapping & HDR Rendering | HDR高动态范围渲染, ACES Filmic, Reinhard, Uncharted2, 曝光控制, 色调映射曲线, 多光源, 软光栅化 | aces_hdr_output.png | published |
-| 05-12 | Deferred Shading Multi-Light Renderer | 延迟渲染, G-Buffer, 多光源, MRT, 法线贴图, 位置重建, 软光栅化 | deferred_shading_output.png | dev-done |
+| 05-12 | Deferred Shading Multi-Light Renderer | 延迟渲染, G-Buffer, 多光源, MRT, 法线贴图, 位置重建, 软光栅化 | deferred_shading_output.png | verified |
