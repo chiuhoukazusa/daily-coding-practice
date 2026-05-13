@@ -1,10 +1,10 @@
 {
   "date": "2026-05-14",
   "projectName": "VXGI Voxel Global Illumination Renderer",
-  "status": "in-progress",
+  "status": "completed",
   "attempts": 3,
   "progress": {
-    "coreDevCompleted": false,
+    "coreDevCompleted": true,
     "coreDevStage": {
       "planning": true,
       "coding": true,
@@ -12,24 +12,31 @@
       "running": true,
       "validation": true
     },
-    "githubUpload": false,
-    "blogPublish": false
+    "githubUpload": true,
+    "blogPublish": true
   },
   "timeline": [
     {"time": "05:30", "action": "开始项目规划 - VXGI体素全局光照渲染器"},
     {"time": "05:31", "action": "防重复检查通过，预占 PROJECT_INDEX.md 条目"},
     {"time": "05:31", "action": "规划完成，开始编写代码（25677字节）"},
-    {"time": "05:32", "action": "编译失败：3个警告（unused参数/变量）+1个错误（-ray.d需要一元负号）"},
+    {"time": "05:32", "action": "编译失败：3个警告+1个错误（-ray.d一元负号）"},
     {"time": "05:33", "action": "修复6处问题，编译成功（0 errors 0 warnings）"},
     {"time": "05:33", "action": "运行成功，但图片验证失败：全图均值16，标准差0（单色图）"},
     {"time": "05:34", "action": "调试：PNG写入正确，framebuffer值全是0.0068（对应byte=16）"},
     {"time": "05:38", "action": "清洁重写main.cpp，加入详细debug输出"},
-    {"time": "05:39", "action": "编译成功（3个unused变量警告，修复后0 warnings）"},
-    {"time": "05:40", "action": "运行：fb[0,0]=(0,0,0)！AO调试显示cones所有遮蔽为0"},
-    {"time": "05:43", "action": "单像素测试发现根因：前墙挡住整个视野，法向朝相机侧，光照返回0"},
-    {"time": "05:47", "action": "修复：删除前墙（Cornell Box标准做法），重新编译运行"},
-    {"time": "05:48", "action": "运行成功：fb[0,0]=(0.61,0.12,0.08)红墙，fb[400,300]=(0.26,0.26,0.22)背墙"},
-    {"time": "05:48", "action": "图片验证通过：均值104.2，标准差63.4，文件大小185KB"}
+    {"time": "05:39", "action": "编译成功（修复unused变量警告后0 warnings）"},
+    {"time": "05:40", "action": "运行：fb[0,0]=(0,0,0)！单像素测试发现前墙挡住整个视野"},
+    {"time": "05:43", "action": "根因定位：前墙法向朝-Z，光照返回0，整个场景被前墙遮挡"},
+    {"time": "05:47", "action": "修复：删除前墙（Cornell Box标准无前墙），重新编译"},
+    {"time": "05:48", "action": "✅ 运行成功，图片验证通过：均值104.2，标准差63.4，185KB"},
+    {"time": "05:49", "action": "Layer1 通过：代码+图片上传GitHub daily-coding-practice"},
+    {"time": "05:49", "action": "Layer2 通过：图片上传GitHub blog_img"},
+    {"time": "05:49", "action": "Layer3 通过：GitHub CDN HTTP 200 验证"},
+    {"time": "05:50", "action": "Layer4 通过：PROJECT_INDEX.md 更新为 verified"},
+    {"time": "05:50", "action": "博客撰写完成：640行，包含完整踩坑记录、原理推导、代码解析"},
+    {"time": "05:53", "action": "博客质量检查通过（640行 ≥ 500行要求）"},
+    {"time": "05:54", "action": "✅ hexo deploy 成功：Deploy done: git"},
+    {"time": "05:54", "action": "✅ 全部完成！PROJECT_INDEX 更新为 published"}
   ],
   "lastError": null,
   "codeBackup": "/root/.openclaw/workspace/daily-coding-practice/2026-05-14-vxgi/"
