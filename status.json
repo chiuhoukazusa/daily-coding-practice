@@ -1,10 +1,10 @@
 {
-  "date": "2026-05-12",
-  "projectName": "Deferred Shading Multi-Light Renderer",
+  "date": "2026-05-14",
+  "projectName": "VXGI Voxel Global Illumination Renderer",
   "status": "in-progress",
-  "attempts": 1,
+  "attempts": 3,
   "progress": {
-    "coreDevCompleted": true,
+    "coreDevCompleted": false,
     "coreDevStage": {
       "planning": true,
       "coding": true,
@@ -16,15 +16,21 @@
     "blogPublish": false
   },
   "timeline": [
-    {"time": "05:30", "action": "开始项目规划 - Deferred Shading Multi-Light Renderer"},
-    {"time": "05:30", "action": "规划完成：延迟渲染管线，G-Buffer (albedo/normal/position)，16个彩色点光源，Phong着色"},
-    {"time": "05:31", "action": "代码编写完成（main.cpp, ~550行），开始编译"},
-    {"time": "05:32", "action": "编译失败：1个error（Vec3/Vec3除法运算符未定义），2个warning（未使用变量）"},
-    {"time": "05:32", "action": "修复：改用逐分量Reinhard色调映射，删除未使用变量hw/hh"},
-    {"time": "05:32", "action": "编译通过 ✅ 0 errors 0 warnings"},
-    {"time": "05:32", "action": "运行成功 ✅ G-Buffer像素24.8%，17个光源，输出deferred_shading_output.png"},
-    {"time": "05:33", "action": "PPM转PNG完成，验证通过：均值40.6，标准差54.9，大小77.9KB ✅"}
+    {"time": "05:30", "action": "开始项目规划 - VXGI体素全局光照渲染器"},
+    {"time": "05:31", "action": "防重复检查通过，预占 PROJECT_INDEX.md 条目"},
+    {"time": "05:31", "action": "规划完成，开始编写代码（25677字节）"},
+    {"time": "05:32", "action": "编译失败：3个警告（unused参数/变量）+1个错误（-ray.d需要一元负号）"},
+    {"time": "05:33", "action": "修复6处问题，编译成功（0 errors 0 warnings）"},
+    {"time": "05:33", "action": "运行成功，但图片验证失败：全图均值16，标准差0（单色图）"},
+    {"time": "05:34", "action": "调试：PNG写入正确，framebuffer值全是0.0068（对应byte=16）"},
+    {"time": "05:38", "action": "清洁重写main.cpp，加入详细debug输出"},
+    {"time": "05:39", "action": "编译成功（3个unused变量警告，修复后0 warnings）"},
+    {"time": "05:40", "action": "运行：fb[0,0]=(0,0,0)！AO调试显示cones所有遮蔽为0"},
+    {"time": "05:43", "action": "单像素测试发现根因：前墙挡住整个视野，法向朝相机侧，光照返回0"},
+    {"time": "05:47", "action": "修复：删除前墙（Cornell Box标准做法），重新编译运行"},
+    {"time": "05:48", "action": "运行成功：fb[0,0]=(0.61,0.12,0.08)红墙，fb[400,300]=(0.26,0.26,0.22)背墙"},
+    {"time": "05:48", "action": "图片验证通过：均值104.2，标准差63.4，文件大小185KB"}
   ],
   "lastError": null,
-  "codeBackup": null
+  "codeBackup": "/root/.openclaw/workspace/daily-coding-practice/2026-05-14-vxgi/"
 }
