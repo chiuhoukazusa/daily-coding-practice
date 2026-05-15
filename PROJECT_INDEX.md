@@ -212,4 +212,4 @@
 | 05-13 | FXAA Anti-Aliasing Post-Process Renderer | FXAA, 抗锯齿, 后处理, 边缘检测, 亮度梯度, 对比度分析, 软光栅化 | fxaa_output.png | published |
 | 05-14 | VXGI Voxel Global Illumination Renderer | 体素全局光照, VXGI, 锥追踪, 间接光照, 漫反射GI, 镜面GI, 体素化, SVO, 软光栅化 | published |
 | 05-15 | FFT Ocean Surface Renderer | FFT海洋表面, Phillips频谱, Gerstner波, 海洋着色, 法线生成, 软光栅化 | fft_ocean_output.png | published |
-| 05-16 | Volumetric Cloud Ray Marching Renderer | 体积云, Ray Marching, 程序化噪声, 大气散射, 光线步进, 软光栅化 | in-progress |
+| 05-16 | Volumetric Cloud Ray Marching Renderer | 体积云, Ray Marching, 程序化噪声, 大气散射, 光线步进, 软光栅化 | dev-done |
