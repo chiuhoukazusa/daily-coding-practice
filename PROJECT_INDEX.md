@@ -215,4 +215,4 @@
 | 05-16 | Volumetric Cloud Ray Marching Renderer | 体积云, Ray Marching, 程序化噪声, 大气散射, 光线步进, 软光栅化 | published |
 | 05-17 | Parallax Occlusion Mapping Renderer | POM视差遮挡贴图, 高度图, 自阴影, 软光栅化 | pom_output.png | published |
 | 05-18 | Shell Texturing Fur Renderer | 毛发渲染, Shell Texturing, 程序化毛发, 噪声密度场, 重力弯曲, 光照, 软光栅化 | published |
-| 05-19 | Atmospheric Scattering Sky Renderer | 大气散射, Rayleigh散射, Mie散射, 天空颜色, 日落效果, 太阳朝向, 多时段渲染, 软光栅化 | verified |
+| 05-19 | Atmospheric Scattering Sky Renderer | 大气散射, Rayleigh散射, Mie散射, 天空颜色, 日落效果, 太阳朝向, 多时段渲染, 软光栅化 | published |
