@@ -216,4 +216,4 @@
 | 05-17 | Parallax Occlusion Mapping Renderer | POM视差遮挡贴图, 高度图, 自阴影, 软光栅化 | pom_output.png | published |
 | 05-18 | Shell Texturing Fur Renderer | 毛发渲染, Shell Texturing, 程序化毛发, 噪声密度场, 重力弯曲, 光照, 软光栅化 | published |
 | 05-19 | Atmospheric Scattering Sky Renderer | 大气散射, Rayleigh散射, Mie散射, 天空颜色, 日落效果, 太阳朝向, 多时段渲染, 软光栅化 | published |
-| 05-20 | Temporal Anti-Aliasing (TAA) Renderer | TAA时域抗锯齿, 运动矢量, 历史帧混合, Halton抖动, 重投影, 幽灵效果抑制, 软光栅化 | in-progress |
+| 05-20 | Temporal Anti-Aliasing (TAA) Renderer | TAA时域抗锯齿, 运动矢量, 历史帧混合, Halton抖动, 重投影, 幽灵效果抑制, 软光栅化 | dev-done |
