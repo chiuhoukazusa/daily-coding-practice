@@ -218,4 +218,4 @@
 | 05-19 | Atmospheric Scattering Sky Renderer | 大气散射, Rayleigh散射, Mie散射, 天空颜色, 日落效果, 太阳朝向, 多时段渲染, 软光栅化 | published |
 | 05-20 | Temporal Anti-Aliasing (TAA) Renderer | TAA时域抗锯齿, 运动矢量, 历史帧混合, Halton抖动, 重投影, 幽灵效果抑制, 软光栅化 | published |
 | 05-21 | Thin Film Iridescence Renderer | 薄膜干涉, 彩虹色, 肥皂泡, 波动光学, 干涉条纹, 菲涅尔, 软光栅化 | thin_film_output.png | published |
-| 05-22 | SSGI Screen Space Global Illumination Renderer | SSGI, 屏幕空间全局光照, 间接漫射, 半球采样, 重要性采样, 时域降噪, 软光栅化 | in-progress |
+| 05-22 | SSGI Screen Space Global Illumination Renderer | SSGI, 屏幕空间全局光照, 间接漫射, 半球采样, 重要性采样, 时域降噪, 软光栅化 | dev-done |
