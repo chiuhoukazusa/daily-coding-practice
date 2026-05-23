@@ -220,4 +220,4 @@
 | 05-21 | Thin Film Iridescence Renderer | 薄膜干涉, 彩虹色, 肥皂泡, 波动光学, 干涉条纹, 菲涅尔, 软光栅化 | thin_film_output.png | published |
 | 05-22 | SSGI Screen Space Global Illumination Renderer | SSGI, 屏幕空间全局光照, 间接漫射, 半球采样, 重要性采样, 时域降噪, 软光栅化 | published |
 | 05-23 | SDF Ray Marching Scene Renderer | SDF几何建模, Ray Marching, 软阴影, AO环境遮蔽, Phong着色, 程序化场景, 软光栅化 | sdf_scene_output.png | published |
-| 05-24 | Subsurface Scattering Renderer | SSS次表面散射, 皮肤渲染, 偶极子模型, 漫射轮廓, Jensen SSS, 半透明阴影, 软光栅化 | verified |
+| 05-24 | Subsurface Scattering Renderer | SSS次表面散射, 皮肤渲染, 偶极子模型, 漫射轮廓, Jensen SSS, 半透明阴影, 软光栅化 | published |
