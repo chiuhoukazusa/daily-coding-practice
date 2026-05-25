@@ -222,3 +222,4 @@
 | 05-23 | SDF Ray Marching Scene Renderer | SDF几何建模, Ray Marching, 软阴影, AO环境遮蔽, Phong着色, 程序化场景, 软光栅化 | sdf_scene_output.png | published |
 | 05-24 | Subsurface Scattering Renderer | SSS次表面散射, 皮肤渲染, 偶极子模型, 漫射轮廓, Jensen SSS, 半透明阴影, 软光栅化 | published |
 | 05-25 | Lightmap Baker | 光照贴图烘焙, UV展开, 辐照度计算, Hemisphere采样, 软阴影, 间接光, 软光栅化 | published |
+| 05-26 | Cloth Simulation Renderer | Verlet积分, 约束弛豫, 布料模拟, 物理仿真, 弹簧质点模型, 悬挂布料, Phong着色, 软光栅化 | in-progress |
