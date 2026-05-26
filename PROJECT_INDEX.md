@@ -223,3 +223,4 @@
 | 05-24 | Subsurface Scattering Renderer | SSS次表面散射, 皮肤渲染, 偶极子模型, 漫射轮廓, Jensen SSS, 半透明阴影, 软光栅化 | published |
 | 05-25 | Lightmap Baker | 光照贴图烘焙, UV展开, 辐照度计算, Hemisphere采样, 软阴影, 间接光, 软光栅化 | published |
 | 05-26 | Catmull-Clark Subdivision Surface Renderer | Catmull-Clark细分, 细分曲面, 多边形网格, 光滑插值, Phong着色, 软光栅化 | published |
+| 05-27 | Procedural Terrain with Hydraulic Erosion | 程序化地形, 水力侵蚀, Perlin噪声, 高度图, 地形着色, 法线计算, 软光栅化 | in-progress |
