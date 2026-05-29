@@ -226,4 +226,4 @@
 | 05-27 | Procedural Terrain with Hydraulic Erosion | 程序化地形, 水力侵蚀, Perlin噪声, 高度图, 地形着色, 法线计算, 软光栅化 | published |
 | 05-28 | Cone-Traced Ambient Occlusion Renderer | 锥形追踪AO, Bent Normals, 多锥采样, 半球遮蔽, 软阴影, 软光栅化 | published |
 | 05-29 | Stochastic Progressive Photon Mapping Renderer | SPPM光子映射, 焦散渲染, 全局光照, 光子追踪, 半径收缩, 软光栅化 | published |
-| 05-30 | Procedural Grass Rendering with Wind Simulation | 程序化草地, 风场模拟, 草叶几何, LOD, Phong着色, 软光栅化 | dev-done |
+| 05-30 | Procedural Grass Rendering with Wind Simulation | 程序化草地, 风场模拟, 草叶几何, LOD, Phong着色, 软光栅化 | verified |
