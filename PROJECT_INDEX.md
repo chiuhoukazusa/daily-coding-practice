@@ -228,3 +228,4 @@
 | 05-29 | Stochastic Progressive Photon Mapping Renderer | SPPM光子映射, 焦散渲染, 全局光照, 光子追踪, 半径收缩, 软光栅化 | published |
 | 05-30 | Procedural Grass Rendering with Wind Simulation | 程序化草地, 风场模拟, 草叶几何, LOD, Phong着色, 软光栅化 | published |
 | 05-31 | Geometry Shader Effects Renderer | 几何着色器, 线框叠加, 法线可视化, 重心坐标, 边缘检测, 切线空间, 软光栅化 | published |
+| 06-01 | Displacement Mapping & Tessellation Renderer | 位移贴图, 细分网格, 高度场, 法线重计算, PBR着色, 软光栅化 | displacement_output.png | in-progress |
