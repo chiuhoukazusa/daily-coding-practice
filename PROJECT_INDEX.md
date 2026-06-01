@@ -229,3 +229,4 @@
 | 05-30 | Procedural Grass Rendering with Wind Simulation | 程序化草地, 风场模拟, 草叶几何, LOD, Phong着色, 软光栅化 | published |
 | 05-31 | Geometry Shader Effects Renderer | 几何着色器, 线框叠加, 法线可视化, 重心坐标, 边缘检测, 切线空间, 软光栅化 | published |
 | 06-01 | Displacement Mapping & Tessellation Renderer | 位移贴图, 细分网格, 高度场, 法线重计算, PBR着色, 软光栅化 | displacement_output.png | published |
+| 06-02 | Screen-Space Reflections (SSR) Renderer | SSR屏幕空间反射, 反射追踪, HiZ加速, 深度缓冲, 菲涅尔, 后处理, 软光栅化 | in-progress |
