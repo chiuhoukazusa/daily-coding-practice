@@ -231,4 +231,4 @@
 | 06-01 | Displacement Mapping & Tessellation Renderer | 位移贴图, 细分网格, 高度场, 法线重计算, PBR着色, 软光栅化 | displacement_output.png | published |
 | 06-02 | Screen-Space Reflections (SSR) Renderer | SSR屏幕空间反射, 反射追踪, HiZ加速, 深度缓冲, 菲涅尔, 后处理, 软光栅化 | published |
 | 06-11 | Depth of Field Bokeh Renderer | 景深, Bokeh, Circle of Confusion, 薄透镜模型, 光圈采样, Poisson Disk, 后处理, 软光栅化 | published |
-| 06-12 | A* Pathfinding Visualizer | A*算法, 启发式搜索, 网格寻路, 曼哈顿/欧氏启发式, 最优性验证(对比Dijkstra/BFS), PPM可视化 | dev-done |
+| 06-12 | A* Pathfinding Visualizer | A*算法, 启发式搜索, 网格寻路, 曼哈顿/欧氏启发式, 最优性验证(对比Dijkstra/BFS), PPM可视化 | verified |
