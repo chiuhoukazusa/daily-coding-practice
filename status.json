@@ -1,8 +1,8 @@
 {
-  "date": "2026-05-29",
-  "projectName": "Stochastic Progressive Photon Mapping Renderer",
+  "date": "2026-06-02",
+  "projectName": "Screen-Space Reflections (SSR) Renderer",
   "status": "completed",
-  "attempts": 2,
+  "attempts": 1,
   "progress": {
     "coreDevCompleted": true,
     "coreDevStage": {
@@ -16,29 +16,24 @@
     "blogPublish": true
   },
   "timeline": [
-    {"time": "05:30", "action": "开始项目规划 - 选题：Stochastic Progressive Photon Mapping Renderer（随机渐进光子映射，焦散效果）"},
-    {"time": "05:31", "action": "防重复检查通过，预占 PROJECT_INDEX.md 条目 + git commit"},
-    {"time": "05:32", "action": "代码编写完成（v1: ~550行 main.cpp，Cornell Box + 玻璃球焦散，暴力搜索）"},
-    {"time": "05:33", "action": "第1次编译：✅ 0错误0警告（修复2个unused warning后）"},
-    {"time": "05:33", "action": "第1次运行（v1，暴力搜索 O(N×M)）：超时SIGTERM（约3分钟未完成）"},
-    {"time": "05:34", "action": "重写v2：添加空间哈希加速O(1)，直接光NEE+光子映射焦散分离"},
-    {"time": "05:35", "action": "v2编译 ✅ 0错误0警告，运行 2.5s 成功，但焦散通道全黑"},
-    {"time": "05:36", "action": "Bug1修复：cosineHemisphere((0,-1,0)) 切向量退化，改为 abs(n.y)<0.999 判断"},
-    {"time": "05:37", "action": "薄透镜公式验算：原玻璃球 r=110 ball_y=120 焦散点在 y=-27（地面以下）"},
-    {"time": "05:38", "action": "Bug2修复：数学推导新参数 r=80 ball_y=97 使焦散精确落在地面（di=97=ball_y）"},
-    {"time": "05:39", "action": "重写v3完整版：20passes×60000photons，调试归一化公式"},
-    {"time": "05:40", "action": "v3运行 3.87s，焦散仍为零 → 加调试输出确认 floor VPs 有 flux 值"},
-    {"time": "05:41", "action": "Bug3修复：输出归一化公式错误，应为 1/(PI*r²*PASSES)，而非×PHOTONS"},
-    {"time": "05:43", "action": "移除调试代码，最终编译 ✅ 0错误0警告，运行 4.09s 完成"},
-    {"time": "05:44", "action": "输出验证：sppm_final.png mean=70.99 std=41.48 size=215KB ✅ 全部通过"},
-    {"time": "05:45", "action": "Layer1: 代码上传 GitHub daily-coding-practice ✅"},
-    {"time": "05:45", "action": "Layer2: 3张PNG上传到 blog_img 图床 ✅"},
-    {"time": "05:46", "action": "Layer3: 3张图片 URL HTTP 200 ✅"},
-    {"time": "05:46", "action": "Layer4: PROJECT_INDEX.md 更新为 verified ✅"},
-    {"time": "05:47", "action": "博客撰写完成（613行，含4个Bug记录、推导、代码解析）"},
-    {"time": "05:51", "action": "hexo generate + deploy 完成，博客上线 ✅"},
-    {"time": "05:52", "action": "PROJECT_INDEX.md 更新为 published，全部完成 ✅"}
+    {"time": "05:30", "action": "开始项目规划：Screen-Space Reflections (SSR) Renderer"},
+    {"time": "05:30", "action": "规划完成，防重复检查通过，预占 PROJECT_INDEX.md 条目"},
+    {"time": "05:31", "action": "代码编写完成（22406字节），拷贝 stb_image_write.h"},
+    {"time": "05:32", "action": "第1次编译：有警告（skyColor unused param, Sphere missing initializer）"},
+    {"time": "05:32", "action": "修复：注释掉 px 参数，补全 Sphere 字段，添加 -Wno-missing-field-initializers"},
+    {"time": "05:32", "action": "第2次编译：0 errors 0 warnings ✅"},
+    {"time": "05:32", "action": "运行成功：214ms，87538个反射像素 ✅"},
+    {"time": "05:32", "action": "图像验证通过：均值168, 标准差27.5, 文件94KB ✅"},
+    {"time": "05:33", "action": "PROJECT_INDEX.md 更新为 dev-done，git push 成功"},
+    {"time": "05:33", "action": "Layer 1：代码上传 GitHub daily-coding-practice ✅"},
+    {"time": "05:34", "action": "Layer 2：图片上传 blog_img 图床 ✅"},
+    {"time": "05:34", "action": "Layer 3：链接验证 HTTP 200 ✅"},
+    {"time": "05:34", "action": "Layer 4：PROJECT_INDEX.md 更新为 verified ✅"},
+    {"time": "05:36", "action": "博客撰写完成：709行，7个必需章节全部到位"},
+    {"time": "05:37", "action": "博客源码 push，hexo generate 生成 374 文件"},
+    {"time": "05:38", "action": "hexo deploy 成功：Deploy done: git ✅"},
+    {"time": "05:38", "action": "PROJECT_INDEX.md 更新为 published，全流程完成 ✅"}
   ],
   "lastError": null,
-  "codeBackup": "/root/.openclaw/workspace/daily-coding-practice/projects/2026-05-29-sppm/"
+  "codeBackup": "/root/.openclaw/workspace/daily-coding-practice/2026-06-02-ssr-renderer/"
 }
