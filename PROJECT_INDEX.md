@@ -233,4 +233,4 @@
 | 06-11 | Depth of Field Bokeh Renderer | 景深, Bokeh, Circle of Confusion, 薄透镜模型, 光圈采样, Poisson Disk, 后处理, 软光栅化 | published |
 | 06-12 | A* Pathfinding Visualizer | A*算法, 启发式搜索, 网格寻路, 曼哈顿/欧氏启发式, 最优性验证(对比Dijkstra/BFS), PPM可视化 | published |
 | 06-13 | GJK Collision Detection Visualizer | GJK算法, 闵可夫斯基差, 单纯形, 碰撞检测, 最近点计算, EPA穿透深度, PPM可视化 | gjk_output.png | published |
-| 06-14 | Quadtree Spatial Partitioning Index | 四叉树空间分区, 点插入, 范围查询, KNN最近邻, 暴力搜索基准对比, 加速比验证 | quadtree_output.png | verified |
+| 06-14 | Quadtree Spatial Partitioning Index | 四叉树空间分区, 点插入, 范围查询, KNN最近邻, 暴力搜索基准对比, 加速比验证 | quadtree_output.png | published |
