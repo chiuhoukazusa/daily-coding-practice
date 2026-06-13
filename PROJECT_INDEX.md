@@ -232,4 +232,4 @@
 | 06-02 | Screen-Space Reflections (SSR) Renderer | SSR屏幕空间反射, 反射追踪, HiZ加速, 深度缓冲, 菲涅尔, 后处理, 软光栅化 | published |
 | 06-11 | Depth of Field Bokeh Renderer | 景深, Bokeh, Circle of Confusion, 薄透镜模型, 光圈采样, Poisson Disk, 后处理, 软光栅化 | published |
 | 06-12 | A* Pathfinding Visualizer | A*算法, 启发式搜索, 网格寻路, 曼哈顿/欧氏启发式, 最优性验证(对比Dijkstra/BFS), PPM可视化 | published |
-| 06-13 | GJK Collision Detection Visualizer | GJK算法, 闵可夫斯基差, 单纯形, 碰撞检测, 最近点计算, EPA穿透深度, PPM可视化 | gjk_output.png | verified |
+| 06-13 | GJK Collision Detection Visualizer | GJK算法, 闵可夫斯基差, 单纯形, 碰撞检测, 最近点计算, EPA穿透深度, PPM可视化 | gjk_output.png | published |
