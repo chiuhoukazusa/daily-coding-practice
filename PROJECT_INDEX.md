@@ -235,4 +235,4 @@
 | 06-13 | GJK Collision Detection Visualizer | GJK算法, 闵可夫斯基差, 单纯形, 碰撞检测, 最近点计算, EPA穿透深度, PPM可视化 | gjk_output.png | published |
 | 06-14 | Quadtree Spatial Partitioning Index | 四叉树空间分区, 点插入, 范围查询, KNN最近邻, 暴力搜索基准对比, 加速比验证 | quadtree_output.png | published |
 | 06-15 | KD-Tree Nearest Neighbor Search | KD-Tree, KNN搜索, 空间索引, 暴力搜索基准对比, 加速比验证 | published |
-| 06-16 | R-Tree Spatial Index | R-Tree, 空间索引, 矩形查询, 暴力搜索基准对比, 加速比验证 | verified |
+| 06-16 | R-Tree Spatial Index | R-Tree, 空间索引, 矩形查询, 暴力搜索基准对比, 加速比验证 | published |
