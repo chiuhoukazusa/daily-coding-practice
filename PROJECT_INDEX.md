@@ -236,3 +236,4 @@
 | 06-14 | Quadtree Spatial Partitioning Index | 四叉树空间分区, 点插入, 范围查询, KNN最近邻, 暴力搜索基准对比, 加速比验证 | quadtree_output.png | published |
 | 06-15 | KD-Tree Nearest Neighbor Search | KD-Tree, KNN搜索, 空间索引, 暴力搜索基准对比, 加速比验证 | published |
 | 06-16 | R-Tree Spatial Index | R-Tree, 空间索引, 矩形查询, 暴力搜索基准对比, 加速比验证 | published |
+| 06-17 | Delaunay Triangulation | Bowyer-Watson算法, 增量构建, 外接圆准则, 超级三角形, 三角剖分, PPM可视化 | in-progress |
