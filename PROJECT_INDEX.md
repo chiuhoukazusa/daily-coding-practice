@@ -237,4 +237,4 @@
 | 06-15 | KD-Tree Nearest Neighbor Search | KD-Tree, KNN搜索, 空间索引, 暴力搜索基准对比, 加速比验证 | published |
 | 06-16 | R-Tree Spatial Index | R-Tree, 空间索引, 矩形查询, 暴力搜索基准对比, 加速比验证 | published |
 | 06-17 | Delaunay Triangulation | Bowyer-Watson算法, 增量构建, 外接圆准则, 超级三角形, 三角剖分, PPM可视化 | published |
-| 06-18 | Convex Hull (Graham Scan + Monotone Chain) | 计算几何, 凸包算法, Graham Scan, Monotone Chain, 算法对比 | verified |
+| 06-18 | Convex Hull (Graham Scan + Monotone Chain) | 计算几何, 凸包算法, Graham Scan, Monotone Chain, 算法对比 | published |
