@@ -239,4 +239,4 @@
 | 06-17 | Delaunay Triangulation | Bowyer-Watson算法, 增量构建, 外接圆准则, 超级三角形, 三角剖分, PPM可视化 | published |
 | 06-18 | Convex Hull (Graham Scan + Monotone Chain) | 计算几何, 凸包算法, Graham Scan, Monotone Chain, 算法对比 | published |
 | 06-19 | SAT Collision Detection Visualizer | Separating Axis Theorem, 2D凸多边形碰撞检测, Monte Carlo验证, PPM可视化 | published |
-| 06-20 | Poisson Disk Sampling | Blue Noise采样, 桥接算法, 最大化最小距离 | verified |
+| 06-20 | Poisson Disk Sampling | Blue Noise采样, 桥接算法, 最大化最小距离 | published |
