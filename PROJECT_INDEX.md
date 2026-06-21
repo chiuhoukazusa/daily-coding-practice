@@ -241,3 +241,4 @@
 | 06-19 | SAT Collision Detection Visualizer | Separating Axis Theorem, 2D凸多边形碰撞检测, Monte Carlo验证, PPM可视化 | published |
 | 06-20 | Poisson Disk Sampling | Blue Noise采样, 桥接算法, 最大化最小距离 | published |
 | 06-21 | K-Means Clustering | 聚类算法, Lloyd迭代, SSE收敛, Silhouette评分, 随机初始化对比 | kmeans_output.png | published |
+| 06-22 | DBSCAN Density Clustering | DBSCAN密度聚类, 邻域查询, 任意形状聚类, 噪声检测, PPM可视化 | in-progress |
