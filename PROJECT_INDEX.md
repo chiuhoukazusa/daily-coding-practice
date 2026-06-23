@@ -243,4 +243,4 @@
 | 06-21 | K-Means Clustering | 聚类算法, Lloyd迭代, SSE收敛, Silhouette评分, 随机初始化对比 | kmeans_output.png | published |
 | 06-22 | DBSCAN Density Clustering | DBSCAN密度聚类, 区域查询, 任意形状聚类, 噪声检测, 轮廓系数, PPM可视化 | published |
 | 06-23 | Gaussian Mixture Models EM Clustering | GMM, EM算法, 高斯混合模型, 对数似然收敛, BIC模型选择, 软聚类, PPM可视化 | published |
-| 06-23 | God Rays Volumetric Light Shafts | 体积光, God Rays, 屏幕空间Ray Marching, 径向模糊, 亮度阈值, 光柱渲染, 软光栅化 | dev-done |
+| 06-23 | God Rays Volumetric Light Shafts | 体积光, God Rays, 屏幕空间Ray Marching, 径向模糊, 亮度阈值, 光柱渲染, 软光栅化 | verified |
