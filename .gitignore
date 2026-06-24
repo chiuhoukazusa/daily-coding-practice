@@ -1,39 +1,6 @@
-# Large image files (PPM is uncompressed, can be huge)
+*.o
+output
+debug
+dbg*
+test_seed
 *.ppm
-
-# Executable binaries (all executables)
-# Specific known executables
-ray_tracer
-perlin_noise
-voronoi
-ray_sphere_intersection
-raytracer
-refraction
-texture_mapping
-shadow_raytracer
-reflection_raytracer
-cohen_sutherland
-bresenham_output
-
-# Python cache
-__pycache__/
-*.pyc
-
-# Temporary status files
-status.json
-
-# Temp and backup directories
-temp/
-.backup/
-
-# Deployment guide
-HEXO_DEPLOYMENT_GUIDE.md
-
-# Upload reports
-uploads_report.md
-
-# Editor files
-.vscode/
-.idea/
-*.swp
-*~
