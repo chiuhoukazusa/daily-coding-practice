@@ -248,4 +248,4 @@
 | 06-25 | Frustum Culling Renderer | 视锥剔除, AABB-Plane测试, 软光栅化, 剔除率统计 | published |
 | 06-26 | Genetic Algorithm Optimizer | 遗传算法, SBX交叉, 多项式变异, 锦标赛选择, Rastrigin函数优化, 收敛性验证 | convergence_plot.ppm | published |
 | 06-27 | Perspective-Correct Texture Mapping | 透视校正, 纹理映射, 四边形光栅化, 双线性插值, Affine对照, PPM输出 | published |
-| 06-28 | Skeletal Animation Linear Blend Skinning | LBS蒙皮, 骨骼动画, 关键帧插值, 软光栅化 | verified |
+| 06-28 | Skeletal Animation Linear Blend Skinning | LBS蒙皮, 骨骼动画, 关键帧插值, 软光栅化 | published |
