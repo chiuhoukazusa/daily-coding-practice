@@ -249,4 +249,4 @@
 | 06-26 | Genetic Algorithm Optimizer | 遗传算法, SBX交叉, 多项式变异, 锦标赛选择, Rastrigin函数优化, 收敛性验证 | convergence_plot.ppm | published |
 | 06-27 | Perspective-Correct Texture Mapping | 透视校正, 纹理映射, 四边形光栅化, 双线性插值, Affine对照, PPM输出 | published |
 | 06-28 | Skeletal Animation Linear Blend Skinning | LBS蒙皮, 骨骼动画, 关键帧插值, 软光栅化 | published |
-| 06-29 | Jump Point Search Pathfinding | JPS算法, 跳点搜索, 网格寻路, 启发式搜索, 最优性验证, A*基准对比 | dev-done |
+| 06-29 | Jump Point Search Pathfinding | JPS算法, 跳点搜索, 网格寻路, 启发式搜索, 最优性验证, A*基准对比 | verified |
