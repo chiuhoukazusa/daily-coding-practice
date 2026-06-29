@@ -250,3 +250,4 @@
 | 06-27 | Perspective-Correct Texture Mapping | 透视校正, 纹理映射, 四边形光栅化, 双线性插值, Affine对照, PPM输出 | published |
 | 06-28 | Skeletal Animation Linear Blend Skinning | LBS蒙皮, 骨骼动画, 关键帧插值, 软光栅化 | published |
 | 06-29 | Jump Point Search Pathfinding | JPS算法, 跳点搜索, 网格寻路, 启发式搜索, 最优性验证, A*基准对比 | published |
+| 06-30 | Euclidean Distance Transform | 距离变换, 欧氏距离场, Voronoi分割, 8SSEDT算法, 多形状测试, 精度验证 | in-progress |
