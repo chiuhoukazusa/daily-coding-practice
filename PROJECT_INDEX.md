@@ -252,4 +252,4 @@
 | 06-29 | Jump Point Search Pathfinding | JPS算法, 跳点搜索, 网格寻路, 启发式搜索, 最优性验证, A*基准对比 | published |
 | 06-30 | Euclidean Distance Transform | 距离变换, 欧氏距离场, Voronoi分割, 8SSEDT算法, 多形状测试, 精度验证 | published |
 | 07-01 | Bilateral Filter Edge-Preserving Smoothing | 双边滤波, 边缘保持, 空间-值域高斯核, 软光栅化 | published |
-| 07-02 | Floyd-Steinberg Error Diffusion Dithering | 误差扩散抖动, Floyd-Steinberg算法, 调色板量化, 软光栅化 | verified |
+| 07-02 | Floyd-Steinberg Error Diffusion Dithering | 误差扩散抖动, Floyd-Steinberg算法, 调色板量化, 软光栅化 | published |
