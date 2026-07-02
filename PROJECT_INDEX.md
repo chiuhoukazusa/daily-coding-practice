@@ -253,3 +253,4 @@
 | 06-30 | Euclidean Distance Transform | 距离变换, 欧氏距离场, Voronoi分割, 8SSEDT算法, 多形状测试, 精度验证 | published |
 | 07-01 | Bilateral Filter Edge-Preserving Smoothing | 双边滤波, 边缘保持, 空间-值域高斯核, 软光栅化 | published |
 | 07-02 | Floyd-Steinberg Error Diffusion Dithering | 误差扩散抖动, Floyd-Steinberg算法, 调色板量化, 软光栅化 | published |
+| 07-03 | Cohen-Sutherland Line Clipping | 图形学, 直线裁剪算法, 区域编码, 分段裁剪, PPM可视化 | verified |
