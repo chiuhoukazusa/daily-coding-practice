@@ -254,4 +254,4 @@
 | 07-01 | Bilateral Filter Edge-Preserving Smoothing | 双边滤波, 边缘保持, 空间-值域高斯核, 软光栅化 | published |
 | 07-02 | Floyd-Steinberg Error Diffusion Dithering | 误差扩散抖动, Floyd-Steinberg算法, 调色板量化, 软光栅化 | published |
 | 07-03 | Cohen-Sutherland Line Clipping | 图形学, 直线裁剪算法, 区域编码, 分段裁剪, PPM可视化 | published |
-| 07-04 | Liang-Barsky Line Clipping | 图形学, 直线裁剪, Liang-Barsky算法, 参数化裁剪, PPM可视化 | in-progress |
+| 07-04 | Liang-Barsky Line Clipping | 图形学, 直线裁剪, Liang-Barsky算法, 参数化裁剪, PPM可视化 | dev-done |
