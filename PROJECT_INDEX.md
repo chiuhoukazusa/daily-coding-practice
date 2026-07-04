@@ -255,4 +255,4 @@
 | 07-02 | Floyd-Steinberg Error Diffusion Dithering | 误差扩散抖动, Floyd-Steinberg算法, 调色板量化, 软光栅化 | published |
 | 07-03 | Cohen-Sutherland Line Clipping | 图形学, 直线裁剪算法, 区域编码, 分段裁剪, PPM可视化 | published |
 | 07-04 | Liang-Barsky Line Clipping | 图形学, 直线裁剪, Liang-Barsky算法, 参数化裁剪, PPM可视化 | published |
-| 07-05 | Sutherland-Hodgman Polygon Clipping | 图形学, 计算几何, 多边形裁剪, 算法可视化 | in-progress |
+| 07-05 | Sutherland-Hodgman Polygon Clipping | 图形学, 计算几何, 多边形裁剪, 算法可视化 | dev-done |
