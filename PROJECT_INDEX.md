@@ -256,4 +256,4 @@
 | 07-03 | Cohen-Sutherland Line Clipping | 图形学, 直线裁剪算法, 区域编码, 分段裁剪, PPM可视化 | published |
 | 07-04 | Liang-Barsky Line Clipping | 图形学, 直线裁剪, Liang-Barsky算法, 参数化裁剪, PPM可视化 | published |
 | 07-05 | Sutherland-Hodgman Polygon Clipping | 图形学, 计算几何, 多边形裁剪, 算法可视化 | published |
-| 07-06 | Metaballs Implicit Surface Renderer | 隐式曲面, Metaballs, 元球渲染, 等值面, 软光栅化 | dev-done |
+| 07-06 | Metaballs Implicit Surface Renderer | 隐式曲面, Metaballs, 元球渲染, 等值面, 软光栅化 | verified |
