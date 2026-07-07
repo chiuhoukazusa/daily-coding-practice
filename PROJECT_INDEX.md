@@ -258,4 +258,4 @@
 | 07-05 | Sutherland-Hodgman Polygon Clipping | 图形学, 计算几何, 多边形裁剪, 算法可视化 | published |
 | 07-06 | Metaballs Implicit Surface Renderer | 隐式曲面, Metaballs, 元球渲染, 等值面, 软光栅化 | published |
 | 07-07 | Octree Spatial Partitioning | Octree, 空间分区, 3D点插入, 范围查询, 邻域搜索, 加速比验证 | published |
-| 07-08 | Quaternion Rotation & SLERP Interpolation | 四元数, SLERP球面线性插值, 3D旋转, 万向节死锁避免, PPM可视化 | verified |
+| 07-08 | Quaternion Rotation & SLERP Interpolation | 四元数, SLERP球面线性插值, 3D旋转, 万向节死锁避免, PPM可视化 | published |
