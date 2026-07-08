@@ -259,3 +259,4 @@
 | 07-06 | Metaballs Implicit Surface Renderer | 隐式曲面, Metaballs, 元球渲染, 等值面, 软光栅化 | published |
 | 07-07 | Octree Spatial Partitioning | Octree, 空间分区, 3D点插入, 范围查询, 邻域搜索, 加速比验证 | published |
 | 07-08 | Quaternion Rotation & SLERP Interpolation | 四元数, SLERP球面线性插值, 3D旋转, 万向节死锁避免, PPM可视化 | published |
+| 07-09 | Cellular Automata - Conway's Game of Life | 元胞自动机, Conway生命游戏, 7种经典模式, 周期/振荡器检测, 网格哈希, 密度扫描统计, 双枪碰撞实验, PPM可视化 | published |
