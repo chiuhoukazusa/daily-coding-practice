@@ -1,0 +1,32 @@
+=========================================
+Conway's Game of Life - Quantitative Report
+Date: 2026-07-09
+=========================================
+
+--- Individual Patterns ---
+Glider: Still Life (静态)
+  Pop: 5 -> 5 (peak 5), gens=200, cycle=1, stability=1
+Blinker: Oscillator period-2 (周期2振荡器)
+  Pop: 3 -> 3 (peak 3), gens=200, cycle=2, stability=1
+Pulsar: Oscillator period-3 (周期3振荡器)
+  Pop: 48 -> 72 (peak 72), gens=200, cycle=3, stability=0
+Gosper Glider Gun: Growing (增长中)
+  Pop: 36 -> 86 (peak 106), gens=300, cycle=0, stability=0.1
+R-Pentomino: Growing (增长中)
+  Pop: 5 -> 174 (peak 221), gens=500, cycle=0, stability=0.04
+Diehard: Extinction (消亡)
+  Pop: 7 -> 0 (peak 40), gens=130, cycle=0, stability=0.123077
+Acorn: Growing (增长中)
+  Pop: 7 -> 276 (peak 434), gens=500, cycle=0, stability=0.022
+
+--- Density Sweep Statistics ---
+Density 0.1: final=1756.1, peak=3967.9, stability=0.009, extinction=0, gens_to_stable=0
+Density 0.2: final=2996.8, peak=8238.3, stability=0.0075, extinction=0, gens_to_stable=0
+Density 0.3: final=3059.3, peak=13771.3, stability=0.0045, extinction=0, gens_to_stable=0
+Density 0.4: final=3048.4, peak=15981.3, stability=0.0065, extinction=0, gens_to_stable=0
+Density 0.5: final=2886.4, peak=19980.8, stability=0.004, extinction=0, gens_to_stable=0
+
+--- Collision Experiment ---
+Initial pop: 72, Final pop: 238, Peak pop: 312
+
+--- Verification: 19/19 passed ---
