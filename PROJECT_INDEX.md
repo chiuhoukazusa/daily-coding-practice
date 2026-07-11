@@ -262,3 +262,4 @@
 | 07-09 | Cellular Automata - Conway's Game of Life | 元胞自动机, Conway生命游戏, 7种经典模式, 周期/振荡器检测, 网格哈希, 密度扫描统计, 双枪碰撞实验, PPM可视化 | published |
 | 07-10 | Barnes-Hut N-Body Simulation | Barnes-Hut算法, N体引力模拟, 四叉树空间划分, O(n log n)加速, 直接法对比 | published |
 | 07-11 | Bentley-Ottmann Line Intersection | 扫描线算法, 事件队列, 活跃集维护, O((n+k)log n), 暴力验证对比 | dev-done |
+| 07-12 | Boids Flocking Simulation | Steering Behaviors, 集群行为, 分离/对齐/凝聚, 空间哈希优化, PPM可视化 | verified |
