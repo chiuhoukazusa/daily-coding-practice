@@ -23,6 +23,7 @@ bool on_segment(const Point& p, const Point& a, const Point& b) {
 struct Segment {
     Point p1, p2; int id;
     Segment(Point a, Point b, int i) : id(i) {
+        // p1 = upper endpoint (larger y), ties broken by smaller x
         if(a.y>b.y+EPS||(fabs(a.y-b.y)<EPS&&a.x<b.x)){p1=a;p2=b;}
         else{p1=b;p2=a;}
     }
@@ -34,10 +35,14 @@ std::vector<std::pair<int,int>> brute_force(const std::vector<Segment>& segs) {
         auto&a=segs[i],&b=segs[j];
         double c1=cross(a.p1,a.p2,b.p1),c2=cross(a.p1,a.p2,b.p2);
         double c3=cross(b.p1,b.p2,a.p1),c4=cross(b.p1,b.p2,a.p2);
-        if(sign(c1)*sign(c2)<0 && sign(c3)*sign(c4)<0) res.push_back({a.id,b.id});
-        else if(fabs(c1)<EPS&&fabs(c2)<EPS){
-            if(on_segment(a.p1,b.p1,b.p2)||on_segment(a.p2,b.p1,b.p2)||on_segment(b.p1,a.p1,a.p2)||on_segment(b.p2,a.p1,a.p2))
-                res.push_back({a.id,b.id});
+        if(sign(c1)*sign(c2)<=0 && sign(c3)*sign(c4)<=0) {
+            if(fabs(c1)<EPS&&fabs(c2)<EPS&&fabs(c3)<EPS&&fabs(c4)<EPS) {
+                if(on_segment(a.p1,b.p1,b.p2)||on_segment(a.p2,b.p1,b.p2)||
+                   on_segment(b.p1,a.p1,a.p2)||on_segment(b.p2,a.p1,a.p2))
+                    res.push_back({a.id,b.id});
+            } else if(fabs(c1)<EPS&&fabs(c2)<EPS) continue;
+            else if(fabs(c3)<EPS&&fabs(c4)<EPS) continue;
+            else res.push_back({a.id,b.id});
         }
     }
     return res;
@@ -47,10 +52,8 @@ struct IntersectionResult {
     int s1, s2; Point pt;
     IntersectionResult(int a,int b,Point p):s1(std::min(a,b)),s2(std::max(a,b)),pt(p){}
     bool operator<(const IntersectionResult& o) const {
-        if(fabs(pt.y-o.pt.y)>EPS) return pt.y<o.pt.y;
-        if(fabs(pt.x-o.pt.x)>EPS) return pt.x<o.pt.x;
         if(s1!=o.s1) return s1<o.s1;
-        return s2<o.s2;
+        return s2<o.s2;  // dedup by (s1,s2) only, ignoring floating-point difference
     }
 };
 
@@ -62,89 +65,142 @@ Point compute_intersection(const Segment& a, const Segment& b) {
 }
 
 bool segments_cross(const Segment& a, const Segment& b) {
+    if(a.id == b.id) return false;
     double c1=cross(a.p1,a.p2,b.p1),c2=cross(a.p1,a.p2,b.p2);
     double c3=cross(b.p1,b.p2,a.p1),c4=cross(b.p1,b.p2,a.p2);
-    if(sign(c1)*sign(c2)<0 && sign(c3)*sign(c4)<0) return true;
-    if(fabs(c1)<EPS&&fabs(c2)<EPS)
-        return on_segment(a.p1,b.p1,b.p2)||on_segment(a.p2,b.p1,b.p2)||
-               on_segment(b.p1,a.p1,a.p2)||on_segment(b.p2,a.p1,a.p2);
+    if(sign(c1)*sign(c2)<=0 && sign(c3)*sign(c4)<=0) {
+        if(fabs(c1)<EPS&&fabs(c2)<EPS&&fabs(c3)<EPS&&fabs(c4)<EPS) {
+            return on_segment(a.p1,b.p1,b.p2)||on_segment(a.p2,b.p1,b.p2)||
+                   on_segment(b.p1,a.p1,a.p2)||on_segment(b.p2,a.p1,a.p2);
+        }
+        if(fabs(c1)<EPS&&fabs(c2)<EPS) return false;
+        if(fabs(c3)<EPS&&fabs(c4)<EPS) return false;
+        return true;
+    }
     return false;
 }
 
 double x_at_y(const Segment& s, double y) {
     if(fabs(s.p2.y-s.p1.y)<EPS) return s.p1.x;
     double t=(y-s.p1.y)/(s.p2.y-s.p1.y);
-    if(t<0)t=0;if(t>1)t=1;
+    t = std::clamp(t, 0.0, 1.0);
     return s.p1.x+t*(s.p2.x-s.p1.x);
 }
 
 std::vector<IntersectionResult> bentley_ottmann(const std::vector<Segment>& segs) {
-    if(segs.size()<2) return {};
+    int n=segs.size();
+    if(n<2) return {};
     std::set<IntersectionResult> results;
-
-    struct Ev { double y; int kind; int id; }; // kind: 0=upper, 2=lower
-    std::vector<Ev> evs;
-    for(auto& s:segs){evs.push_back({s.p1.y,0,s.id});evs.push_back({s.p2.y,2,s.id});}
-    std::sort(evs.begin(),evs.end(),[](auto&a,auto&b){
-        if(fabs(a.y-b.y)>EPS) return a.y>b.y;
-        if(a.kind!=b.kind) return a.kind<b.kind;
-        return a.id<b.id;
-    });
-
-    // Use vector as status (sorted by x at sweep_y)
+    
+    // Event: (y, x, segment_id, left_endpoint_x)
+    // Sweep top-to-bottom (y descending). Horizontal segments need special care.
+    struct Event {
+        double y, x, left_x; int seg; bool is_exit;
+        bool operator<(const Event& o) const {
+            if(fabs(y-o.y)>EPS) return y > o.y;      // descending
+            if(fabs(x-o.x)>EPS) return x < o.x;       // ascending
+            if(is_exit != o.is_exit) return !is_exit; // enters before exits
+            return seg < o.seg;
+        }
+    };
+    
+    std::set<Event> Q;
+    for(int i=0;i<n;i++){
+        bool horiz = fabs(segs[i].p1.y - segs[i].p2.y) < EPS;
+        if(horiz){
+            // Horizontal: enter at left endpoint, don't stay in status
+            Q.insert({segs[i].p1.y, segs[i].p1.x, segs[i].p1.x, i, false}); // enter
+            Q.insert({segs[i].p1.y, segs[i].p2.x, segs[i].p1.x, i, true});  // exit immediately
+        } else {
+            Q.insert({segs[i].p1.y, segs[i].p1.x, segs[i].p1.x, i, false}); // enter at top
+            Q.insert({segs[i].p2.y, segs[i].p2.x, segs[i].p1.x, i, true});  // exit at bottom
+        }
+    }
+    
     std::vector<int> status;
     double sweep_y = INF;
-
-    size_t i=0;
-    while(i<evs.size()){
-        double y=evs[i].y;
-        sweep_y=y;
-
-        std::vector<int> starting, ending;
-        while(i<evs.size() && fabs(evs[i].y-y)<EPS){
-            if(evs[i].kind==0) starting.push_back(evs[i].id);
-            else ending.push_back(evs[i].id);
-            i++;
+    
+    while(!Q.empty()){
+        auto it = Q.begin();
+        double y = it->y;
+        sweep_y = y;
+        
+        // Collect all events at this y
+        std::vector<Event> batch;
+        while(!Q.empty() && fabs(Q.begin()->y - y) < EPS){
+            batch.push_back(*Q.begin());
+            Q.erase(Q.begin());
         }
-
-        // Re-sort status by x at current sweep_y
-        std::sort(status.begin(),status.end(),[&](int a,int b){
-            double xa=x_at_y(segs[a],sweep_y), xb=x_at_y(segs[b],sweep_y);
+        
+        // Re-sort status at current sweep_y
+        std::sort(status.begin(), status.end(), [&](int a, int b){
+            double xa=x_at_y(segs[a], sweep_y), xb=x_at_y(segs[b], sweep_y);
             if(fabs(xa-xb)>EPS) return xa<xb;
             return a<b;
         });
-
-        // Check all starting segments against all active segments
-        for(int sid:starting){
-            for(int aid:status){
-                if(!segments_cross(segs[sid],segs[aid])) continue;
-                Point pt=compute_intersection(segs[sid],segs[aid]);
-                if(pt.y>sweep_y+EPS) continue;
-                results.insert(IntersectionResult(sid,aid,pt));
-            }
+        
+        std::vector<int> enters, exits;
+        for(auto& ev : batch){
+            if(!ev.is_exit) enters.push_back(ev.seg);
+            else exits.push_back(ev.seg);
         }
-
-        // Remove ending segments
-        for(int eid:ending){
-            auto it=std::find(status.begin(),status.end(),eid);
-            if(it==status.end()) continue;
-            // Check new neighbors after removal
-            int idx=it-status.begin();
-            if(idx>0 && idx+1<(int)status.size()){
-                int p=status[idx-1], n=status[idx+1];
-                if(segments_cross(segs[p],segs[n])){
-                    Point pt=compute_intersection(segs[p],segs[n]);
-                    if(pt.y<=sweep_y+EPS)
-                        results.insert(IntersectionResult(p,n,pt));
+        
+        // Check all entering segments against each other
+        for(size_t i=0;i<enters.size();i++)
+            for(size_t j=i+1;j<enters.size();j++){
+                int a=enters[i], b=enters[j];
+                if(segments_cross(segs[a], segs[b]))
+                    results.insert(IntersectionResult(a,b,compute_intersection(segs[a],segs[b])));
+            }
+        
+        // Check entering segments against status
+        for(int sid : enters)
+            for(int aid : status)
+                if(segments_cross(segs[sid], segs[aid]))
+                    results.insert(IntersectionResult(sid,aid,compute_intersection(segs[sid],segs[aid])));
+        
+        // Check exiting segments against status
+        for(int eid : exits)
+            for(int aid : status)
+                if(segments_cross(segs[eid], segs[aid]))
+                    results.insert(IntersectionResult(eid,aid,compute_intersection(segs[eid],segs[aid])));
+        
+        // Remove exiting segments from status
+        for(int eid : exits){
+            auto it2 = std::find(status.begin(), status.end(), eid);
+            if(it2 != status.end()){
+                int idx = it2 - status.begin();
+                // Check if removal creates new adjacency
+                if(idx > 0 && idx + 1 < (int)status.size()){
+                    int left=status[idx-1], right=status[idx+1];
+                    if(segments_cross(segs[left], segs[right]))
+                        results.insert(IntersectionResult(left,right,
+                            compute_intersection(segs[left],segs[right])));
                 }
+                status.erase(it2);
             }
-            status.erase(it);
         }
-
-        // Add starting segments
-        for(int sid:starting) status.push_back(sid);
+        
+        // Add entering segments to status (but NOT horizontal segments — they exit immediately)
+        for(int sid : enters){
+            bool horiz = fabs(segs[sid].p1.y - segs[sid].p2.y) < EPS;
+            if(!horiz) status.push_back(sid);
+        }
+        
+        // Re-sort status and check adjacencies
+        std::sort(status.begin(), status.end(), [&](int a, int b){
+            double xa=x_at_y(segs[a], sweep_y), xb=x_at_y(segs[b], sweep_y);
+            if(fabs(xa-xb)>EPS) return xa<xb;
+            return a<b;
+        });
+        
+        for(int i=0; i+1 < (int)status.size(); i++){
+            int a=status[i], b=status[i+1];
+            if(segments_cross(segs[a], segs[b]))
+                results.insert(IntersectionResult(a,b,compute_intersection(segs[a],segs[b])));
+        }
     }
-
+    
     return std::vector<IntersectionResult>(results.begin(),results.end());
 }
 
@@ -218,9 +274,9 @@ int main(){
         int match=0;
         for(auto&p:bf)if(bop.count(p)||bop.count({p.second,p.first}))match++;
 
-        if(match==(int)bf.size()&&(int)bop.size()==match){std::cout<<"  ✅ PASS"<<std::endl;passed++;}
+        if(match==(int)bf.size()&&(int)bop.size()==match){std::cout<<"  \u2705 PASS"<<std::endl;passed++;}
         else{
-            std::cout<<"  ❌ FAIL (match "<<match<<"/"<<bf.size()<<")"<<std::endl;
+            std::cout<<"  \u274c FAIL (match "<<match<<"/"<<bf.size()<<")"<<std::endl;
             std::cout<<"  Missing: ";
             for(auto&p:bf)if(!bop.count(p)&&!bop.count({p.second,p.first}))std::cout<<"("<<p.first<<","<<p.second<<") ";
             std::cout<<std::endl;
