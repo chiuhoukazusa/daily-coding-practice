@@ -263,3 +263,4 @@
 | 07-10 | Barnes-Hut N-Body Simulation | Barnes-Hut算法, N体引力模拟, 四叉树空间划分, O(n log n)加速, 直接法对比 | published |
 | 07-11 | Bentley-Ottmann Line Intersection | 扫描线算法, 事件队列, 活跃集维护, O((n+k)log n), 暴力验证对比 | dev-done |
 | 07-12 | Boids Flocking Simulation | Steering Behaviors, 集群行为, 分离/对齐/凝聚, 空间哈希优化, PPM可视化 | published |
+| 07-13 | RK4 Runge-Kutta ODE Solver | 数值方法, RK4 vs Euler, 弹簧-阻尼系统, 能量守恒验证 | verified |
