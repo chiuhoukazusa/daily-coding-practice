@@ -248,20 +248,4 @@
 | 06-25 | Frustum Culling Renderer | 视锥剔除, AABB-Plane测试, 软光栅化, 剔除率统计 | published |
 | 06-26 | Genetic Algorithm Optimizer | 遗传算法, SBX交叉, 多项式变异, 锦标赛选择, Rastrigin函数优化, 收敛性验证 | convergence_plot.ppm | published |
 | 06-27 | Perspective-Correct Texture Mapping | 透视校正, 纹理映射, 四边形光栅化, 双线性插值, Affine对照, PPM输出 | published |
-| 06-28 | Skeletal Animation Linear Blend Skinning | LBS蒙皮, 骨骼动画, 关键帧插值, 软光栅化 | published |
-| 06-29 | Jump Point Search Pathfinding | JPS算法, 跳点搜索, 网格寻路, 启发式搜索, 最优性验证, A*基准对比 | published |
-| 06-30 | Euclidean Distance Transform | 距离变换, 欧氏距离场, Voronoi分割, 8SSEDT算法, 多形状测试, 精度验证 | published |
-| 07-01 | Bilateral Filter Edge-Preserving Smoothing | 双边滤波, 边缘保持, 空间-值域高斯核, 软光栅化 | published |
-| 07-02 | Floyd-Steinberg Error Diffusion Dithering | 误差扩散抖动, Floyd-Steinberg算法, 调色板量化, 软光栅化 | published |
-| 07-03 | Cohen-Sutherland Line Clipping | 图形学, 直线裁剪算法, 区域编码, 分段裁剪, PPM可视化 | published |
-| 07-04 | Liang-Barsky Line Clipping | 图形学, 直线裁剪, Liang-Barsky算法, 参数化裁剪, PPM可视化 | published |
-| 07-05 | Sutherland-Hodgman Polygon Clipping | 图形学, 计算几何, 多边形裁剪, 算法可视化 | published |
-| 07-06 | Metaballs Implicit Surface Renderer | 隐式曲面, Metaballs, 元球渲染, 等值面, 软光栅化 | published |
-| 07-07 | Octree Spatial Partitioning | Octree, 空间分区, 3D点插入, 范围查询, 邻域搜索, 加速比验证 | published |
-| 07-08 | Quaternion Rotation & SLERP Interpolation | 四元数, SLERP球面线性插值, 3D旋转, 万向节死锁避免, PPM可视化 | published |
-| 07-09 | Cellular Automata - Conway's Game of Life | 元胞自动机, Conway生命游戏, 7种经典模式, 周期/振荡器检测, 网格哈希, 密度扫描统计, 双枪碰撞实验, PPM可视化 | published |
-| 07-10 | Barnes-Hut N-Body Simulation | Barnes-Hut算法, N体引力模拟, 四叉树空间划分, O(n log n)加速, 直接法对比 | published |
-| 07-11 | Bentley-Ottmann Line Intersection | 扫描线算法, 事件队列, 活跃集维护, O((n+k)log n), 暴力验证对比 | published |
-| 07-12 | Boids Flocking Simulation | Steering Behaviors, 集群行为, 分离/对齐/凝聚, 空间哈希优化, PPM可视化 | published |
-| 07-13 | RK4 Runge-Kutta ODE Solver | 数值方法, RK4 vs Euler, 弹簧-阻尼系统, 能量守恒验证 | published |
-| 07-14 | Strassen Matrix Multiplication | Strassen算法, 分治矩阵乘法, O(n^2.81), 标准乘法基准对比, 精度验证 | dev-done |
+| 06-28 | Skeletal Animation Linear Blend Skinning | LBS蒙皮, 骨骼动画, 关键帧插值, 软光栅化 | in-progress |

@@ -25,15 +25,37 @@ description: 每日编程实践的【开发阶段】Skill。负责选题、编�
 
 ---
 
-## Step 0：防重复检查（必须先做）
+## Step 0：状态检查（必须先做）
 
 ```bash
 cd /root/.openclaw/workspace/daily-coding-practice
-
-# 检查今日是否已有项目
 TODAY=$(date +%m-%d)
+
+# 检查今日项目状态
+STATUS=$(grep "| $TODAY |" PROJECT_INDEX.md | awk -F'|' '{print $NF}' | tr -d ' ')
+
+if [ "$STATUS" = "published" ]; then
+    echo "✅ 今日项目已完成发布，Pipeline 全部完成。"
+    exit 0
+fi
+
+if [ "$STATUS" = "verified" ]; then
+    echo "⚠️ 发现今日项目卡在 verified 状态 —— 代码和图片已就绪但博客未发布！"
+    echo "立即跳转到 blog-code-workflow 完成发布..."
+    echo ""
+    echo "=== 请读取并执行 blog-code-workflow Skill ==="
+    echo "项目在 PROJECT_INDEX.md 中状态为 verified，跳过开发阶段，直接写博客发布。"
+    exit 2
+fi
+
+if [ "$STATUS" = "dev-done" ]; then
+    echo "⚠️ 今日项目开发已完成但未验证，跳过开发阶段，直接进入 verification。"
+    exit 3
+fi
+
+# 仅在 in-progress 时检查重复
 if grep -q "| $TODAY |" PROJECT_INDEX.md 2>/dev/null; then
-    echo "❌ 今天已有项目，禁止重复！"
+    echo "❌ 今天已有项目正在进行中（in-progress），禁止重复！"
     cat PROJECT_INDEX.md | grep "$TODAY"
     exit 1
 fi
@@ -43,7 +65,12 @@ echo "近期项目列表（检查主题是否重复）："
 tail -35 PROJECT_INDEX.md
 ```
 
-**如果发现重复 → 停止，从 PROJECT_INDEX.md 的"待探索领域"中重新选题。**
+**状态机规则**：
+- `published` → 全部完成，退出
+- `verified` → **直接跳到 blog-code-workflow**（不要再写代码）
+- `dev-done` → 跳到 daily-coding-verification
+- `in-progress` → 报错（不能同时有两个进行中的项目）
+- 无记录 → 正常开始新项目
 
 ---
 
@@ -155,9 +182,16 @@ git push origin main
 
 ---
 
-## Step 5：交棒
+## Step 5：交棒到验证阶段（⚠️ 不可跳过，代码跑通了不算完）
 
-开发阶段完成。**现在读取并执行 `daily-coding-verification` Skill。**
+开发阶段完成。**立即**按以下顺序执行：
+
+1. 读取 `daily-coding-verification` Skill
+2. 执行其 Layer 1-4（GitHub 上传 + 图床上传 + 链接验证）
+3. **执行其 Step 5（交棒到 blog-code-workflow + 博客发布 + URL 验证）**
+
+> ⚠️ **不要在 dev-done 状态停止。PROJECT_INDEX.md 最终必须是 `published`。**  
+> ⚠️ **"代码能跑"不是成功——博客上线且可访问才是成功。**
 
 ---
 
