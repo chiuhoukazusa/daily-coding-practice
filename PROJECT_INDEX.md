@@ -264,3 +264,4 @@
 | 07-11 | Bentley-Ottmann Line Intersection | 扫描线算法, 事件队列, 活跃集维护, O((n+k)log n), 暴力验证对比 | published |
 | 07-12 | Boids Flocking Simulation | Steering Behaviors, 集群行为, 分离/对齐/凝聚, 空间哈希优化, PPM可视化 | published |
 | 07-13 | RK4 Runge-Kutta ODE Solver | 数值方法, RK4 vs Euler, 弹簧-阻尼系统, 能量守恒验证 | published |
+| 07-14 | Strassen Matrix Multiplication | Strassen算法, 分治矩阵乘法, O(n^2.81), 标准乘法基准对比, 精度验证 | in-progress |
