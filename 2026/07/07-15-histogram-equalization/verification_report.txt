@@ -1,0 +1,14 @@
+  ✅ Entropy increase: 4.258068 → 4.305579 (max=8.000000)
+  ✅ KS statistic improvement: 0.726562 → 0.114281 (lower = closer to uniform)
+  ✅ KL divergence decrease: 3.741932 → 3.694421 (lower = more uniform)
+  ✅ Contrast improvement: 7.257845 → 75.454500 (std dev, higher = more contrast)
+  ✅ Range expansion: [40,69] → [0,255]
+
+--- Summary ---
+Entropy:  4.2581 → 4.3056 (+0.0475)
+KS stat:  0.7266 → 0.1143 (-0.6123)
+KL div:   3.7419 → 3.6944 (-0.0475)
+Std dev:  7.2578 → 75.4545 (+68.1967)
+Range:    [40,69] → [0,255]
+
+🎉 ALL CHECKS PASSED
