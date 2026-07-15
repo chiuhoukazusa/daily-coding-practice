@@ -266,3 +266,4 @@
 | 07-13 | RK4 Runge-Kutta ODE Solver | 数值方法, RK4 vs Euler, 弹簧-阻尼系统, 能量守恒验证 | published |
 | 07-14 | Strassen Matrix Multiplication | Strassen算法, 分治矩阵乘法, O(n^2.81), 标准乘法基准对比, 精度验证 | published |
 | 07-15 | Histogram Equalization | 图像处理, 直方图均衡化, CDF映射, 对比度增强 | published |
+| 07-16 | Bezier Surface Renderer | 双三次贝塞尔曲面, Bernstein多项式, 曲面细分, Phong光照, 软光栅化 | in-progress |
