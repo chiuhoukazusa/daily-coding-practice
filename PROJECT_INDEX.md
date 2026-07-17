@@ -268,3 +268,4 @@
 | 07-15 | Histogram Equalization | 图像处理, 直方图均衡化, CDF映射, 对比度增强 | published |
 | 07-16 | Bezier Surface Renderer | 双三次贝塞尔曲面, Bernstein多项式, 曲面细分, Phong光照, 软光栅化 | published |
 | 07-17 | Ear Clipping Polygon Triangulation | Ear Clipping算法, 多边形三角剖分, 点-三角形测试, CCW定向, 面积守恒验证, 5种多边形测试 | published |
+| 07-18 | RRT Path Planning | RRT算法, 快速探索随机树, 路径规划, 障碍物避碰, 连续空间采样, PPM可视化 | verified |
