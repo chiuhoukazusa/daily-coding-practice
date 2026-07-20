@@ -270,5 +270,5 @@
 | 07-17 | Ear Clipping Polygon Triangulation | Ear Clipping算法, 多边形三角剖分, 点-三角形测试, CCW定向, 面积守恒验证, 5种多边形测试 | published |
 | 07-18 | RRT Path Planning | RRT算法, 快速探索随机树, 路径规划, 障碍物避碰, 连续空间采样, PPM可视化 | published |
 | 07-19 | Minimum Spanning Tree Prim vs Kruskal | 图算法, MST, Prim算法, Kruskal算法, 并查集, 算法可视化对比, PPM可视化 | published |
-| 07-20 | Sobel Edge Detection | 图像处理, Sobel算子, 梯度边缘检测, 非极大值抑制, 滞后阈值, PPM可视化 | verified |
+| 07-20 | Sobel Edge Detection | 图像处理, Sobel算子, 梯度边缘检测, 非极大值抑制, 滞后阈值, PPM可视化 | published |
 | 07-21 | Median Filter Denoising | 图像处理, 中值滤波, 椒盐噪声去除, 滑动窗口, PSNR量化验证, PPM可视化 | published |
