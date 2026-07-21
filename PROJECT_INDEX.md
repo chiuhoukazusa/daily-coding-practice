@@ -272,4 +272,4 @@
 | 07-19 | Minimum Spanning Tree Prim vs Kruskal | 图算法, MST, Prim算法, Kruskal算法, 并查集, 算法可视化对比, PPM可视化 | published |
 | 07-20 | Sobel Edge Detection | 图像处理, Sobel算子, 梯度边缘检测, 非极大值抑制, 滞后阈值, PPM可视化 | published |
 | 07-21 | Median Filter Denoising | 图像处理, 中值滤波, 椒盐噪声去除, 滑动窗口, PSNR量化验证, PPM可视化 | published |
-| 07-22 | Canny Edge Detection | 图像处理, Canny边缘检测, 高斯平滑, 非极大值抑制, 双阈值, 滞后阈值追踪, PPM可视化 | dev-done |
+| 07-22 | Canny Edge Detection | 图像处理, Canny边缘检测, 高斯平滑, 非极大值抑制, 双阈值, 滞后阈值追踪, PPM可视化 | verified |
