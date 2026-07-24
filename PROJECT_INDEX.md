@@ -275,3 +275,4 @@
 | 07-22 | Canny Edge Detection | 图像处理, Canny边缘检测, 高斯平滑, 非极大值抑制, 双阈值, 滞后阈值追踪, PPM可视化 | published |
 | 07-23 | Seam Carving Content-Aware Resize | 接缝剪裁, 动态规划, 能量函数, 内容感知缩放, PPM可视化 | published |
 | 07-24 | Half-Edge Mesh Data Structure | 网格数据结构, Half-Edge, 邻接查询, 边界检测, 法线计算 | - | published |
+| 07-25 | Alpha-Beta Pruning Game AI | Minimax, Alpha-Beta剪枝, 博弈树搜索, Tic-Tac-Toe, 节点计数对比 | dev-done |
