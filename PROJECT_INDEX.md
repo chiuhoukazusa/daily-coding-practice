@@ -277,3 +277,4 @@
 | 07-24 | Half-Edge Mesh Data Structure | 网格数据结构, Half-Edge, 邻接查询, 边界检测, 法线计算 | - | published |
 | 07-25 | Alpha-Beta Pruning Game AI | Minimax, Alpha-Beta剪枝, 博弈树搜索, Tic-Tac-Toe, 节点计数对比 | published |
 | 07-26 | Scanline Polygon Fill | 扫描线算法, 多边形填充, 边表, 活动边表, 凸/凹/自交多边形, 面积验证 | published |
+| 07-27 | GPU Rendering Pipeline: Homogeneous Clipping | GPU流水线, 齐次裁剪, 透视校正插值, 软光栅化 | dev-done |
