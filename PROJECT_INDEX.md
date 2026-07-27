@@ -278,3 +278,4 @@
 | 07-25 | Alpha-Beta Pruning Game AI | Minimax, Alpha-Beta剪枝, 博弈树搜索, Tic-Tac-Toe, 节点计数对比 | published |
 | 07-26 | Scanline Polygon Fill | 扫描线算法, 多边形填充, 边表, 活动边表, 凸/凹/自交多边形, 面积验证 | published |
 | 07-27 | GPU Rendering Pipeline: Homogeneous Clipping | GPU流水线, 齐次裁剪, 透视校正插值, 软光栅化 | published |
+| 07-28 | Morphological Operations (Erosion/Dilation/Opening/Closing) | 形态学操作, 腐蚀/膨胀/开运算/闭运算, 3种结构元素(Square/Cross/Diamond), 二值+灰度, 18项量化验证(单调性/等幂性/对偶性/精确像素级验证) | comparison_grid.ppm | published |
