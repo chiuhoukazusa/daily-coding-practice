@@ -281,4 +281,4 @@
 | 07-28 | Morphological Operations (Erosion/Dilation/Opening/Closing) | 形态学操作, 腐蚀/膨胀/开运算/闭运算, 3种结构元素(Square/Cross/Diamond), 二值+灰度, 18项量化验证(单调性/等幂性/对偶性/精确像素级验证) | comparison_grid.ppm | published |
 | 07-29 | Gaussian Blur - Separable Kernel Optimization | 高斯模糊, 可分离核, 2D→1D卷积分解, 4种σ配置测试, 核可分离性验证, PSNR输出等价性, 性能加速比(最大14.5x), 方差递减验证 | blur_sigma*_2d/sep.ppm | published |
 | 07-30 | Cross-Hatching NPR Renderer | NPR渲染, 交叉排线, 色调分级, 边缘检测, 软光栅化 | verified |
-| 07-31 | Weighted Voronoi Stippling | Voronoi分区, 加权采样, Lloyd迭代松弛, 点密度匹配, 计算艺术, PPM可视化, 收敛追踪, 量化验证 | verified |
+| 07-31 | Weighted Voronoi Stippling | Voronoi分区, 加权采样, Lloyd迭代松弛, 点密度匹配, 计算艺术, PPM可视化, 收敛追踪, 量化验证 | published |
