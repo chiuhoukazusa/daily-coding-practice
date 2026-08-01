@@ -283,4 +283,4 @@
 | 07-30 | Cross-Hatching NPR Renderer | NPR渲染, 交叉排线, 色调分级, 边缘检测, 软光栅化 | published |
 | 07-31 | Weighted Voronoi Stippling | Voronoi分区, 加权采样, Lloyd迭代松弛, 点密度匹配, 计算艺术, PPM可视化, 收敛追踪, 量化验证 | published |
 | 08-01 | Halton Sequence Quasi-Monte Carlo | Quasi-Monte Carlo, Halton序列, 低差异序列, 离散度量化, 蒙特卡洛积分对比 | published |
-| 08-02 | Harris Corner Detection | 计算机视觉, Harris角点检测, 结构张量, 角点响应函数, 非极大值抑制, PPM可视化 | verified |
+| 08-02 | Harris Corner Detection | 计算机视觉, Harris角点检测, 结构张量, 角点响应函数, 非极大值抑制, PPM可视化 | published |
