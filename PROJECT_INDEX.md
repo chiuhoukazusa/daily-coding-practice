@@ -285,4 +285,4 @@
 | 08-01 | Halton Sequence Quasi-Monte Carlo | Quasi-Monte Carlo, Halton序列, 低差异序列, 离散度量化, 蒙特卡洛积分对比 | published |
 | 08-02 | Harris Corner Detection | 计算机视觉, Harris角点检测, 结构张量, 角点响应函数, 非极大值抑制, PPM可视化 | published |
 | 08-03 | Rotating Calipers Minimum Bounding Box | 计算几何, Rotating Calipers, 最小包围矩形, 凸包对踵点, 算法可视化 | published |
-| 08-04 | Conjugate Gradient Solver | 数值方法, CG迭代求解器, 稀疏线性系统, 收敛性分析 | in-progress |
+| 08-04 | Conjugate Gradient Solver | 数值方法, CG迭代求解器, 稀疏线性系统, 收敛性分析 | dev-done |
