@@ -286,3 +286,4 @@
 | 08-02 | Harris Corner Detection | 计算机视觉, Harris角点检测, 结构张量, 角点响应函数, 非极大值抑制, PPM可视化 | published |
 | 08-03 | Rotating Calipers Minimum Bounding Box | 计算几何, Rotating Calipers, 最小包围矩形, 凸包对踵点, 算法可视化 | published |
 | 08-04 | Conjugate Gradient Solver | 数值方法, CG迭代求解器, 稀疏线性系统, 收敛性分析 | published |
+| 08-05 | GMRES Krylov Subspace Solver | 数值方法, GMRES(m), Arnoldi迭代, Givens旋转, 重启策略, 非对称线性系统, CG等价性对比 | planned |
