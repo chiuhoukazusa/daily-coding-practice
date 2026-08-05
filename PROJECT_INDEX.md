@@ -287,3 +287,4 @@
 | 08-03 | Rotating Calipers Minimum Bounding Box | 计算几何, Rotating Calipers, 最小包围矩形, 凸包对踵点, 算法可视化 | published |
 | 08-04 | Conjugate Gradient Solver | 数值方法, CG迭代求解器, 稀疏线性系统, 收敛性分析 | published |
 | 08-05 | GMRES Krylov Subspace Solver | 数值方法, GMRES(m), Arnoldi迭代, Givens旋转, 重启策略, 非对称线性系统, CG等价性对比 | planned |
+| 08-06 | Bresenham Circle & Ellipse Rasterization | 图形学, 光栅化, Bresenham圆/椭圆算法, 中点算法, 对称性验证, 八分圆绘制 | in-progress |
