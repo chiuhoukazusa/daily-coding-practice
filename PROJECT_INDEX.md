@@ -288,3 +288,4 @@
 | 08-04 | Conjugate Gradient Solver | 数值方法, CG迭代求解器, 稀疏线性系统, 收敛性分析 | published |
 | 08-05 | GMRES Krylov Subspace Solver | 数值方法, GMRES(m), Arnoldi迭代, Givens旋转, 重启策略, 非对称线性系统, CG等价性对比 | planned |
 | 08-06 | Bresenham Circle & Ellipse Rasterization | 图形学, 光栅化, Bresenham圆/椭圆算法, 中点算法, 对称性验证, 八分圆绘制 | published |
+| 08-07 | LU Decomposition (Doolittle Algorithm) | 数值方法, LU分解, Doolittle算法, 前代/回代, 条件数验证, 线性方程组求解 | verified |
