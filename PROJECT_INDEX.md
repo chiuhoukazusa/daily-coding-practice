@@ -294,4 +294,4 @@
 | 08-10 | Jacobi Eigenvalue Decomposition | 数值方法, Jacobi特征值算法, Givens旋转, 对称矩阵对角化, 迭代收敛, Frobenius范数不变性 | published |
 | 08-11 | SVD Singular Value Decomposition | 数值线性代数, Golub-Reinsch, 矩阵分解, 精度验证 | published |
 | 08-12 | Huffman Coding Data Compression | Huffman编码, 前缀码, 最小堆, 压缩率验证 | published |
-| 08-13 | DBSCAN Density-Based Clustering | 机器学习, 聚类, DBSCAN, 密度可达, 噪声点检测, 区域查询, 量化验证 | dbscan_output.ppm | in-progress |
+| 08-13 | DBSCAN Density-Based Clustering | 机器学习, 聚类, DBSCAN, 密度可达, 噪声点检测, 区域查询, 量化验证 | dbscan_output.ppm | dev-done |
