@@ -37,3 +37,9 @@ DBSCAN 是一种基于密度的聚类算法，相比 k-means（06-21）和 GMM�
 | 噪声检测 F1 | 0.7850 |
 
 ARI=1.0 表示与 ground-truth 完全一致，正确识别了环形结构（k-means/GMM 无法做到）。
+
+## 输出结果
+
+![DBSCAN 聚类结果](dbscan_output.png)
+
+（不同颜色代表不同簇，黑色点为检测出的噪声点）
