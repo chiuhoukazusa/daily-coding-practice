@@ -295,3 +295,4 @@
 | 08-11 | SVD Singular Value Decomposition | 数值线性代数, Golub-Reinsch, 矩阵分解, 精度验证 | published |
 | 08-12 | Huffman Coding Data Compression | Huffman编码, 前缀码, 最小堆, 压缩率验证 | published |
 | 08-13 | DBSCAN Density-Based Clustering | 机器学习, 聚类, DBSCAN, 密度可达, 噪声点检测, 区域查询, 量化验证 | dbscan_output.ppm | verified |
+| 08-14 | Marching Squares 2D Isocontour Extraction | 图形学, 计算几何, Marching Squares, 等值线提取, 双线性插值, 16种case表, 轮廓闭合性验证 | marching_squares.ppm | dev-done |
