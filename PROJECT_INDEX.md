@@ -298,4 +298,4 @@
 | 08-14 | Marching Squares 2D Isocontour Extraction | 图形学, 计算几何, Marching Squares, 等值线提取, 双线性插值, 16种case表, 轮廓闭合性验证 | marching_squares.ppm | verified |
 | 08-15 | NURBS Curve Renderer | NURBS, 有理B样条, Cox-de Boor, 权重控制, 圆精确表示, PPM可视化 | nurbs_output.ppm | verified |
 | 08-16 | Flow Field Pathfinding | 游戏AI寻路, Flow Field流场, 成本场, 积分场BFS/Dijkstra, 梯度下降, A*基准对比, 多智能体 | flowfield_output.ppm | verified |
-| 08-17 | Closest Pair of Points (Divide & Conquer) | 计算几何, 分治最近点对, 最近点对算法, 中位分割, 带状区域扫描, 暴力O(n²)基准对比, 距离精度验证 | closest_pair_output.ppm | in-progress |
+| 08-17 | Closest Pair of Points (Divide & Conquer) | 计算几何, 分治最近点对, 最近点对算法, 中位分割, 带状区域扫描, 暴力O(n²)基准对比, 距离精度验证 | closest_pair_output.ppm | dev-done |
