@@ -300,4 +300,4 @@
 | 08-16 | Flow Field Pathfinding | 游戏AI寻路, Flow Field流场, 成本场, 积分场BFS/Dijkstra, 梯度下降, A*基准对比, 多智能体 | flowfield_output.ppm | verified |
 | 08-17 | Closest Pair of Points (Divide & Conquer) | 计算几何, 分治最近点对, 最近点对算法, 中位分割, 带状区域扫描, 暴力O(n²)基准对比, 距离精度验证 | closest_pair_output.ppm | published |
 | 08-18 | BSP Tree 3D Painter's Algorithm | BSP二叉空间分割, 平面分割, 画家算法, 背面剔除, 视点排序, 多边形排序验证 | bsp_output.ppm | verified |
-| 08-19 | Minimum Enclosing Circle (Welzl Algorithm) | 计算几何, 最小包围圆, Welzl随机增量算法, 三点定圆, 暴力O(n^4)基准对比, 半径精度验证 | welzl_mec_output.ppm | verified |
+| 08-19 | Minimum Enclosing Circle (Welzl Algorithm) | 计算几何, 最小包围圆, Welzl随机增量算法, 三点定圆, 暴力O(n^4)基准对比, 半径精度验证 | welzl_mec_output.ppm | published |
