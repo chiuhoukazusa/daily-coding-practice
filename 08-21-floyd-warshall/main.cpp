@@ -180,6 +180,156 @@ int main() {
         cout << "[Test4] n=" << n << " time=" << ms << "ms checksum=" << checksum << "\n";
     }
 
+    // ============ Visualization: graph + shortest path + benchmark ============
+    // Renders a PPM image: left panel = demo graph with shortest path highlighted,
+    // right panel = O(n^3) time-complexity benchmark curve.
+    {
+        const int W = 1200, H = 600;
+        vector<vector<int>> img(H, vector<int>(W * 3, 255)); // 255 = white  (RGB)
+        auto setpx = [&](int x, int y, int r, int g, int b) {
+            if (x < 0 || x >= W || y < 0 || y >= H) return;
+            img[y][x*3+0] = r; img[y][x*3+1] = g; img[y][x*3+2] = b;
+        };
+
+        // ---- Left panel: demo graph (positive + negative edges), highlight path ----
+        int N = 8;
+        vector<pair<double,double>> pos(N);
+        double cx = 300, cy = 300, R = 190;
+        for (int i = 0; i < N; i++) {
+            double a = 2*M_PI*i/N - M_PI/2;
+            pos[i] = {cx + R*cos(a), cy + R*sin(a)};
+        }
+        // Build a demo graph with some negative edges, no negative cycle
+        FloydWarshall demo(N);
+        vector<tuple<int,int,long long>> demoEdges = {
+            {0,1,4},{1,2,2},{2,3,6},{3,4,3},{4,5,1},{5,6,5},{6,7,2},{7,0,3},
+            {0,2,9},{1,3,7},{2,6,-4},{3,7,-2},{4,0,8},{5,7,6},{0,5,-1}
+        };
+        for (auto [u,v,w] : demoEdges) demo.addEdge(u, v, w);
+        demo.run();
+
+        // draw edges
+        for (auto [u,v,w] : demoEdges) {
+            int x1 = pos[u].first, y1 = pos[u].second;
+            int x2 = pos[v].first, y2 = pos[v].second;
+            int colr = (w < 0) ? 200 : 130;
+            int colg = (w < 0) ? 60  : 130;
+            int colb = (w < 0) ? 60  : 130;
+            // Bresenham line
+            int dx = abs(x2-x1), sx = x1<x2?1:-1;
+            int dy = -abs(y2-y1), sy = y1<y2?1:-1;
+            int err = dx+dy, e2;
+            int xx=x1, yy=y1;
+            while (true) {
+                setpx(xx, yy, colr, colg, colb);
+                if (xx==x2 && yy==y2) break;
+                e2 = 2*err;
+                if (e2 >= dy) { err += dy; xx += sx; }
+                if (e2 <= dx) { err += dx; yy += sy; }
+            }
+        }
+
+        // shortest path from 0 to 7 (highlighted in red, thick)
+        auto sp = demo.path(0, 7);
+        for (size_t i = 0; i + 1 < sp.size(); i++) {
+            int u = sp[i], v = sp[i+1];
+            int x1 = pos[u].first, y1 = pos[u].second;
+            int x2 = pos[v].first, y2 = pos[v].second;
+            int dx = abs(x2-x1), sx = x1<x2?1:-1;
+            int dy = -abs(y2-y1), sy = y1<y2?1:-1;
+            int err = dx+dy, e2;
+            int xx=x1, yy=y1;
+            while (true) {
+                setpx(xx-1, yy, 230,40,40); setpx(xx+1, yy, 230,40,40);
+                setpx(xx, yy-1, 230,40,40); setpx(xx, yy+1, 230,40,40);
+                setpx(xx, yy, 230,40,40);
+                if (xx==x2 && yy==y2) break;
+                e2 = 2*err;
+                if (e2 >= dy) { err += dy; xx += sx; }
+                if (e2 <= dx) { err += dx; yy += sy; }
+            }
+        }
+
+        // draw nodes (filled circles) + labels
+        for (int i = 0; i < N; i++) {
+            int x = pos[i].first, y = pos[i].second;
+            for (int dy = -12; dy <= 12; dy++)
+                for (int dx = -12; dx <= 12; dx++)
+                    if (dx*dx + dy*dy <= 144)
+                        setpx(x+dx, y+dy, 40, 90, 220);
+            setpx(x, y, 255, 255, 255);
+        }
+
+        // ---- Right panel: O(n^3) benchmark curve ----
+        int bx = 650, bw = 520, bh = 520, by0 = 550;
+        // axis
+        for (int x = bx; x <= bx+bw; x++) setpx(x, by0, 60,60,60);
+        for (int y = by0-bh; y <= by0; y++) setpx(bx, y, 60,60,60);
+
+        vector<pair<int,double>> bench; // n -> ms
+        mt19937 brng(999);
+        for (int n : {50, 75, 100, 125, 150, 175, 200}) {
+            vector<vector<int>> g(n, vector<int>(n, (int)1e9));
+            for (int i = 0; i < n; i++) g[i][i] = 0;
+            for (int e = 0; e < n*5; e++) {
+                int u = brng()%n, v = brng()%n;
+                g[u][v] = min(g[u][v], 1 + (int)(brng()%100));
+            }
+            auto t0 = chrono::high_resolution_clock::now();
+            long long ck = 0;
+            for (int k = 0; k < n; k++)
+                for (int i = 0; i < n; i++)
+                    for (int j = 0; j < n; j++)
+                        if (g[i][k] + g[k][j] < g[i][j]) g[i][j] = g[i][k] + g[k][j];
+            for (int i = 0; i < n; i++) ck += g[i][i%n];
+            auto t1 = chrono::high_resolution_clock::now();
+            double ms = chrono::duration<double, milli>(t1 - t0).count();
+            bench.push_back({n, ms});
+        }
+        double maxMs = 0; for (auto& p : bench) maxMs = max(maxMs, p.second);
+        // fit cubic curve n^3 * k
+        double kFit = 0; for (auto& p : bench) kFit += p.second / pow(p.first, 3.0);
+        kFit /= bench.size();
+
+        auto plot = [&](vector<pair<int,double>>& pts, int r, int g, int b) {
+            for (auto& p : pts) {
+                int x = bx + (int)((double)p.first / 200 * bw);
+                int y = by0 - (int)(p.second / maxMs * bh);
+                for (int dy=-3; dy<=3; dy++) for (int dx=-3; dx<=3; dx++)
+                    if (dx*dx+dy*dy <= 4) setpx(x+dx, y+dy, r, g, b);
+            }
+            for (size_t i = 0; i + 1 < pts.size(); i++) {
+                int x1 = bx + (int)((double)pts[i].first / 200 * bw);
+                int y1 = by0 - (int)(pts[i].second / maxMs * bh);
+                int x2 = bx + (int)((double)pts[i+1].first / 200 * bw);
+                int y2 = by0 - (int)(pts[i+1].second / maxMs * bh);
+                int dx = abs(x2-x1), sx = x1<x2?1:-1;
+                int dy = -abs(y2-y1), sy = y1<y2?1:-1;
+                int err = dx+dy, e2, xx=x1, yy=y1;
+                while (true) { setpx(xx, yy, r, g, b);
+                    if (xx==x2 && yy==y2) break;
+                    e2=2*err;
+                    if (e2>=dy){err+=dy;xx+=sx;} if (e2<=dx){err+=dx;yy+=sy;} }
+            }
+        };
+
+        // cubic fit curve (scaled to maxMs)
+        vector<pair<int,double>> fit;
+        for (int n = 50; n <= 200; n += 10)
+            fit.push_back({n, kFit * pow(n, 3.0)});
+        plot(fit, 200, 200, 200);
+        plot(bench, 220, 60, 40);
+
+        // Write PPM
+        ofstream f("floyd_warshall_output.ppm");
+        f << "P3\n" << W << " " << H << "\n255\n";
+        for (int y = 0; y < H; y++)
+            for (int x = 0; x < W; x++)
+                f << img[y][x*3+0] << " " << img[y][x*3+1] << " " << img[y][x*3+2] << " ";
+        f.close();
+        cout << "[Visualization] wrote floyd_warshall_output.ppm (" << W << "x" << H << ")\n";
+    }
+
     cout << "ALL_DONE\n";
     return 0;
 }

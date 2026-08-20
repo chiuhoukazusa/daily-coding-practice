@@ -302,4 +302,4 @@
 | 08-18 | BSP Tree 3D Painter's Algorithm | BSP二叉空间分割, 平面分割, 画家算法, 背面剔除, 视点排序, 多边形排序验证 | bsp_output.ppm | verified |
 | 08-19 | Minimum Enclosing Circle (Welzl Algorithm) | 计算几何, 最小包围圆, Welzl随机增量算法, 三点定圆, 暴力O(n^4)基准对比, 半径精度验证 | welzl_mec_output.ppm | published |
 | 08-20 | Terrain LOD (Geomipmapping) | 游戏开发/图形学, Geomipmapping地形LOD, 距离分级, 三角形数减少, 裂缝修复, 软光栅化, 量化验证 | terrain_lod_output.ppm | published |
-| 08-21 | Floyd-Warshall All-Pairs Shortest Path | 图算法, 动态规划O(V^3), APSP, 负权边支持, 负环检测, 路径重建最优性验证, Dijkstra基准对比, 时间复杂度基准 | dev-done |
+| 08-21 | Floyd-Warshall All-Pairs Shortest Path | 图算法, 动态规划O(V^3), APSP, 负权边支持, 负环检测, 路径重建最优性验证, Dijkstra基准对比, 时间复杂度基准 | floyd_warshall_output.ppm | dev-done |
