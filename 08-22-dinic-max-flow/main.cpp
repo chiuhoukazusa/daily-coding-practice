@@ -227,6 +227,120 @@ int main() {
         printf("   结果一致 = %s, 加速比 = %.2fx\n", fd==fek?"✅":"❌", td>0 ? tek/td : 0);
     }
 
+    // ---- 测试 5：可视化（网络流图 + 最小割） ----
+    printf("\n[测试5] 生成可视化 PPM 图像\n");
+    {
+        // 构造一个有代表性的网络，包含重叠路径以展示 Dinic 的分层图优势。
+        // 网络：s=0 分成两支到 a=1(10) / b=2(5)，汇聚到 c=3，再到 t=4。
+        int n = 6; // 0=s, 1=a, 2=b, 3=c, 4=d, 5=t
+        vector<array<long long,3>> E = {
+            {0,1,10},{0,2,8},
+            {1,3,5},{1,4,3},
+            {2,1,4},{2,3,6},
+            {3,5,12},{4,5,7}
+        };
+        Dinic d(n);
+        for (auto &e : E) d.addEdge(e[0], e[1], e[2]);
+        long long flow = d.maxFlow(0, 5);
+        auto side = minCutSide(d, 0);
+
+        // 计算每条原始边的实际流量 = 原始容量 - 残量
+        // 为返回残量图对每条边定位，需要重新构建并记录 addEdge 后的残量。
+        // 这里用一个快照：重建网络，跑完后读取残量。
+        Dinic dr(n);
+        vector<array<long long,3>> E2 = E; // 拷贝
+        for (auto &e : E2) dr.addEdge(e[0], e[1], e[2]);
+        dr.maxFlow(0, 5);
+        // 用邻接矩阵快照残量：由于双向边用 rev 索引，直接遍历正向边
+        // 正向边残量通过 g[u][i].cap 读取（i 为正向边的索引）
+        map<pair<int,int>, long long> resid;
+        map<pair<int,int>, long long> orig;
+        for (auto &e : E) orig[{e[0],e[1]}] = e[2];
+        for (int u = 0; u < n; u++) {
+            for (auto &e : dr.g[u]) {
+                if (orig.count({u, e.to})) resid[{u, e.to}] = e.cap;
+            }
+        }
+        vector<array<long long,3>> flowEdges;
+        for (auto &e : E) {
+            long long cap = orig[{e[0],e[1]}];
+            long long used = cap - resid[{e[0],e[1]}];
+            flowEdges.push_back({e[0], e[1], used});
+        }
+
+        // 图布局（固定坐标，W=1200 H=750）
+        const int W = 1200, H = 750;
+        map<int, pair<int,int>> pos = {
+            {0,{120,375}}, {1,{420,180}}, {2,{420,570}},
+            {3,{840,240}}, {4,{840,510}}, {5,{1080,375}}
+        };
+
+        // 生成 PPM (P3 文本格式)
+        vector<vector<array<int,3>>> img(H, vector<array<int,3>>(W, {255,255,255}));
+
+        auto drawLine = [&](int x0,int y0,int x1,int y1,array<int,3> c){
+            int dx=abs(x1-x0), dy=abs(y1-y0);
+            int sx=x0<x1?1:-1, sy=y0<y1?1:-1;
+            int err=dx-dy;
+            while(true){
+                if(x0>=0&&x0<W&&y0>=0&&y0<H) img[y0][x0]=c;
+                if(x0==x1&&y0==y1) break;
+                int e2=2*err;
+                if(e2>-dy){err-=dy;x0+=sx;}
+                if(e2<dx){err+=dx;y0+=sy;}
+            }
+        };
+        auto drawCircle = [&](int cx,int cy,int r,array<int,3> c){
+            for(int y=-r;y<=r;y++) for(int x=-r;x<=r;x++){
+                if(x*x+y*y<=r*r && cx+x>=0&&cx+x<W&&cy+y>=0&&cy+y<H)
+                    img[cy+y][cx+x]=c;
+            }
+        };
+
+        // 1. 画边（先画，节点覆盖其上）
+        for (auto &fe : flowEdges) {
+            int u=fe[0], v=fe[1]; long long used=fe[2];
+            auto [x0,y0]=pos[u]; auto [x1,y1]=pos[v];
+            long long cap=orig[{u,v}];
+            // 边颜色：已满（used==cap）红色，部分使用绿色，未用灰色
+            array<int,3> ec;
+            if (used == cap) ec = {220,60,60};
+            else if (used > 0) ec = {60,180,90};
+            else ec = {200,200,200};
+            drawLine(x0,y0,x1,y1,ec);
+        }
+
+        // 2. 画节点
+        for (int i=0;i<n;i++){
+            auto [x,y]=pos[i];
+            array<int,3> nc;
+            if (i==0) nc={60,120,220};           // source 蓝
+            else if (i==5) nc={220,120,60};      // sink 橙
+            else if (side[i]) nc={80,160,90};    // 源侧（最小割）绿
+            else nc={160,160,160};                // 汇侧灰
+            drawCircle(x,y,26,nc);
+            // 节点边框
+            drawCircle(x,y,30,{0,0,0});
+            drawCircle(x,y,26,nc);
+        }
+
+        // 3. 用 PIL 后期加标签（在 C++ 里简化为后续 Python 标注）
+        //    这里只输出 PPM，标签由 Python 脚本添加。
+
+        ofstream f("dinic_maxflow_output.ppm");
+        f << "P3\n" << W << " " << H << "\n255\n";
+        for(int y=0;y<H;y++){
+            for(int x=0;x<W;x++){
+                f << img[y][x][0] << " " << img[y][x][1] << " " << img[y][x][2] << " ";
+            }
+            f << "\n";
+        }
+        f.close();
+        printf("   [Visualization] wrote dinic_maxflow_output.ppm (%dx%d)\n", W, H);
+        printf("   max_flow=%lld, source_side_nodes=%d\n", flow,
+               (int)count(side.begin(), side.end(), true));
+    }
+
     printf("\n=== 全部验证完成 ===\n");
     return 0;
 }
