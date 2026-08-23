@@ -305,4 +305,4 @@
 | 08-21 | Floyd-Warshall All-Pairs Shortest Path | 图算法, 动态规划O(V^3), APSP, 负权边支持, 负环检测, 路径重建最优性验证, Dijkstra基准对比, 时间复杂度基准 | floyd_warshall_output.ppm | verified |
 | 08-22 | Maximum Flow (Dinic's Algorithm) | 图算法, 网络流, Dinic算法, BFS分层图, DFS阻塞流, 最大流最小割验证, Edmonds-Karp基准对比 | dinic_maxflow_output.ppm | published |
 | 08-23 | Strongly Connected Components (Tarjan's Algorithm) | 图算法, Tarjan SCC, Kosaraju, 强连通分量, 缩点DAG, 拓扑序验证, 有向图可达性 | tarjan_scc_output.ppm | published |
-| 08-24 | Bellman-Ford Shortest Path | 图算法, Bellman-Ford, 单源最短路, 负权边, 负环检测, 动态规划松弛, Dijkstra基准对比 | bellman_ford_output.ppm | dev-done |
+| 08-24 | Bellman-Ford Shortest Path | 图算法, Bellman-Ford, 单源最短路, 负权边, 负环检测, 动态规划松弛, Dijkstra基准对比 | bellman_ford_output.ppm | verified |
