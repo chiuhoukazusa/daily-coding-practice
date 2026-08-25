@@ -5,7 +5,9 @@
 //   3) Cycle detection correctness on graphs with/without cycles
 //   4) Randomized DAG stress test (many trials)
 
+#define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <bits/stdc++.h>
+#include "stb_image_write.h"
 using namespace std;
 
 // ---------- Kahn's Algorithm (BFS, in-degree based) ----------
@@ -70,6 +72,90 @@ bool isValidTopo(const vector<int>& order, const vector<pair<int,int>>& edges) {
 
 bool hasCycle(int n, const vector<pair<int,int>>& edges) {
     return kahn(n, edges).empty();
+}
+
+// ---------------- PNG visualization ----------------
+// Draw a DAG laid out left-to-right in layers by topological rank.
+// Vertices colored by a gradient from early (red) to late (blue) in the order.
+void writePNG(const char* path, int n, const vector<pair<int,int>>& edges,
+              const vector<int>& order) {
+    int S = 800, W = S, H = S;
+    vector<unsigned char> img(W * H * 3, 255);
+
+    // Rank of each vertex in the topological order (0 = earliest).
+    vector<int> rank(n, 0);
+    for (int i = 0; i < (int)order.size(); i++) rank[order[i]] = i;
+
+    // Layer (x) = rank; y = spread within same layer to reduce overlap.
+    // Simple assignment: x proportional to rank/n, y = pseudo-random-ish offset
+    // based on vertex id so same-layer vertices don't overlap.
+    mt19937 layout(7);
+    double marginX = 70, marginY = 70;
+    double usableW = W - 2 * marginX;
+    double usableH = H - 2 * marginY;
+    int maxRank = max(1, n - 1);
+
+    vector<pair<double,double>> pos(n);
+    for (int i = 0; i < n; i++) {
+        double tx = (double)rank[i] / maxRank;
+        double x = marginX + tx * usableW;
+        double y = marginY + ((double)(layout() % 1000) / 1000.0) * usableH;
+        pos[i] = {x, y};
+    }
+
+    auto setPixel = [&](int x, int y, unsigned char r, unsigned char g, unsigned char b) {
+        if (x < 0 || x >= W || y < 0 || y >= H) return;
+        int idx = (y * W + x) * 3;
+        img[idx] = r; img[idx+1] = g; img[idx+2] = b;
+    };
+
+    auto drawLine = [&](double x0, double y0, double x1, double y1,
+                        unsigned char r, unsigned char g, unsigned char b) {
+        int steps = max(1, (int)hypot(x1-x0, y1-y0));
+        for (int s = 0; s <= steps; s++) {
+            double t = (double)s / steps;
+            setPixel((int)(x0 + t*(x1-x0)), (int)(y0 + t*(y1-y0)), r, g, b);
+        }
+    };
+
+    // Draw directed edges (light gray) with arrowheads at the target end.
+    for (auto& e : edges) {
+        int u = e.first, v = e.second;
+        double x0 = pos[u].first, y0 = pos[u].second;
+        double x1 = pos[v].first, y1 = pos[v].second;
+        // Shorten the line so it stops at the vertex boundary (radius r=16).
+        double len = hypot(x1-x0, y1-y0);
+        if (len < 1e-9) continue;
+        double ux = (x1-x0)/len, uy = (y1-y0)/len;
+        double stopx = x1 - ux * 18, stopy = y1 - uy * 18;
+        drawLine(x0, y0, stopx, stopy, 150, 150, 150);
+        // Arrowhead triangle at (stopx, stopy) pointing along (ux, uy).
+        double ah = 9, aw = 6;
+        double nx = -uy, ny = ux;
+        double bx = stopx - ux*ah, by = stopy - uy*ah;
+        double lx = bx + nx*aw, ly = by + ny*aw;
+        double rx = bx - nx*aw, ry = by - ny*aw;
+        drawLine(stopx, stopy, lx, ly, 120, 120, 120);
+        drawLine(stopx, stopy, rx, ry, 120, 120, 120);
+        drawLine(lx, ly, rx, ry, 120, 120, 120);
+    }
+
+    // Draw vertices as filled disks, gradient color by rank.
+    for (int i = 0; i < n; i++) {
+        int x = (int)pos[i].first, y = (int)pos[i].second;
+        int r = 16;
+        double t = maxRank == 0 ? 0.0 : (double)rank[i] / maxRank;
+        // Red (early) -> blue (late) gradient.
+        unsigned char cr = (unsigned char)(230 - 150 * t);
+        unsigned char cg = (unsigned char)(57 + 60 * t);
+        unsigned char cb = (unsigned char)(70 + 180 * t);
+        for (int dy = -r; dy <= r; dy++)
+            for (int dx = -r; dx <= r; dx++)
+                if (dx*dx + dy*dy <= r*r)
+                    setPixel(x+dx, y+dy, cr, cg, cb);
+    }
+
+    stbi_write_png(path, W, H, 3, img.data(), W * 3);
 }
 
 // Generate a random DAG: edges only point from lower index to higher index.
@@ -171,6 +257,19 @@ int main() {
     printf("Cycle detection: %d/%d planted-cycle graphs correctly flagged\n", cycDetected, cycTrials);
     printf("\nTOTAL CHECKS: %d, PASSED: %d\n", totalChecks, pass);
     printf("stressOK=%d cycOK=%d\n", stressOK ? 1 : 0, cycDetected == cycTrials ? 1 : 0);
+
+    // ---------- Visualization: draw a fixed example DAG ----------
+    // A course-schedule style DAG with 10 nodes for a recognizable diagram.
+    int vn = 10;
+    vector<pair<int,int>> vedges = {
+        {0,2},{0,3},{1,3},{1,4},{2,5},{3,5},{3,6},{4,6},
+        {5,7},{6,7},{6,8},{7,9},{8,9},{2,8},{4,8}
+    };
+    vector<int> vorder = kahn(vn, vedges);
+    if (!vorder.empty()) {
+        writePNG("topological_sort_output.png", vn, vedges, vorder);
+        printf("\nVisualization written to topological_sort_output.png (10-node DAG)\n");
+    }
 
     bool allOK = (pass == totalChecks) && stressOK && (cycDetected == cycTrials);
     printf("\nRESULT: %s\n", allOK ? "ALL_PASS" : "FAIL");
