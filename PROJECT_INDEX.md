@@ -308,3 +308,4 @@
 | 08-24 | Bellman-Ford Shortest Path | 图算法, Bellman-Ford, 单源最短路, 负权边, 负环检测, 动态规划松弛, Dijkstra基准对比 | bellman_ford_output.ppm | verified |
 | 08-25 | Graph Coloring (Welsh-Powell + Backtracking) | 图算法, 图着色, Welsh-Powell贪心, 回溯精确染色, 色数验证, 二分图2可着色检测 | graph_coloring_output.png | verified |
 | 08-26 | Topological Sort (Kahn + DFS) | 图算法, 拓扑排序, Kahn算法, DFS后序, DAG有向无环图, 环检测, 最优性验证, PPM可视化 | published |
+| 08-27 | Simplex Noise 2D Generator | Simplex噪声, 梯度噪声, 偏斜变换, 频谱各向同性验证, Perlin对比, 程序化纹理 | simplex_noise_output.ppm | in-progress |
