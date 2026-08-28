@@ -1,0 +1,28 @@
+=== Test 1: Factorization reconstruction (A - L*L^T) ===
+  n=  4  ||A - L*L^T||_F = 0.0000000000
+  n= 16  ||A - L*L^T||_F = 0.0000000000
+  n= 64  ||A - L*L^T||_F = 0.0000000000
+  n=128  ||A - L*L^T||_F = 0.0000000000
+  MAX reconstruction error = 0.0000000000
+
+=== Test 2: Linear solve residual ||A x - b|| ===
+  n=  4  residual = 0.0000000000
+  n= 16  residual = 0.0000000000
+  n= 64  residual = 0.0000000000
+  n=128  residual = 0.0000000000
+  MAX residual = 0.0000000000
+
+=== Test 3: Non-SPD detection ===
+  indefinite matrix -> decomposition returned: false (correct)
+  negative definite matrix -> returned: false (correct)
+
+=== Test 4: Known exact decomposition ===
+  L[0][0]=2.0000000000 (expect 2.0)
+  L[1][0]=1.0000000000 (expect 1.0)
+  L[1][1]=1.4142135624 (expect 1.4142135624)
+  exact case OK
+
+=== SUMMARY ===
+max_reconstruction_error=0.0000000000
+max_solve_residual=0.0000000000
+PASS=true
