@@ -312,3 +312,4 @@
 | 08-29 | Cholesky Decomposition (SPD Linear Solver) | 数值方法, Cholesky分解, 对称正定矩阵, 下三角矩阵, A=LLᵀ重构验证, 线性方程组求解, 精度验证 | cholesky_output.txt | verified |
 | 08-30 | Bicubic Interpolation Image Upscaling | 图像处理, 双三次插值, Keys/Catmull-Rom核, 最近邻/双线性/双三次对比, 2x/4x放大, PSNR/MSE/边缘锐度量化验证, PPM可视化 | bicubic_comparison.png | verified |
 | 08-31 | Point-in-Polygon Test (Ray Casting + Winding Number) | 计算几何, 射线投射法, 环绕数法, 凸/凹/自交多边形, 蒙特卡洛面积比值验证, PPM可视化 | pip_output.ppm | verified |
+| 09-01 | FFT Fast Fourier Transform (Cooley-Tukey) | 算法/数值方法, Cooley-Tukey FFT, 位逆序置换, 蝴蝶运算, DFT基准确认, Parseval能量守恒, 圆卷积/频谱, 量化验证 | fft_output.txt | verified |
