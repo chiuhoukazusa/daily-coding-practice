@@ -1,0 +1,10 @@
+PASS | FFT vs DFT 逐点误差 | max_err=0.000000 (需 < 1e-9)
+PASS | IFFT(FFT(x)) 往返重建 | max_err=0.000000 (需 < 1e-9)
+PASS | Parseval 能量守恒 | time_E=660.313951 freq_E/N=660.313951 rel_err=0.000000
+PASS | FFT 线性性 FFT(a)+FFT(b)=FFT(a+b) | max_err=0.000000
+PASS | 圆卷积定理 FFT卷积 == 时域循环卷积 | max_err=0.000000
+PASS | 正弦波频谱尖峰位置与幅度 | bin16=768.000000 bin496=768.000000 expected=768.000000 max_other=0.000000
+PASS | 正弦波旁瓣抑制 | max_other_bin=0.000000 (需 ~0)
+PASS | 时间复杂度 O(N log N) 缩放 | t(1024)=17.729000us t(65536)=1896.328000us ratio=106.961927 theory=102.400000 (需 < 3x theory)
+
+TOTAL: ALL PASS
