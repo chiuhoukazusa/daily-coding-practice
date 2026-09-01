@@ -1,0 +1,26 @@
+=== Newton-Raphson & Secant Root Finding — 量化验证 ===
+
+▶ f(x)=x^2-2  (sqrt2, 简单根)
+  真实根 = 1.414213562373095
+  Newton:  iter= 4  converged=1  |err|=0.000e+00  收敛阶≈2.000
+  Secant:  iter= 6  converged=1  |err|=2.252e-13  收敛阶≈1.624
+
+▶ f(x)=cos(x)-x  (简单根, 超越)
+  真实根 = 0.739085133215161
+  Newton:  iter= 4  converged=1  |err|=0.000e+00  收敛阶≈1.997
+  Secant:  iter= 5  converged=1  |err|=1.532e-14  收敛阶≈1.724
+
+▶ f(x)=(x-1)^3  (三重根, 重根退化)
+  真实根 = 1.000000000000000
+  Newton:  iter=22  converged=1  |err|=6.683e-05  收敛阶≈1.000
+  Secant:  iter=31  converged=1  |err|=7.579e-05  收敛阶≈1.000
+
+=== 多重根修正（Newton vs 改进 Newton m=3）===
+  普通 Newton  (x0=1.5): iter=22 |err|=6.683e-05 阶≈1.000 (线性退化)
+  修正 Newton (m=3):     iter= 1 |err|=0.000e+00 阶≈-1.000 (恢复二次)
+
+[CHECK] Newton 简单根收敛阶=2.000 (期望≈2.0)
+[CHECK] Secant 收敛阶=1.624 (期望≈1.618)
+[CHECK] 重根: 普通 Newton iter=22 vs 修正 Newton iter=1 (期望 修正 << 普通)
+
+✅ 全部量化验证通过
