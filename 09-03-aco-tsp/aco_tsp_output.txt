@@ -1,0 +1,22 @@
+=== ACO TSP Verification (n=60, seed=98765) ===
+[valid] Nearest-neighbor tour visits each city exactly once            PASS
+[valid] ACO tour visits each city exactly once                         PASS
+[valid] 2-opt refined tour visits each city exactly once               PASS
+[ACO] ACO tour <= NN greedy tour (improvement)                         PASS
+[ACO] ACO tour <= avg random tour                                      PASS
+[2-opt] 2-opt never increases tour length (monotone)                   PASS
+[2-opt] refinement applied or already local-optimum                    PASS
+
+--- Length summary ---
+Nearest-Neighbor greedy : 818.1994
+Average random tour     : 3160.4103
+ACO best tour           : 660.1857
+ACO + 2-opt             : 650.0648 (improved=yes)
+ACO vs NN improvement   : 19.31%
+
+--- Brute-force cross-check (small instance) ---
+Brute-force optimum : 295.168754
+ACO result          : 295.168754
+[optimum] ACO recovers exact optimum on n=8 instance (<=0.1%)          PASS
+
+=== ALL CHECKS PASSED ===

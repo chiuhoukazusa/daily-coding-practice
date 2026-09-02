@@ -314,4 +314,4 @@
 | 08-31 | Point-in-Polygon Test (Ray Casting + Winding Number) | 计算几何, 射线投射法, 环绕数法, 凸/凹/自交多边形, 蒙特卡洛面积比值验证, PPM可视化 | pip_output.ppm | verified |
 | 09-01 | FFT Fast Fourier Transform (Cooley-Tukey) | 算法/数值方法, Cooley-Tukey FFT, 位逆序置换, 蝴蝶运算, DFT基准确认, Parseval能量守恒, 圆卷积/频谱, 量化验证 | fft_output.txt | verified |
 | 09-02 | Newton-Raphson & Secant Root Finding | 数值方法, Newton-Raphson, Secant割线法, 求根, 二次收敛阶验证, 病态/重根分析 | newton_secant_output.txt | verified |
-| 09-03 | Ant Colony Optimization for TSP | 算法/图算法, 蚁群优化ACO, 信息素矩阵, 概率路径构建, 信息素蒸发/更新, 贪心最近邻初始化, 收敛验证(对比贪心/NN/2-opt), 最优性验证 | aco_tsp_output.txt | in-progress |
+| 09-03 | Ant Colony Optimization for TSP | 算法/图算法, 蚁群优化ACO, 信息素矩阵, 概率路径构建, 信息素蒸发/更新, 贪心最近邻初始化, 收敛验证(对比贪心/NN/2-opt), 最优性验证 | aco_tsp_output.txt | dev-done |
