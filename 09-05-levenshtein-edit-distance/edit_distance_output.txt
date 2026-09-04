@@ -1,0 +1,81 @@
+===== Levenshtein Edit Distance 验证 =====
+测试对数: 12
+
+[PASS] "kitten" -> "sitting"  dist=3
+      A: kitten-
+      B: sitting
+    ops: SMMMSMI
+[PASS] "flaw" -> "lawn"  dist=2
+      A: flaw-
+      B: -lawn
+    ops: DMMMI
+[PASS] "" -> ""  dist=0
+      A: 
+      B: 
+    ops: 
+[PASS] "abc" -> ""  dist=3
+      A: abc
+      B: ---
+    ops: DDD
+[PASS] "" -> "xyz"  dist=3
+      A: ---
+      B: xyz
+    ops: III
+[PASS] "abc" -> "abc"  dist=0
+      A: abc
+      B: abc
+    ops: MMM
+[PASS] "sunday" -> "saturday"  dist=3
+      A: s--unday
+      B: saturday
+    ops: MIIMSMMM
+[PASS] "intention" -> "execution"  dist=5
+      A: intention
+      B: execution
+    ops: SSSSSMMMM
+[PASS] "algorithm" -> "altruistic"  dist=6
+      A: algori-thm
+      B: altruistic
+    ops: MMSSSMIMSS
+[PASS] "gumbo" -> "gambol"  dist=2
+      A: gumbo-
+      B: gambol
+    ops: MSMMMI
+[PASS] "a" -> "b"  dist=1
+      A: a
+      B: b
+    ops: S
+[PASS] "ab" -> "ba"  dist=2
+      A: ab
+      B: ba
+    ops: SS
+
+===== 经典参考值断言 =====
+  [PASS] dist("kitten","sitting")=3 (期望 3)
+  [PASS] dist("flaw","lawn")=2 (期望 2)
+  [PASS] dist("sunday","saturday")=3 (期望 3)
+  [PASS] dist("intention","execution")=5 (期望 5)
+  [PASS] dist("gumbo","gambol")=2 (期望 2)
+  [PASS] dist("","")=0 (期望 0)
+  [PASS] dist("abc","")=3 (期望 3)
+  [PASS] dist("","xyz")=3 (期望 3)
+  [PASS] dist("a","b")=1 (期望 1)
+  [PASS] dist("abc","abc")=0 (期望 0)
+
+===== 数学性质验证 =====
+  自反性 dist(x,x)==0: PASS (6/6)
+  对称性 dist(x,y)==dist(y,x): PASS (5/5)
+  上下界 max(|a|-|b|)<=dist<=max(|a|,|b|): PASS (200/200 随机串)
+  三角形不等式 dist(a,c)<=dist(a,b)+dist(b,c): PASS (200/200 随机三元组)
+
+===== 性能对比 (滚动数组 vs 完整矩阵) =====
+  字符串长度: 2000 x 2000
+  滚动数组: dist=20 用时 6.49322 ms
+  完整矩阵: dist=20 用时 10.6382 ms
+  一致性(opt==full): PASS
+  空间: 滚动数组 O(min)=2001 个 int vs 完整矩阵 O(n*m)=4004001 个 int
+
+===== 汇总 =====
+  功能用例: 全部通过
+  经典参考值: 全部通过
+✅ 全部量化验证通过

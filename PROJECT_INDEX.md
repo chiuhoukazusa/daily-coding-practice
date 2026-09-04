@@ -316,3 +316,4 @@
 | 09-02 | Newton-Raphson & Secant Root Finding | 数值方法, Newton-Raphson, Secant割线法, 求根, 二次收敛阶验证, 病态/重根分析 | newton_secant_output.txt | verified |
 | 09-03 | Ant Colony Optimization for TSP | 算法/图算法, 蚁群优化ACO, 信息素矩阵, 概率路径构建, 信息素蒸发/更新, 贪心最近邻初始化, 收敛验证(对比贪心/NN/2-opt), 最优性验证 | aco_tsp_output.txt | verified |
 | 09-04 | Boyer-Moore String Search | 字符串算法, Boyer-Moore, 坏字符规则, 好后缀规则, 跳跃表, 朴素搜索基准对比, 正确性/加速比量化验证 | bm_output.txt | verified |
+| 09-05 | Levenshtein Edit Distance (DP) | 算法/动态规划, Wagner-Fischer, 编辑距离, 滚动数组O(min(m,n))优化, 回溯对齐, 量化验证(参考值对比/上下界/自反性) | edit_distance_output.txt | published |
