@@ -1,0 +1,10 @@
+[Test 1] small correctness: PASS  ac=3 bf=3
+[Test 2] overlapping: PASS  ac=34 bf=34
+[Test 3] fail-depth invariant: PASS
+[Test 4] randomized (200 trials): 200/200  total matches ac=8640 bf=8640
+[Test 5] perf: text=400001 chars, patterns=500
+  AC = 3.814398 ms (73700 matches)
+  BF = 74.339044 ms (73700 matches)
+  correctness: PASS  speedup = 19.489063x
+
+DONE
