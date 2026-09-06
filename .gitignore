@@ -1,6 +1,8 @@
 *.o
-output
-debug
-dbg*
-test_seed
 *.ppm
+core.*
+dbg*
+debug
+kmp
+output
+test_seed
