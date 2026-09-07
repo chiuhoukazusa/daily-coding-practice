@@ -319,3 +319,4 @@
 | 09-05 | Levenshtein Edit Distance (DP) | 算法/动态规划, Wagner-Fischer, 编辑距离, 滚动数组O(min(m,n))优化, 回溯对齐, 量化验证(参考值对比/上下界/自反性) | edit_distance_output.txt | published |
 | 09-06 | Aho-Corasick Multi-Pattern Matching | 字符串算法/自动机, Aho-Corasick, Trie树, 失败链接, 输出链接, 多模式匹配, 朴素逐模式基准对比, 正确性/加速比量化验证 | ac_automaton_output.txt | verified |
 | 09-07 | KMP String Matching (Prefix Function) | 字符串算法, KMP Knuth-Morris-Pratt, 前缀函数, 失配回退, 朴素搜索基准对比, 正确性/加速比量化验证 | kmp_output.txt | verified |
+| 09-08 | Manacher Longest Palindromic Substring | 字符串算法, Manacher算法, 最长回文子串, 中心扩展O(n²)基准对比, 正确性/加速比量化验证 | manacher_output.txt | dev-done |

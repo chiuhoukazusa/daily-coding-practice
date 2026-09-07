@@ -1,0 +1,30 @@
+=== Manacher 最长回文子串 — 量化验证 ===
+  case "babad" -> brute 3 / manacher 3  ✅
+  case "cbbd" -> brute 2 / manacher 2  ✅
+  case "a" -> brute 1 / manacher 1  ✅
+  case "aa" -> brute 2 / manacher 2  ✅
+  case "(empty)" -> brute 0 / manacher 0  ✅
+  case "abcba" -> brute 5 / manacher 5  ✅
+  case "abacdfgdcaba" -> brute 3 / manacher 3  ✅
+  case "aaaa" -> brute 4 / manacher 4  ✅
+  case "racecar" -> brute 7 / manacher 7  ✅
+  case "abccba" -> brute 6 / manacher 6  ✅
+  case "forgeeksskeegfor" -> brute 10 / manacher 10  ✅
+  case "abcddcba" -> brute 8 / manacher 8  ✅
+正确性: 132/132 通过
+
+=== 性能基准 (求最长回文子串长度) ===
+  n=   100  brute=    0.00ms  manacher=  0.001ms  speedup=    4.5x
+  n=   500  brute=    0.04ms  manacher=  0.005ms  speedup=    8.2x
+  n=  1000  brute=    0.15ms  manacher=  0.009ms  speedup=   16.9x
+  n=  2000  brute=    0.55ms  manacher=  0.017ms  speedup=   32.3x
+  n=  5000  brute=    3.18ms  manacher=  0.049ms  speedup=   64.9x
+  n= 10000  brute=   12.36ms  manacher=  0.092ms  speedup=  134.7x
+  n= 20000  brute=   48.67ms  manacher=  0.189ms  speedup=  257.6x
+
+最大输入 (n=20000) 加速比: 257.575x
+✅ 加速比验证通过 (Manacher O(n) 显著优于 O(n^2))
+
+构造回文长度=1000, Manacher 找到=1000  ✅
+
+=== 全部验证通过 ✅ ===
