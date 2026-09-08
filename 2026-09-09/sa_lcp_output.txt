@@ -1,0 +1,16 @@
+Correctness: PASS ✅ (226 strings checked, SA & LCP all match brute force)
+LCP bounds: PASS ✅ (sum=3468 over 1999 adj pairs, each within [0, remaining-suffix-len])
+
+Performance (n=5000, alphabet=26):
+  brute force:  0.59 ms
+  prefix doubling: 0.09 ms
+  speedup:      6.73x
+  SA equality:  PASS ✅
+
+Distinct substrings: SA/LCP=1997532, brute count=1997532  MATCH ✅
+
+=== SUMMARY ===
+correctness_checks=226
+lcp_bound_ok=true
+speedup=6.73x
+distinct_substring_correct=true
