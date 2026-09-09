@@ -1,0 +1,59 @@
+=== Bron-Kerbosch Maximal Clique Enumeration ===
+
+[triangle] n=3
+  暴力基准: cliques=1 maxClique=3
+  BK basic : cliques=1 maxClique=3 valid=Y nodes=8
+  BK pivot : cliques=1 maxClique=3 valid=Y nodes=4
+  -> ✅ PASS
+
+[path4] n=4
+  暴力基准: cliques=3 maxClique=2
+  BK basic : cliques=3 maxClique=2 valid=Y nodes=8
+  BK pivot : cliques=3 maxClique=2 valid=Y nodes=6
+  -> ✅ PASS
+
+[bipartite_k44] n=8
+  暴力基准: cliques=16 maxClique=2
+  BK basic : cliques=16 maxClique=2 valid=Y nodes=25
+  BK pivot : cliques=16 maxClique=2 valid=Y nodes=21
+  -> ✅ PASS
+
+[complete5+3iso] n=8
+  暴力基准: cliques=4 maxClique=5
+  BK basic : cliques=4 maxClique=5 valid=Y nodes=35
+  BK pivot : cliques=4 maxClique=5 valid=Y nodes=9
+  -> ✅ PASS
+
+[random_n8_d0.4] n=8
+  暴力基准: cliques=6 maxClique=3
+  BK basic : cliques=6 maxClique=3 valid=Y nodes=23
+  BK pivot : cliques=6 maxClique=3 valid=Y nodes=14
+  -> ✅ PASS
+
+[random_n10_d0.3] n=10
+  暴力基准: cliques=10 maxClique=2
+  BK basic : cliques=10 maxClique=2 valid=Y nodes=19
+  BK pivot : cliques=10 maxClique=2 valid=Y nodes=16
+  -> ✅ PASS
+
+[random_n12_d0.5] n=12
+  暴力基准: cliques=13 maxClique=6
+  BK basic : cliques=13 maxClique=6 valid=Y nodes=144
+  BK pivot : cliques=13 maxClique=6 valid=Y nodes=28
+  -> ✅ PASS
+
+[random_n14_d0.2] n=14
+  暴力基准: cliques=16 maxClique=3
+  BK basic : cliques=16 maxClique=3 valid=Y nodes=39
+  BK pivot : cliques=16 maxClique=3 valid=Y nodes=28
+  -> ✅ PASS
+
+[random_n16_d0.35] n=16
+  暴力基准: cliques=25 maxClique=3
+  BK basic : cliques=25 maxClique=3 valid=Y nodes=69
+  BK pivot : cliques=25 maxClique=3 valid=Y nodes=45
+  -> ✅ PASS
+
+=== 汇总 ===
+总极大团数: basic=94 pivot=94
+✅ 全部测试通过：极大团数量、最大团大小、团有效性均与暴力基准一致
