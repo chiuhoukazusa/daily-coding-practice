@@ -1,0 +1,8 @@
+== Fenwick Tree (BIT) 验证报告 ==
+Test1 点更新/前缀和/区间查询 失配数 = 0 (应为 0)
+Test1 PASS
+Test2 逆序对 BIT=6359898 暴力=6359898 (N=5000)
+Test2 PASS
+Test3a BIT 逆序对  N=200000 时间=39.773474ms 结果=9999488180
+Test3b 暴力逆序对 N=20000 时间=421.496944ms 结果=99895206
+Estimated speedup (extrapolated O(n^2) vs O(n log n)) = 1059.743848x

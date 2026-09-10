@@ -322,3 +322,4 @@
 | 09-08 | Manacher Longest Palindromic Substring | 字符串算法, Manacher算法, 最长回文子串, 中心扩展O(n²)基准对比, 正确性/加速比量化验证 | manacher_output.txt | verified |
 | 09-09 | Suffix Array & LCP (Prefix Doubling + Kasai) | 字符串数据结构, 后缀数组, 前缀倍增排序, 计数排序, Kasai LCP, 朴素排序基准对比, 正确性/加速比量化验证 | sa_lcp_output.txt | published |
 | 09-10 | Bron-Kerbosch Maximal Clique Enumeration | 图算法, 极大团, Bron-Kerbosch, 枢轴优化Pivot, 退化解Tomita, 暴力基准对比, 团计数/最大团定量验证 | bk_output.txt | verified |
+| 09-11 | Fenwick Tree (Binary Indexed Tree) | 数据结构, BIT树状数组, 前缀和, 区间查询, 逆序对计数, 暴力基准对比, 正确性/加速比量化验证 | fenwick_output.txt | dev-done |
