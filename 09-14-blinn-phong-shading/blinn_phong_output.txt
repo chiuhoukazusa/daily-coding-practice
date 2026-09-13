@@ -1,0 +1,29 @@
+=== Blinn-Phong Shading Model ===
+
+Test1 反射模型数值有界性 [0,1]:
+  min=0.0225 max=1.0000  越界数=0/600
+  结果: ✅ PASS (所有分量 ∈ [0,1])
+
+Test2 高光集中度(FWHM)随 shininess 增大而变窄:
+  shininess=   8 -> FWHM=85.35°
+  shininess=  32 -> FWHM=68.15°
+  shininess= 128 -> FWHM=62.25°
+  shininess= 512 -> FWHM=60.60°
+  结果: ✅ PASS (FWHM 单调递减)
+
+Test3 Blinn-Phong 高光 vs 经典 Phong (相同 shininess):
+  shininess=  16: Blinn FWHM=74.70°  Phong FWHM=64.00°  (Blinn ≥ Phong ✅) | 峰值 Blinn=1.0000 Phong=1.0000
+  shininess=  64: Blinn FWHM=64.35°  Phong FWHM=61.10°  (Blinn ≥ Phong ✅) | 峰值 Blinn=1.0000 Phong=1.0000
+  shininess= 256: Blinn FWHM=61.15°  Phong FWHM=60.30°  (Blinn ≥ Phong ✅) | 峰值 Blinn=1.0000 Phong=1.0000
+  结果: ✅ PASS (Blinn 高光同等或更宽，符合理论)
+
+Test4 球体渲染像素统计:
+  文件大小=2160000 bytes  像素均值=20.9  标准差=25.3
+  结果: ✅ PASS (非全黑/全白且有丰富渐变)
+
+Test5 三分量分离与能量关系:
+  正面直射: R=1.000 G=1.000 B=1.000 (期望≈1.0, 被 clamp)
+  背面:     R=0.040 G=0.040 B=0.040 (期望≈0.04 纯环境)
+  结果: ✅ PASS (环境光独立，正面受光饱和)
+
+=== 全部量化验证通过 ✅ ===
