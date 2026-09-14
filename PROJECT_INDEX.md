@@ -326,4 +326,4 @@
 | 09-12 | Segment Tree (Range Sum + Lazy Propagation) | 数据结构, 线段树, 区间和查询, 区间更新懒标记, 二分查找kth, 暴力O(n)基准对比, 正确性/加速比量化验证 | published |
 | 09-13 | Treap Balanced BST (Random Priority) | 数据结构, Treap树堆, 随机优先级堆性质, BST性质, 旋转(split/merge), 高度平衡验证, std::set正确性对比, 性能/加速验证 | published |
 | 09-14 | Blinn-Phong Shading Model | 图形学, Blinn-Phong着色, 镜面高光, 半程向量, 环境/漫反射/高光分量, Phong对比, 能量守恒验证 | verified |
-| 09-15 | Red-Black Tree (Self-Balancing BST) | 数据结构, 红黑树, 旋转+染色, BST性质, 黑高不变, 无红红相邻, std::set正确性对比, 性能/高度平衡量化验证 | rbtree_output.txt | dev-done |
+| 09-15 | Red-Black Tree (Self-Balancing BST) | 数据结构, 红黑树, 旋转+染色, BST性质, 黑高不变, 无红红相邻, std::set正确性对比, 性能/高度平衡量化验证 | rbtree_output.txt | verified |
