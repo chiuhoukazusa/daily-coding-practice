@@ -1,0 +1,11 @@
+=== Red-Black Tree Quantitative Verification ===
+
+Test 1: 20 randomized mixed-workload trials (insert/erase/find/kth) + invariants: PASS
+Test 2: sorted insert of 16383 nodes: height=26 (bound 28.000000), black-height=13 (valid range [7, 14]), invariants=hold -> PASS
+Test 3: 50k insert + 20k erase, inorder equality vs std::set (32230 elems): PASS
+Test 4: performance (N=1000000), invariants hold=yes
+  build  RB=0.696193s  std::set=0.511620s  ratio=1.360762x
+  lookup RB=0.603437s  std::set=0.742475s  ratio=0.812737x (unique=999892)
+  -> PASS (find correctness confirmed)
+
+=== ALL TESTS PASSED ===
