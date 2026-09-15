@@ -327,3 +327,4 @@
 | 09-13 | Treap Balanced BST (Random Priority) | 数据结构, Treap树堆, 随机优先级堆性质, BST性质, 旋转(split/merge), 高度平衡验证, std::set正确性对比, 性能/加速验证 | published |
 | 09-14 | Blinn-Phong Shading Model | 图形学, Blinn-Phong着色, 镜面高光, 半程向量, 环境/漫反射/高光分量, Phong对比, 能量守恒验证 | verified |
 | 09-15 | Red-Black Tree (Self-Balancing BST) | 数据结构, 红黑树, 旋转+染色, BST性质, 黑高不变, 无红红相邻, std::set正确性对比, 性能/高度平衡量化验证 | rbtree_output.txt | published |
+| 09-16 | Splay Tree (Self-Adjusting BST) | 数据结构, Splay树伸展树, 自调整BST, splay操作(zig/zig-zig/zig-zag), 摊还O(log n), std::set正确性对比, 缓存局部性/结构调整验证 | splay_output.txt | in-progress |
