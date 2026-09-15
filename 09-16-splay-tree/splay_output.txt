@@ -1,0 +1,18 @@
+=== Splay Tree Quantitative Verification ===
+
+[Test 1] Correctness vs std::set (200000 mixed ops): PASS
+          total rotations = 3478751, per op = 17.394
+          key comparisons per op = 17.342
+
+[Test 2] BST invariant (strictly increasing in-order): PASS | size=43191 (ref=43191)
+          tree height = 42  (log2(n) ~ 15.398)
+
+[Test 3] accessed node becomes root after find: PASS
+
+[Test 4] Local access workload (100000 finds over hot window):
+          Splay:  height=50, compares/op=6.397
+          Naive:  height=35, compares/op=17.365
+
+[Test 5] Heavy insert/erase churn (100000 ops) vs std::set: PASS
+
+=== DONE ===
