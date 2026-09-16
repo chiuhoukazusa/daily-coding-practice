@@ -1,0 +1,21 @@
+=== 正确性测试 (Hopcroft-Karp vs Kuhn) ===
+Case 1: nL=2 nR=2 edges=3 | HK=2 Kuhn=2 bound=2  OK
+Case 2: nL=3 nR=3 edges=9 | HK=3 Kuhn=3 bound=3  OK
+Case 3: nL=4 nR=4 edges=5 | HK=4 Kuhn=4 bound=4  OK
+Case 4: nL=3 nR=3 edges=0 | HK=0 Kuhn=0 bound=3  OK
+Case 5: nL=1 nR=3 edges=3 | HK=1 Kuhn=1 bound=1  OK
+
+=== 随机小图正确性压力测试 (100轮) ===
+轮次=100  失败=0  OK
+
+=== 性能基准 (Hopcroft-Karp vs Kuhn 加速比) ===
+graph(nL x nR, p)          edges         HK_ms       Kuhn_ms   speedup
+2000x2000 p=0.010000       39847         0.210        24.065     114.8x
+2000x2000 p=0.050000      199524         0.834        62.922      75.4x
+3000x3000 p=0.005000       44782         0.425        43.730     102.9x
+5000x5000 p=0.002000       50240         0.931        83.336      89.5x
+
+=== 最终判定 ===
+正确性全部通过: YES
+最大加速比: 114.826x
+RESULT: PASS max_speedup=114.826x
