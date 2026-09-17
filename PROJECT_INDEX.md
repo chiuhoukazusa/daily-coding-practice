@@ -329,4 +329,4 @@
 | 09-15 | Red-Black Tree (Self-Balancing BST) | 数据结构, 红黑树, 旋转+染色, BST性质, 黑高不变, 无红红相邻, std::set正确性对比, 性能/高度平衡量化验证 | rbtree_output.txt | published |
 | 09-16 | Splay Tree (Self-Adjusting BST) | 数据结构, Splay树伸展树, 自调整BST, splay操作(zig/zig-zig/zig-zag), 摊还O(log n), std::set正确性对比, 缓存局部性/结构调整验证 | splay_output.txt | verified |
 | 09-17 | Hopcroft-Karp Maximum Bipartite Matching | 图算法, 二分图最大匹配, Hopcroft-Karp, BFS分层+DFS增广, 匈牙利O(VE)基准对比, 匹配数/正确性量化验证, 随机图性能加速比 | hopcroft_karp_output.txt | verified |
-| 09-18 | Union-Find Disjoint Set Union | 数据结构, 并查集, 路径压缩, 按秩合并, 连通性, Kruskal应用, 暴力基准对比, 正确性/性能量化验证 | union_find_output.txt | published |
+| 09-18 | Union-Find Disjoint Set Union | 数据结构, 并查集, 路径压缩, 按秩合并, 连通性, Kruskal应用, 暴力基准对比, 正确性/性能量化验证 | union_find_output.txt | verified |
