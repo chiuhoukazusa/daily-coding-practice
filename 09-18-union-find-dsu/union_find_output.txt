@@ -1,0 +1,8 @@
+TEST 1 (explicit small graph): PASS
+TEST 2 (randomized cross-validation, 49954 unions+queries vs naive): PASS
+TEST 3 (Kruskal MST via DSU, weight=29720, edges=199): PASS
+TEST 4 (random mix N=500000 OPS=1000000):
+  DSU (compress+rank): 0.052053s
+  Naive: exceeded 20000000 traversal steps after 0.370793s -> PATHOLOGICAL (near-quadratic). DSU stays O(alpha(N)).
+TEST 4: PASS (DSU finishes quickly, naive degenerates)
+TEST 5 (union-by-rank depth bound, N=1048576): max_depth=20 <= log2(N)=20 -> PASS
