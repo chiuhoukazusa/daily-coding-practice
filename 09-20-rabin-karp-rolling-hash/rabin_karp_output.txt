@@ -1,0 +1,12 @@
+basic_correctness_tests=10 failures=0
+random_correctness_tests=5000 mismatches=0
+single_hash_collision_pair_found=no
+benchmark_text_len=2000000 pattern_len=20
+rk_matches=0 naive_matches=0
+rk_time_ms=22.477 naive_time_ms=7.696
+speedup=0.34x
+multi_pattern_count=200 text_len=1000000 pat_len=12
+multi_rk_matches=0 multi_naive_matches=0
+multi_rk_time_ms=21.777 multi_naive_time_ms=742.364 multi_speedup=34.09x
+TOTAL_TESTS=5010 TOTAL_FAILURES=0
+ALL_PASS
