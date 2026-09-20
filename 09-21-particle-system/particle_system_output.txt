@@ -1,0 +1,11 @@
+=== Particle System Physics: Euler vs Verlet ===
+
+[Vanilla] Projectile max position error: Euler=0.007358 m, Verlet=0.000000 m
+PASS: projectile matches analytic parabola (both < 0.05 m)
+[Vanilla] Euler energy drift: max=2180658.9129%, final=2180658.9129%
+[Vanilla] Verlet energy drift: max=0.050000%, final=0.014667%
+PASS: Verlet conserves energy (bounded drift, symplectic)
+[Vanilla] Bounce test: 5 bounces, final y=0.708 m
+PASS: particle bounced and settled (lifecycle works)
+
+ALL CHECKS PASSED
