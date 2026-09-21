@@ -1,0 +1,23 @@
+PASS  size-equality
+PASS  sorted-keys-equality
+PASS  sorted-ascending
+  ops: insert=66717 erase=66976 query=66307 | final size=36709
+PASS  search-found-values
+PASS  search-misses-correct
+PASS  level-0-size-geometric (47690)
+PASS  level-1-decay (got=23577 expect~25000)
+PASS  level-2-decay (got=12054 expect~12500)
+PASS  level-3-decay (got=5860 expect~6250)
+PASS  level-4-decay (got=3062 expect~3125)
+PASS  level-5-decay (got=1482 expect~1562)
+PASS  level-6-decay (got=758 expect~781)
+PASS  max-level-in-expected-range (=17)
+  levels histogram: 0:47690 1:23577 2:12054 3:5860 4:3062 5:1482 6:758 7:342 8:151 ... maxLevel=17
+  skip-list 1000000 lookups: 754.798046 ms (0.754798 us/lookup)
+  naive linear 5000 lookups: 303.116713 ms (60.623343 us/lookup)
+  speedup = 80.317302x
+PASS  skip-list-speedup>20x (=80.317302x)
+
+==========================================
+ALL CHECKS PASSED
+==========================================
