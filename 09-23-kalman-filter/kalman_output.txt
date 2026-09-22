@@ -1,0 +1,15 @@
+=== Kalman Filter Verification ===
+measurement noise sigma = 2.000 (var=4.00)
+RMSE raw measurement      = 2.0378
+RMSE kalman position      = 0.5570
+RMSE kalman velocity      = 0.2305 (true=2.00)
+position RMSE reduction   = 3.7x
+innovations lag-1 corr    = -0.0203 (expect ~0)
+final pos std dev         = 0.4793 (init=1.0000)
+
+PASS: position estimate well below noise (3.66x)
+PASS: velocity recovered (RMSE=0.2305)
+PASS: innovations approximately white (rho1=-0.0203)
+PASS: covariance bounded & shrunk (0.4793 < 1.0000)
+
+ALL CHECKS PASSED
