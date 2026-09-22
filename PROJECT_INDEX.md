@@ -334,4 +334,4 @@
 | 09-20 | Rabin-Karp Rolling Hash String Matching | 字符串算法, Rabin-Karp, 滚动哈希, 双哈希防碰撞, 朴素搜索基准对比, 正确性/加速比量化验证 | verified |
 | 09-21 | Particle System Physics (Euler vs Verlet Integration) | 游戏开发/物理模拟, 粒子系统, 欧拉积分, Verlet积分, 重力运动, 能量守恒, 弹道轨迹解析解对比, 经典力学验证 | particle_system_output.txt | verified |
 | 09-22 | Skip List (Probabilistic Ordered Map) | 数据结构, 跳表, 随机层级, 多层链表索引, 期望O(log n)查找/插入/删除, 概率平衡验证, std::set正确性对比, 性能加速/层高量化验证 | skip_list_output.txt | verified |
-| 09-23 | Kalman Filter State Estimation | 算法/状态估计, 卡尔曼滤波, 线性高斯模型, 匀速运动, 预测-更新循环, 增益收敛, RMSE量化验证(对比原始测量/真值), 统计性质验证 | kalman_output.txt | dev-done |
+| 09-23 | Kalman Filter State Estimation | 算法/状态估计, 卡尔曼滤波, 线性高斯模型, 匀速运动, 预测-更新循环, 增益收敛, RMSE量化验证(对比原始测量/真值), 统计性质验证 | kalman_output.txt | verified |
