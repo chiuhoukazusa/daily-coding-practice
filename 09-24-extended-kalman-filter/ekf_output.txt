@@ -1,0 +1,14 @@
+============ EKF Radar Tracking (Nonlinear Measurement) ============
+Dynamics: constant velocity (linear).  Sensor: range+bearing (nonlinear).
+range std=2.0m  bearing std=0.008rad   target flies 896m
+Steps: 3000 (post-warmup 2700, dt=0.05s)
+--------------------------------------------------------------------
+RMSE(position)  EKF (re-linearized H) : 0.8457 m
+RMSE(position)  naive sensor          : 7.3789 m
+RMSE(position)  linear-KF (frozen H)  : 0.8824 m
+--------------------------------------------------------------------
+EKF / naive sensor  : 8.72x
+EKF / frozen-H KF   : 1.04x
+3-sigma consistency (target >=90%): 100.00%
+====================================================================
+RESULT: PASS
