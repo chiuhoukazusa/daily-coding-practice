@@ -335,4 +335,4 @@
 | 09-21 | Particle System Physics (Euler vs Verlet Integration) | 游戏开发/物理模拟, 粒子系统, 欧拉积分, Verlet积分, 重力运动, 能量守恒, 弹道轨迹解析解对比, 经典力学验证 | particle_system_output.txt | verified |
 | 09-22 | Skip List (Probabilistic Ordered Map) | 数据结构, 跳表, 随机层级, 多层链表索引, 期望O(log n)查找/插入/删除, 概率平衡验证, std::set正确性对比, 性能加速/层高量化验证 | skip_list_output.txt | verified |
 | 09-23 | Kalman Filter State Estimation | 算法/状态估计, 卡尔曼滤波, 线性高斯模型, 匀速运动, 预测-更新循环, 增益收敛, RMSE量化验证(对比原始测量/真值), 统计性质验证 | kalman_output.txt | verified |
-| 09-24 | Extended Kalman Filter (EKF) Nonlinear State Estimation | 算法/状态估计, 扩展卡尔曼滤波, 非线性系统, Jacobian线性化, 单摆/弹道非线性, 预测-更新, RMSE量化验证(对比UKF/真值) | ekf_output.txt | dev-done |
+| 09-24 | Extended Kalman Filter (EKF) Nonlinear State Estimation | 算法/状态估计, 扩展卡尔曼滤波, 非线性系统, Jacobian线性化, 单摆/弹道非线性, 预测-更新, RMSE量化验证(对比UKF/真值) | ekf_output.txt | verified |
