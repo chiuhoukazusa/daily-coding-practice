@@ -337,4 +337,4 @@
 | 09-23 | Kalman Filter State Estimation | 算法/状态估计, 卡尔曼滤波, 线性高斯模型, 匀速运动, 预测-更新循环, 增益收敛, RMSE量化验证(对比原始测量/真值), 统计性质验证 | kalman_output.txt | verified |
 | 09-24 | Extended Kalman Filter (EKF) Nonlinear State Estimation | 算法/状态估计, 扩展卡尔曼滤波, 非线性系统, Jacobian线性化, 单摆/弹道非线性, 预测-更新, RMSE量化验证(对比UKF/真值) | ekf_output.txt | verified |
 | 09-25 | Hungarian Algorithm (Kuhn-Munkres) Assignment | 图算法, 匈牙利算法, 带权二分图最大权完美匹配, Kuhn-Munkres, 增广路, 暴力基准对比, 最优性验证 | verified |
-| 09-26 | Matrix Chain Multiplication (DP Optimal Parenthesization) | 算法/DP动态规划, 矩阵链乘法, 最优括号化, 区间DP, Catalan括号化暴力基准对比, 最小标量乘法次数, 重建括号方案 | matrix-chain-multiplication | in-progress |
+| 09-26 | Matrix Chain Multiplication (DP Optimal Parenthesization) | 算法/DP动态规划, 矩阵链乘法, 最优括号化, 区间DP, Catalan括号化暴力基准对比, 最小标量乘法次数, 重建括号方案 | matrix-chain-multiplication | dev-done |

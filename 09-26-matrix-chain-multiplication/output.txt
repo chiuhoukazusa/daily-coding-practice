@@ -1,0 +1,65 @@
+=== Matrix Chain Multiplication — Quantitative Verification ===
+
+[Case 1] dims=[10,20,30,40,30]  n=4
+  DP min cost          = 30000
+  Brute-force min cost = 30000
+  Parenthesization     = (((A0 x A1) x A2) x A3)
+  Re-eval cost         = 30000  (dims 10x30)
+  Self-consistent      = PASS   Matches brute-force = PASS   => ✅
+
+[Case 2] dims=[5,10,3,12,5,50,6]  n=6
+  DP min cost          = 2010
+  Brute-force min cost = 2010
+  Parenthesization     = ((A0 x A1) x ((A2 x A3) x (A4 x A5)))
+  Re-eval cost         = 2010  (dims 5x6)
+  Self-consistent      = PASS   Matches brute-force = PASS   => ✅
+
+[Case 3] dims=[30,35,15,5,10,20,25]  n=6
+  DP min cost          = 15125
+  Brute-force min cost = 15125
+  Parenthesization     = ((A0 x (A1 x A2)) x ((A3 x A4) x A5))
+  Re-eval cost         = 15125  (dims 30x25)
+  Self-consistent      = PASS   Matches brute-force = PASS   => ✅
+
+[Case 4] dims=[2,3,4,5]  n=3
+  DP min cost          = 64
+  Brute-force min cost = 64
+  Parenthesization     = ((A0 x A1) x A2)
+  Re-eval cost         = 64  (dims 2x5)
+  Self-consistent      = PASS   Matches brute-force = PASS   => ✅
+
+[Case 5] dims=[7,6,5,4,3,2]  n=5
+  DP min cost          = 208
+  Brute-force min cost = 208
+  Parenthesization     = (A0 x (A1 x (A2 x (A3 x A4))))
+  Re-eval cost         = 208  (dims 7x2)
+  Self-consistent      = PASS   Matches brute-force = PASS   => ✅
+
+[Case 6] dims=[100,1,100,1,100]  n=4
+  DP min cost          = 10200
+  Brute-force min cost = 10200
+  Parenthesization     = (A0 x ((A1 x A2) x A3))
+  Re-eval cost         = 10200  (dims 100x100)
+  Self-consistent      = PASS   Matches brute-force = PASS   => ✅
+
+[Case 7] dims=[1,100,1,100,1,100,1]  n=6
+  DP min cost          = 302
+  Brute-force min cost = 302
+  Parenthesization     = ((A0 x A1) x ((A2 x A3) x (A4 x A5)))
+  Re-eval cost         = 302  (dims 1x1)
+  Self-consistent      = PASS   Matches brute-force = PASS   => ✅
+
+=== Correctness summary: 7/7 cases passed ===
+
+=== Performance comparison (DP O(n^3) vs Brute-force Catalan) ===
+  n  |       DP_time(us) |      BF_time(us) |  Catalan(pars) | speedup
+-----|-------------------|------------------|----------------|---------
+    8 |                 1 |               26 |            429 |     17.3x
+   10 |                 2 |              176 |           4862 |     61.5x
+   12 |                 1 |             1556 |          58786 |    889.7x
+   14 |                 4 |            13371 |         742900 |   3024.6x
+   16 |                 8 |           119074 |        9694845 |  14194.1x
+   18 |                14 |          1100614 |      129644790 |  75384.6x
+   20 |                15 |          9765312 |     1767263190 | 648384.1x
+
+=== Overall: ALL CHECKS PASSED ✅ ===
