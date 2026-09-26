@@ -1,0 +1,15 @@
+=== B-Tree (t=3) ===
+inserted=200000 unique_after_insert=190241 size()=190241
+height=10  theoretical~log_t(n)=11.1105
+insert time (ms)=182.991  per-op(ns)=914.954
+inorder_sorted=PASS  size_match=PASS
+contains_all=PASS  no_false_positive=PASS
+--- Clean unique-key test (N2=100000) ---
+value_mapping_correct=PASS
+after_delete size=50000 expected=50000  size_ok=PASS
+deleted_keys_absent=PASS
+--- Performance (unique keys, N=100000) ---
+std::set insert(ms)=26.8398  find(ms)=37.6115
+BTree   insert(ms)=57.7298  find(ms)=29.3494
+height_within_theoretical_bounds=PASS
+=== OVERALL: PASS ===
