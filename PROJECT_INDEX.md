@@ -339,3 +339,4 @@
 | 09-25 | Hungarian Algorithm (Kuhn-Munkres) Assignment | 图算法, 匈牙利算法, 带权二分图最大权完美匹配, Kuhn-Munkres, 增广路, 暴力基准对比, 最优性验证 | verified |
 | 09-26 | Matrix Chain Multiplication (DP Optimal Parenthesization) | 算法/DP动态规划, 矩阵链乘法, 最优括号化, 区间DP, Catalan括号化暴力基准对比, 最小标量乘法次数, 重建括号方案 | matrix-chain-multiplication | published |
 | 09-27 | B-Tree Multiway Search Tree | 数据结构, B树, 多路搜索树, 磁盘友好, 分裂/合并, 高度平衡不变式, std::set正确性对比, 性能/高度量化验证 | btree_output.txt | verified |
+| 09-28 | Binary Lifting LCA & Kth Ancestor | 树算法, 最近公共祖先LCA, Binary Lifting倍增, euler tour, K-th Ancestor, 朴素LCA基准对比, 正确性/加速比量化验证 | verified |
