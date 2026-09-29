@@ -341,3 +341,4 @@
 | 09-27 | B-Tree Multiway Search Tree | 数据结构, B树, 多路搜索树, 磁盘友好, 分裂/合并, 高度平衡不变式, std::set正确性对比, 性能/高度量化验证 | btree_output.txt | verified |
 | 09-28 | Binary Lifting LCA & Kth Ancestor | 树算法, 最近公共祖先LCA, Binary Lifting倍增, euler tour, K-th Ancestor, 朴素LCA基准对比, 正确性/加速比量化验证 | verified |
 | 09-29 | Sparse Table RMQ (Range Minimum Query) | 数据结构, Sparse Table稀疏表, RMQ区间最值查询, O(1)查询, 静态数组, 朴素循环基准对比, 正确性/加速比量化验证 | sparse_table_output.txt | verified |
+| 09-30 | Adaptive Simpson Integration (Recursive Quadrature) | 数值方法, 自适应Simpson积分, 递归细分, 误差估计, 高斯-勒让德对比, 解析解对比, 收敛阶量化验证 | simpson_output.txt | in-progress |
