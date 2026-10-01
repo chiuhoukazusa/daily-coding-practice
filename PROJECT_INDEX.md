@@ -343,4 +343,4 @@
 | 09-29 | Sparse Table RMQ (Range Minimum Query) | 数据结构, Sparse Table稀疏表, RMQ区间最值查询, O(1)查询, 静态数组, 朴素循环基准对比, 正确性/加速比量化验证 | sparse_table_output.txt | verified |
 | 09-30 | Adaptive Simpson Integration (Recursive Quadrature) | 数值方法, 自适应Simpson积分, 递归细分, 误差估计, 高斯-勒让德对比, 解析解对比, 收敛阶量化验证 | simpson_output.txt | verified |
 | 10-01 | Gauss-Seidel & Jacobi Poisson Solver | 数值方法, Poisson方程, Gauss-Seidel, Jacobi迭代, 松弛法, 收敛率/谱半径量化验证, 解析解对比 | published |
-| 10-02 | LCS Longest Common Subsequence (Hirschberg Linear-Space) | 算法/DP动态规划, LCS最长公共子序列, 朴素O(nm)DP基准, 空间优化O(min)长度DP, Hirschberg分治线性空间O(min)重建, 子序列有效性验证, 内存对比(1.5GB vs 3.6MB), 量化验证 | lcs_output.txt | verified |
+| 10-02 | LCS Longest Common Subsequence (Hirschberg Linear-Space) | 算法/DP动态规划, LCS最长公共子序列, 朴素O(nm)DP基准, 空间优化O(min)长度DP, Hirschberg分治线性空间O(min)重建, 子序列有效性验证, 内存对比(1.5GB vs 3.6MB), 量化验证 | lcs_output.txt | published |
