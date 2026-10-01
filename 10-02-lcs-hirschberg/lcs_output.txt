@@ -1,21 +1,18 @@
-=== Bentley-Ottmann Line Intersection ===
+=== LCS Verification Report ===
+Total cases: 206
+Passed:      206
+Failed:      0
 
-Test: Grid_6x6 (6 segs)  BF:9  BO:9
-  ✅ PASS
-  Saved: Grid_6x6.ppm
+--- Examples ---
+a="ABCBDAB" b="BDCABA"
+  LCS length (naive)  = 4
+  LCS length (space)  = 4
+  LCS (hirschberg)    = "BDAB"
 
-Test: Star_10 (5 segs)  BF:10  BO:8
-  ❌ FAIL (match 8/10)
-  Missing: (1,4) (2,3) 
-  Saved: Star_10.ppm
+--- Performance (length 2000, alphabet 4) ---
+  naive O(nm) table:   7.61562 ms  (len=1296)
+  space O(min) length: 2.05021 ms  (len=1296)
+  hirschberg rec:      6.26598 ms  (len=1296)
+  hirschberg==naive?   YES
 
-Test: Random_20 (20 segs)  BF:32  BO:32
-  ✅ PASS
-  Saved: Random_20.ppm
-
-Test: Polygon_20 (20 segs)  BF:120  BO:116
-  ❌ FAIL (match 116/120)
-  Missing: (1,2) (2,8) (9,14) (10,13) 
-  Saved: Polygon_20.ppm
-
-===== 2/4 passed =====
+RESULT: PASS
