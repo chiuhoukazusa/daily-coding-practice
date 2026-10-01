@@ -1,0 +1,21 @@
+=== Bentley-Ottmann Line Intersection ===
+
+Test: Grid_6x6 (6 segs)  BF:9  BO:9
+  ✅ PASS
+  Saved: Grid_6x6.ppm
+
+Test: Star_10 (5 segs)  BF:10  BO:8
+  ❌ FAIL (match 8/10)
+  Missing: (1,4) (2,3) 
+  Saved: Star_10.ppm
+
+Test: Random_20 (20 segs)  BF:32  BO:32
+  ✅ PASS
+  Saved: Random_20.ppm
+
+Test: Polygon_20 (20 segs)  BF:120  BO:116
+  ❌ FAIL (match 116/120)
+  Missing: (1,2) (2,8) (9,14) (10,13) 
+  Saved: Polygon_20.ppm
+
+===== 2/4 passed =====
