@@ -1,0 +1,4 @@
+Test1 (random 0/1 graph, n=2000 m=12000): mismatches=0 -> PASS
+Test2 (grid 300x300 with walls): mismatches=0 corner_dist=104 -> PASS
+Test3 (perf, n=200000 m=1000000): 0-1 BFS=0.065471s Dijkstra=0.090034s speedup=1.375170x
+Done.
