@@ -346,4 +346,4 @@
 | 10-02 | LCS Longest Common Subsequence (Hirschberg Linear-Space) | 算法/DP动态规划, LCS最长公共子序列, 朴素O(nm)DP基准, 空间优化O(min)长度DP, Hirschberg分治线性空间O(min)重建, 子序列有效性验证, 内存对比(1.5GB vs 3.6MB), 量化验证 | lcs_output.txt | published |
 | 10-03 | Min-Cost Max-Flow (Successive Shortest Path + Potentials) | 图算法, 网络流, 最小费用最大流, 势能Dijkstra, SPFA-Bellman-Ford初始化, 残差网络, 流量守恒验证, 暴力基准对比, 最优性/成本量化验证 | mcmf_output.txt | verified |
 | 10-04 | Zero-One BFS Shortest Path | 图算法, 0-1 BFS, Deque最短路, O(V+E), Dijkstra基准对比, 网格墙穿行验证, 性能加速比 | zero_one_bfs_output.txt | published |
-| 10-05 | Longest Increasing Subsequence (LIS) | 算法/DP动态规划, 最长上升子序列, O(n²)DP, O(n log n)Patience贪心, 二分lower_bound, 序列重建, 随机暴力验证, 正确性/复杂度量化验证 | dev-done |
+| 10-05 | Longest Increasing Subsequence (LIS) | 算法/DP动态规划, 最长上升子序列, O(n²)DP, O(n log n)Patience贪心, 二分lower_bound, 序列重建, 随机暴力验证, 正确性/复杂度量化验证 | verified |
