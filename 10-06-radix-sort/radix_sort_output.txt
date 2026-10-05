@@ -1,21 +1,9 @@
-=== Bentley-Ottmann Line Intersection ===
+✅ 正确性测试通过: 25 组 (范围覆盖负数/大值/重复/小规模) 全部与 std::sort 一致
+✅ 稳定性验证: 相等 key 的原始顺序(id)保持递增
 
-Test: Grid_6x6 (6 segs)  BF:9  BO:9
-  ✅ PASS
-  Saved: Grid_6x6.ppm
+===== 性能对比 (LSD Radix Sort vs std::sort) =====
+size=   100000 | radix=    0.74 ms | std::sort=    5.40 ms | 加速比= 7.29x | 一致✅
+size=  1000000 | radix=    8.70 ms | std::sort=   63.20 ms | 加速比= 7.27x | 一致✅
+size= 10000000 | radix=  102.42 ms | std::sort=  743.03 ms | 加速比= 7.26x | 一致✅
 
-Test: Star_10 (5 segs)  BF:10  BO:8
-  ❌ FAIL (match 8/10)
-  Missing: (1,4) (2,3) 
-  Saved: Star_10.ppm
-
-Test: Random_20 (20 segs)  BF:32  BO:32
-  ✅ PASS
-  Saved: Random_20.ppm
-
-Test: Polygon_20 (20 segs)  BF:120  BO:116
-  ❌ FAIL (match 116/120)
-  Missing: (1,2) (2,8) (9,14) (10,13) 
-  Saved: Polygon_20.ppm
-
-===== 2/4 passed =====
+🎉 全部量化验证通过
