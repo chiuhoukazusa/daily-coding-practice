@@ -348,4 +348,4 @@
 | 10-04 | Zero-One BFS Shortest Path | 图算法, 0-1 BFS, Deque最短路, O(V+E), Dijkstra基准对比, 网格墙穿行验证, 性能加速比 | zero_one_bfs_output.txt | published |
 | 10-05 | Longest Increasing Subsequence (LIS) | 算法/DP动态规划, 最长上升子序列, O(n²)DP, O(n log n)Patience贪心, 二分lower_bound, 序列重建, 随机暴力验证, 正确性/复杂度量化验证 | verified |
 | 10-06 | Radix Sort (LSD) | 算法/排序, LSD基数排序, 计数排序稳定, 字节分桶, 负整数符号位翻转映射, std::sort正确性对比(25组), 稳定性验证, 性能加速比(7.97~8.67x) | radix_sort_output.txt | verified |
-| 10-07 | AVL Tree Self-Balancing BST | 数据结构, AVL树, 平衡因子, 旋转(LL/RR/LR/RL), 高度平衡不变式, std::set正确性对比, 高度/性能量化验证 | avl_tree_output.txt | dev-done |
+| 10-07 | AVL Tree Self-Balancing BST | 数据结构, AVL树, 平衡因子, 旋转(LL/RR/LR/RL), 高度平衡不变式, std::set正确性对比, 高度/性能量化验证 | avl_tree_output.txt | verified |
