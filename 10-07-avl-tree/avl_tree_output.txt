@@ -1,0 +1,11 @@
+[PASS] std::set correctness: inorder sequence matches reference (120940 elements)
+[PASS] balance factor invariant holds after 100000 insertions
+  height=20  theoretical_bound~23.5899  log2(n)=16.6096
+[PASS] height within theoretical O(log n) bound
+[PASS] balanced after sorted (worst-case) insertion
+[PASS] height stays logarithmic for sorted input: 16
+  AVL:       insert=92ms lookup=0ms erase=75ms
+  std::set:  insert=64ms lookup=0ms erase=73ms
+[PASS] structure empty & consistent after bulk erase
+========================================
+ALL TESTS PASSED
