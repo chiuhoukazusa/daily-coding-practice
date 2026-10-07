@@ -1,0 +1,20 @@
+  pi(10      )=4 (expected 4)
+  pi(100     )=25 (expected 25)
+  pi(1000    )=168 (expected 168)
+  pi(10000   )=1229 (expected 1229)
+  pi(100000  )=9592 (expected 9592)
+  pi(1000000 )=78498 (expected 78498)
+  pi(10000000)=664579 (expected 664579)
+[PASS] prime-counting pi(n) matches reference for n=10..10^7
+[PASS] segmented sieve outputs exactly match naive sieve on 7 ranges
+[PASS] Miller-Rabin agrees with sieve on [2, 10^6] (999999 numbers, 0 mismatches)
+[PASS] Miller-Rabin identifies 8 known large primes
+[PASS] Miller-Rabin rejects 12 Carmichael numbers (no false positive)
+[PASS] Miller-Rabin rejects strong pseudoprimes (deterministic base set)
+[PASS] MR vs trial-division agree on 10000 ~1e12..1e15 numbers (count=612)
+    Miller-Rabin: 3.94 ms | trial division: 27469.68 ms | speedup 6970.4x
+[PASS] MR faster than trial division on large numbers
+    segmented sieve [1e9, 1e9+1e6]: 48155 primes in 5.7 ms (memory O(1e6) bools, not O(1e9))
+[PASS] segmented sieve count plausible over [1e9, 1e9+1e6] (=48155)
+========================================
+ALL TESTS PASSED (9 checks)
