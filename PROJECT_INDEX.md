@@ -351,3 +351,4 @@
 | 10-07 | AVL Tree Self-Balancing BST | 数据结构, AVL树, 平衡因子, 旋转(LL/RR/LR/RL), 高度平衡不变式, std::set正确性对比, 高度/性能量化验证 | avl_tree_output.txt | verified |
 | 10-08 | Sieve & Miller-Rabin Primality | 算法/数论, Eratosthenes埃氏筛+分段筛, Miller-Rabin素性测试, 确定性基集, Carmichael数检测, π(n)素数计数验证, 性能对比 | sieve_miller_output.txt | published |
 | 10-09 | Z-Algorithm (Z-Function) String Matching | 字符串算法, Z函数, Z-box, 线性时间模式匹配, 朴素O(nm)基准对比, 正确性/加速比量化验证 | z_algorithm_output.txt | verified |
+| 10-10 | Dijkstra Shortest Path (Binary Heap) | 图算法, Dijkstra, 优先队列二叉堆, 贪心最短路, 惰性删除, O(E log V), Floyd-Warshall/O(n^2)基准对比, 正确性/复杂度量化验证 | dijkstra_output.txt | dev-done |

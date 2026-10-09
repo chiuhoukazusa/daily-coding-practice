@@ -1,0 +1,20 @@
+=== Dijkstra (Binary Heap) Verification ===
+Random tests: 60 graphs (V=2..81, density 5%..95%)
+Total single-source distance checks: 2326
+Correct (match Floyd-Warshall & O(V^2) baseline): 2326
+Failures: 0
+Max abs error vs reference: 0
+
+=== Benchmark (sparse V=20000 E=100000) ===
+Heap Dijkstra: 4.71 ms
+O(V^2) baseline: 978.24 ms
+Speedup: 207.55x
+Sparse result mismatch count: 0
+
+=== Benchmark (dense V=3000) ===
+Heap Dijkstra: 8.41 ms
+O(V^2) baseline: 44.26 ms
+Speedup: 5.26x
+Dense result mismatch count: 0
+
+RESULT: PASS
