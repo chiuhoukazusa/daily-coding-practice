@@ -1,0 +1,14 @@
+=== Pollard's Rho Factorization — Quantitative Verification ===
+Total test cases: 20
+Failures: 0
+PASS: all factors prime, reconstruct n, match trial division
+Semiprime factorization time:
+  Pollard Rho:  0.00211075 s
+  Trial division: 4.21583 s
+  Speedup: 1997.31x
+Large prime factors found:
+  2100000011 * 2200000009 = 4620000043100000099
+  2300000041 * 2400000011 = 5520000123700000451
+Miller-Rabin spot-checks:
+  18446744073709551557 is_prime=1 (expect 1)
+  18446744073709551615 is_composite=1 (expect 1)
