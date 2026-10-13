@@ -355,4 +355,4 @@
 | 10-11 | Pollard Rho Integer Factorization | 算法/数论, Pollard Rho, Brent循环检测, Miller-Rabin确定性素性测试, 试除法小因子剥离, 64位大整数分解, 素因子素数性验证, 乘积重构验证, 参考对比, 性能加速比(1996x) | pollard_rho_output.txt | verified |
 | 10-12 | 3D Transform Pipeline Renderer | MVP变换, 齐次坐标, LookAt相机, 透视投影, 模型/视图/投影矩阵, 深度验证, PPM可视化 | pipeline_output.ppm | verified |
 | 10-13 | Sweep & Prune Broad-Phase Collision | 游戏开发/物理模拟, 宽相位碰撞检测, AABB区间排序, 活动列表扫描, 暴力O(n²)基准对比, 碰撞对正确性/加速比量化验证 | sweep_and_prune_output.ppm | verified |
-| 10-14 | Markov Chain N-Gram Text Generation | 算法/概率模型, N-Gram马尔可夫链, 转移概率矩阵, 随机生成, 概率归一化验证, 熵/困惑度量化验证 | markov_output.txt | verified |
+| 10-14 | Markov Chain N-Gram Text Generation | 算法/概率模型, N-Gram马尔可夫链, 转移概率矩阵, 随机生成, 概率归一化验证, 熵/困惑度量化验证 | markov_output.txt | published |
