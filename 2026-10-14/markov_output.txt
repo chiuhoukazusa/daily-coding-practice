@@ -1,0 +1,35 @@
+=== Markov Chain N-Gram Text Generation ===
+N (gram size)   = 3
+Corpus length   = 262 chars
+Distinct contexts (states) = 79
+
+[Verify 1] Transition probability normalization:
+  total transitions counted = 260
+  all rows sum to exactly 1.0 : PASS
+  transitions == |windows| = 260 : PASS
+
+[Verify 2] Unseen context handled gracefully:
+  'zzz' not in model (generation stops) : PASS
+
+[Verify 3] Reproducibility (same seed = same output):
+  3 runs with seed=12345 identical : PASS
+
+[Verify 4] All generated N-grams are valid in training data:
+  PASS
+
+[Verify 5] Model cross-entropy / perplexity (Laplace smoothed):
+  vocabulary size       = 27
+  eval windows          = 260
+  cross-entropy (bits)  = 2.994662
+  perplexity            = 7.970456
+  perplexity < V+1 (model fits better than uniform) : PASS
+
+=== Generated sample (len=200) ===
+the quick be is the is the question winter is a rose lazy dog a rembe quick brown fox jumps or not to brown fox jumps over the nor is cominters
+
+=== Example transition distribution ===
+  P(' ' | "th") = 0.100000
+  P('a' | "th") = 0.100000
+  P('e' | "th") = 0.800000
+
+=== OVERALL: ALL PASS ===
