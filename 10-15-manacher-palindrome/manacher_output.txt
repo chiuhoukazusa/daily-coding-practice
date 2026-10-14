@@ -1,0 +1,8 @@
+[known-cases] pass=7 fail=0
+[random-correctness] trials=5000 pass=5000 fail=0
+[complexity] len=1000 manacher_cmps=1999 brute_cmps=500500 ratio=250.375x
+[complexity] len=2000 manacher_cmps=3999 brute_cmps=2001000 ratio=500.375x
+[complexity] len=4000 manacher_cmps=7999 brute_cmps=8002000 ratio=1000.375x
+[complexity] len=8000 manacher_cmps=15999 brute_cmps=32004000 ratio=2000.375x
+[complexity] len=16000 manacher_cmps=31999 brute_cmps=128008000 ratio=4000.375x
+[SUMMARY] known-fail=0 random-fail=0 cmp-ratio=2750.472x => PASS

@@ -356,3 +356,4 @@
 | 10-12 | 3D Transform Pipeline Renderer | MVP变换, 齐次坐标, LookAt相机, 透视投影, 模型/视图/投影矩阵, 深度验证, PPM可视化 | pipeline_output.ppm | verified |
 | 10-13 | Sweep & Prune Broad-Phase Collision | 游戏开发/物理模拟, 宽相位碰撞检测, AABB区间排序, 活动列表扫描, 暴力O(n²)基准对比, 碰撞对正确性/加速比量化验证 | sweep_and_prune_output.ppm | verified |
 | 10-14 | Markov Chain N-Gram Text Generation | 算法/概率模型, N-Gram马尔可夫链, 转移概率矩阵, 随机生成, 概率归一化验证, 熵/困惑度量化验证 | markov_output.txt | published |
+| 10-15 | Manacher Longest Palindromic Substring | 字符串算法, Manacher马拉车, 最长回文子串, 中心扩展+镜像优化, O(n)线性, 暴力基准对比, 正确性/加速比量化验证 | manacher_output.txt | dev-done |
