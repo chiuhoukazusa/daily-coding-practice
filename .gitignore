@@ -1,10 +1,4 @@
-*.o
+# 编译产物（不提交二进制）
+*10-17-romberg-integration/output
+*10-17-romberg-integration/plot
 *.ppm
-core.*
-dbg*
-debug
-kmp
-output
-test_seed
-bk
-output
