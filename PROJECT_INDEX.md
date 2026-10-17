@@ -359,3 +359,4 @@
 | 10-15 | Manacher Longest Palindromic Substring | 字符串算法, Manacher马拉车, 最长回文子串, 中心扩展+镜像优化, O(n)线性, 暴力基准对比, 正确性/加速比量化验证 | manacher_output.txt | verified |
 | 10-16 | RKF45 Adaptive Step-Size ODE Solver | 数值方法, RKF45(Runge-Kutta-Fehlberg), 自适应步长, 误差控制, 龙格库塔4/5阶嵌入对, 弹簧/单摆/洛伦兹系统, 固定RK4/RK45对比, 局部截断误差量化验证 | rkf45_output.txt | verified |
 | 10-17 | Romberg Integration (Richardson Extrapolation) | 数值方法, Romberg积分, Richardson外推, 梯形法则, 收敛阶量化验证 | published |
+| 10-18 | Depth of Field Renderer | 景深, 弥散圆, 薄透镜模型, 蒙特卡洛采样 | in-progress |
