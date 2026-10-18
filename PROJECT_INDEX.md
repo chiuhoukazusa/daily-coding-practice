@@ -360,3 +360,4 @@
 | 10-16 | RKF45 Adaptive Step-Size ODE Solver | 数值方法, RKF45(Runge-Kutta-Fehlberg), 自适应步长, 误差控制, 龙格库塔4/5阶嵌入对, 弹簧/单摆/洛伦兹系统, 固定RK4/RK45对比, 局部截断误差量化验证 | rkf45_output.txt | verified |
 | 10-17 | Romberg Integration (Richardson Extrapolation) | 数值方法, Romberg积分, Richardson外推, 梯形法则, 收敛阶量化验证 | published |
 | 10-18 | Depth of Field Renderer | 景深, 弥散圆, 薄透镜模型, 蒙特卡洛采样 | verified |
+| 10-19 | Simplex Linear Programming Solver | 算法/数值方法, 单纯形法, 两阶段法, 线性规划, 最优性验证(顶点枚举暴力基准对比), 可行性验证 | verified |
