@@ -1,0 +1,28 @@
+=== Simplex LP Solver Verification ===
+Comparing simplex optimal value vs brute-force vertex enumeration
+
+Config n=2 m=2 :  passed 20/20
+Config n=2 m=3 :  passed 20/20
+Config n=3 m=2 :  passed 20/20
+Config n=3 m=3 :  passed 20/20
+Config n=3 m=4 :  passed 20/20
+Config n=4 m=4 :  passed 20/20
+Config n=4 m=5 :  passed 20/20
+
+=== Summary ===
+Total tests: 140
+Passed (|simplex - brute| < 1e-5): 140
+Max |diff|: 4.26326e-13
+Mean |diff|: 1.32089e-14
+
+=== Feasibility Check (A x <= b, x >= 0) ===
+Feasible solutions: 140/140
+Max constraint violation: 1.42109e-14
+
+=== Analytical Textbook Case ===
+optimal value = 9 (expected 9)
+solution x = [1, 3]
+(expected x=[1,3])
+✅ ANALYTICAL CASE PASSED
+
+✅ ALL TESTS PASSED
