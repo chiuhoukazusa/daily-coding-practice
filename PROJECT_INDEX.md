@@ -361,4 +361,4 @@
 | 10-17 | Romberg Integration (Richardson Extrapolation) | 数值方法, Romberg积分, Richardson外推, 梯形法则, 收敛阶量化验证 | published |
 | 10-18 | Depth of Field Renderer | 景深, 弥散圆, 薄透镜模型, 蒙特卡洛采样 | verified |
 | 10-19 | Simplex Linear Programming Solver | 算法/数值方法, 单纯形法, 两阶段法, 线性规划, 最优性验证(顶点枚举暴力基准对比), 可行性验证 | verified |
-| 10-20 | Viterbi HMM Decoding | 算法/DP, 隐马尔可夫模型, Viterbi解码, 对数概率, 暴力枚举基准对比, 最优路径量化验证 | viterbi_output.txt | in-progress |
+| 10-20 | Viterbi HMM Decoding | 算法/DP, 隐马尔可夫模型, Viterbi解码, 对数概率, 暴力枚举基准对比, 最优路径量化验证 | viterbi_output.txt | dev-done |

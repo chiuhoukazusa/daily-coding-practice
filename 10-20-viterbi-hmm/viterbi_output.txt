@@ -1,0 +1,10 @@
+Fixed test: viterbi_logProb = -20.593060281  brute_logProb = -20.593060281
+  PASS
+
+=== VERIFICATION SUMMARY ===
+Total trials: 361
+Passed:       361
+Failed:       0
+Path mismatches (same prob diff path): NO
+
+RESULT: ALL TESTS PASSED ✅
