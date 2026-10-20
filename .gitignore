@@ -3,3 +3,6 @@
 *10-17-romberg-integration/plot
 *.ppm
 2026/10/10-19-simplex/simplex
+
+# 10-21 suffix automaton 编译产物
+10-21-suffix-automaton/output
