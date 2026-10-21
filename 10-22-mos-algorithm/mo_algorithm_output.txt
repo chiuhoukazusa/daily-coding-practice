@@ -1,0 +1,9 @@
+=== Mo's Algorithm (Power-of-Array Range Queries) ===
+n = 200000, q = 100000, value_range = 1000, block = 447
+naive_subset = 2000
+naive_time_ms = 352.102 (subset) -> projected full 17605.089 ms
+mo_time_ms = 61.305
+speedup_vs_projected_naive = 287.172x
+correctness_matches = 2000 / 2000 (ALL MATCH)
+mo_total_answer_sum = 671059006185
+VERDICT: PASS
