@@ -1,0 +1,7 @@
+medium n=30 blossom=15 covered=30 valid=1
+large n=200 edges=978 blossom=100 valid=1 time=0.02ms
+
+=== SUMMARY ===
+small_random_pass=300/300 dense_pass=150/150
+total_graphs=464 mismatches=0
+RESULT=PASS
