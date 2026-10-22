@@ -364,4 +364,4 @@
 | 10-20 | Viterbi HMM Decoding | 算法/DP, 隐马尔可夫模型, Viterbi解码, 对数概率, 暴力枚举基准对比, 最优路径量化验证 | viterbi_output.txt | verified | 
 | 10-21 | Suffix Automaton (DAWG) | 字符串数据结构, 后缀自动机, endpos等价类, 后缀链接, 本质不同子串O(n), 子串出现次数, 最长公共子串, 状态/转移数上界(2n-1/3n-4), 暴力基准对比, 加速比10900x | verified |
 | 10-22 | Mo's Algorithm Range Queries | 算法/数据结构, 莫队算法, 平方根分解, 离线区间查询, 块排序, 双指针扩展, 朴素O(n)基准对比, 加速比量化验证 | mo_algorithm_output.txt | verified |
-| 10-23 | Edmonds' Blossom General Graph Maximum Matching | 图算法, 一般图最大匹配, 带花树算法 Blossom, 增广路, 花收缩 blossom contraction, 交替树, 暴力指数基准对比, 匹配大小/最优性量化验证 | dev-done |
+| 10-23 | Edmonds' Blossom General Graph Maximum Matching | 图算法, 一般图最大匹配, 带花树算法 Blossom, 增广路, 花收缩 blossom contraction, 交替树, 暴力指数基准对比, 匹配大小/最优性量化验证 | verified |
