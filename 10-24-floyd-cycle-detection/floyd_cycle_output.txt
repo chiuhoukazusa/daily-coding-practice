@@ -1,0 +1,10 @@
+=== Correctness ===
+Test cases: 213
+Passed:     213
+
+=== Performance (N=2000000, mu=666666, lambda=1333334) ===
+Floyd avg:   0.000 ms
+HashSet avg: 80.029 ms
+Speedup (Floyd vs HashSet): 1732224.597x
+
+ALL CHECKS PASSED
