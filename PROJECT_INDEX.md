@@ -367,4 +367,4 @@
 | 10-23 | Edmonds' Blossom General Graph Maximum Matching | 图算法, 一般图最大匹配, 带花树算法 Blossom, 增广路, 花收缩 blossom contraction, 交替树, 暴力指数基准对比, 匹配大小/最优性量化验证 | verified |
 | 10-24 | Floyd's Cycle Detection (Tortoise & Hare) | 算法/链表, Floyd判圈算法, 快慢指针, 环入口检测, 环长度, 哈希表基准对比, 正确性/复杂度量化验证 | floyd_cycle_output.txt | published |
 | 10-25 | Eulerian Path & Circuit (Hierholzer's Algorithm) | 图算法, 欧拉回路, 欧拉路径, Hierholzer算法, Fleury对比, 半欧拉/全欧拉判定, 出度入度条件, 正确性/复杂度量化验证 | verified |
-| 10-26 | Stoer-Wagner Global Minimum Cut | 图算法, 全局最小割, Stoer-Wagner, 最大邻接序(MAS), 相位合并, 最大流基准对比(s-t对), 最优性/MinCut值量化验证 | dev-done |
+| 10-26 | Stoer-Wagner Global Minimum Cut | 图算法, 全局最小割, Stoer-Wagner, 最大邻接序(MAS), 相位合并, 最大流基准对比(s-t对), 最优性/MinCut值量化验证 | verified |
