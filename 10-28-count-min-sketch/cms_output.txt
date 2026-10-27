@@ -1,0 +1,21 @@
+config w=2000 d=5 | eps_theory=0.0014 (eps*N=271) delta_theory=0.0067
+  items=4946  total_stream=200000
+  mean_abs_err=3.5  max_abs_err=371  L1_err=17427
+  underestimate_count=0 (should be 0 in theory) total_under=0
+  guarantee_violations=1/0% of items exceed eps*N
+  space: cms=80000 bits (9.8 KB), exact=237408 bits (29.0 KB), ratio=3.0x
+
+config w=500 d=7 | eps_theory=0.0054 (eps*N=1087) delta_theory=0.0009
+  items=4952  total_stream=200000
+  mean_abs_err=44.7  max_abs_err=437  L1_err=221454
+  underestimate_count=0 (should be 0 in theory) total_under=0
+  guarantee_violations=0/0% of items exceed eps*N
+  space: cms=28000 bits (3.4 KB), exact=237696 bits (29.0 KB), ratio=8.5x
+
+config w=160 d=5 | eps_theory=0.0170 (eps*N=3397) delta_theory=0.0067
+  items=4930  total_stream=200000
+  mean_abs_err=563.3  max_abs_err=1905  L1_err=2776833
+  underestimate_count=0 (should be 0 in theory) total_under=0
+  guarantee_violations=0/0% of items exceed eps*N
+  space: cms=6400 bits (0.8 KB), exact=236640 bits (28.9 KB), ratio=37.0x
+
