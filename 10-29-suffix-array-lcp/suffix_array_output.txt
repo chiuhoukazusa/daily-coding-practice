@@ -1,0 +1,19 @@
+[Correctness] 500 random strings ALL MATCH naive reference
+[Edge] len=1 "a" OK
+[Edge] len=2 "aa" OK
+[Edge] len=3 "aaa" OK
+[Edge] len=2 "ab" OK
+[Edge] len=3 "aba" OK
+[Edge] len=6 "banana" OK
+[Edge] len=11 "mississippi" OK
+[Edge] len=11 "aaaaabaaaaa" OK
+[Edge] len=10 "ababababab" OK
+[Edge] len=26 "abcdefghijkl..." OK
+[Edge] len=43 "the quick br..." OK
+[Perf] prefix-doubling+Kasai: n=200000 -> 37.51 ms
+[Perf] naive O(n^2 log n):    n=4000 -> 0.52 ms
+[Perf] naive extrapolated to n=200000: ~1922 ms (est)
+[Speedup] prefix-doubling vs naive ~ 51x
+[Verify] LCP bounds valid for n=200000: YES
+[Spot] pairwise LCP via RMQ-min (Kasai LCP array): 100/100 match naive
+RESULT: PASS
