@@ -370,4 +370,4 @@
 | 10-26 | Stoer-Wagner Global Minimum Cut | 图算法, 全局最小割, Stoer-Wagner, 最大邻接序(MAS), 相位合并, 最大流基准对比(s-t对), 最优性/MinCut值量化验证 | verified |
 | 10-27 | Heavy-Light Decomposition (Path Queries) | 树算法/数据结构, HLD重链剖分, 欧拉序+线段树, 树路径和/最大值查询, 朴素暴力基准对比, 正确性/加速比量化验证 | hld_output.txt | published |
 | 10-28 | Count-Min Sketch Frequency Estimation | 算法/数据结构, Count-Min Sketch, 次线性空间频率估计, 多重哈希, 概率近似, 频率误差上界验证(ϵ/δ), 精确计数基准对比, 空间压缩比量化验证 | cms_output.txt | verified |
-| 10-29 | Suffix Array & LCP (Prefix-Doubling + Kasai) | 字符串算法, 后缀数组, 前缀倍增排序(基数排序), LCP最长公共前缀(Kasai), RMQ查询, 朴素排序基准对比, 正确性/加速比量化验证 | suffix_array_output.txt | dev-done |
+| 10-29 | Suffix Array & LCP (Prefix-Doubling + Kasai) | 字符串算法, 后缀数组, 前缀倍增排序(基数排序), LCP最长公共前缀(Kasai), RMQ查询, 朴素排序基准对比, 正确性/加速比量化验证 | suffix_array_output.txt | verified |
