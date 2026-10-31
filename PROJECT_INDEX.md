@@ -373,3 +373,4 @@
 | 10-29 | Suffix Array & LCP (Prefix-Doubling + Kasai) | 字符串算法, 后缀数组, 前缀倍增排序(基数排序), LCP最长公共前缀(Kasai), RMQ查询, 朴素排序基准对比, 正确性/加速比量化验证 | suffix_array_output.txt | verified |
 | 10-30 | Stable Marriage Problem (Gale-Shapley) | 算法/图算法, 稳定婚姻, Gale-Shapley延迟接受, 提议方最优, 阻滞对检测, 完美匹配, 暴力枚举稳定性验证 | stable_marriage_output.txt | verified |
 | 10-31 | Brent's Method Root Finding | 数值方法, Brent算法(二分+割线+逆二次插值混合), 求根, 收敛阶/迭代次数量化验证, 对比二分法/割线法/Newton | brent_output.txt | verified |
+| 11-01 | Normal Mapping (Tangent-Space Bump Mapping) | 图形学, 法线贴图, 切线空间TBN, 凹凸映射, 光照扰动量化验证, 有/无法线贴图对比 | normal_mapping_output.png | in-progress |
