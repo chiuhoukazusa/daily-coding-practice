@@ -374,3 +374,4 @@
 | 10-30 | Stable Marriage Problem (Gale-Shapley) | 算法/图算法, 稳定婚姻, Gale-Shapley延迟接受, 提议方最优, 阻滞对检测, 完美匹配, 暴力枚举稳定性验证 | stable_marriage_output.txt | verified |
 | 10-31 | Brent's Method Root Finding | 数值方法, Brent算法(二分+割线+逆二次插值混合), 求根, 收敛阶/迭代次数量化验证, 对比二分法/割线法/Newton | brent_output.txt | verified |
 | 11-01 | Normal Mapping (Tangent-Space Bump Mapping) | 图形学, 法线贴图, 切线空间TBN, 凹凸映射, 光照扰动量化验证, 有/无法线贴图对比 | normal_mapping_output.png | verified |
+| 11-02 | Skeletal Animation (LBS + Dual-Quaternion Skinning) | 图形学/游戏开发, 骨骼层次结构, FK前向运动学, 线性混合蒙皮LBS, 双四元数蒙皮DQS, 骨轴twist糖纸塌陷对比, 权重归一化/无漂移/刚体跟随/半径保持量化验证 | skeletal_animation_output.png | dev-done |
