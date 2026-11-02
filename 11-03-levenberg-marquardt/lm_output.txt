@@ -1,0 +1,24 @@
+=== Levenberg-Marquardt Nonlinear Least Squares ===
+
+Ground-truth params: A=3.700 tau=1.200 C=0.800
+Noise floor (SST at truth): 0.075845
+
+method                  A      tau       C    iters       cost
+LM                 3.7039   1.1833  0.8049       13   0.073830
+Gauss-Newton     1865971.5186 -20517594.5230 -1865968.5754        5 162.404117
+GradDescent        3.7030   1.1837  0.8049    20000   0.073832
+
+
+LM  max relative parameter error = 1.3918%
+[PASS] LM recovers parameters within 5% relative error
+LM  cost / noise-floor cost = 0.9734
+[PASS] LM final cost near noise floor (not overfit)
+LM  iters=13  GD iters=20000
+[PASS] LM achieves lower cost than gradient descent
+[PASS] LM converges in far fewer iterations than GD
+GN  cost=162.404117  (LM cost=0.073830)
+[PASS] Gauss-Newton within 1.5x of LM or diverged (damping justified)
+Mean residual at LM fit = 0.00000
+[PASS] residual mean near zero (unbiased fit)
+
+ALL CHECKS PASSED
