@@ -375,4 +375,4 @@
 | 10-31 | Brent's Method Root Finding | 数值方法, Brent算法(二分+割线+逆二次插值混合), 求根, 收敛阶/迭代次数量化验证, 对比二分法/割线法/Newton | brent_output.txt | verified |
 | 11-01 | Normal Mapping (Tangent-Space Bump Mapping) | 图形学, 法线贴图, 切线空间TBN, 凹凸映射, 光照扰动量化验证, 有/无法线贴图对比 | normal_mapping_output.png | verified |
 | 11-02 | Skeletal Animation (LBS + Dual-Quaternion Skinning) | 图形学/游戏开发, 骨骼层次结构, FK前向运动学, 线性混合蒙皮LBS, 双四元数蒙皮DQS, 骨轴twist糖纸塌陷对比, 权重归一化/无漂移/刚体跟随/半径保持量化验证 | skeletal_animation_output.png | verified |
-| 11-03 | Levenberg-Marquardt Nonlinear Least Squares | 数值方法, Levenberg-Marquardt, Gauss-Newton阻尼, 非线性最小二乘, 曲线拟合, 雅可比矩阵, 收敛性/残差量化验证, 对比Gauss-Newton/梯度下降 | lm_output.txt | dev-done |
+| 11-03 | Levenberg-Marquardt Nonlinear Least Squares | 数值方法, Levenberg-Marquardt, Gauss-Newton阻尼, 非线性最小二乘, 曲线拟合, 雅可比矩阵, 收敛性/残差量化验证, 对比Gauss-Newton/梯度下降 | lm_output.txt | verified |
