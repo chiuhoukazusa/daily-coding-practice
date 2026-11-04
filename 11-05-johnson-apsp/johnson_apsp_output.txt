@@ -1,0 +1,20 @@
+========================================
+Johnson vs Floyd-Warshall correctness
+========================================
+Random graph cases passed: 60 / 60
+RESULT: PASS (all distance matrices + neg-cycle detection match Floyd-Warshall)
+
+========================================
+Johnson vs Bellman-Ford (independent)
+========================================
+Graph has negative cycle; Johnson result: correctly rejected
+
+========================================
+Performance (sparse graph, density 2%)
+========================================
+
+ALL CHECKS COMPLETE
+n=  200  edges=   790  Johnson= 0.0038s  FloydWarshall= 0.0043s  speedup=   1.1x
+n=  400  edges=  3158  Johnson= 0.0236s  FloydWarshall= 0.0373s  speedup=   1.6x
+n=  800  edges= 12648  Johnson= 0.1275s  FloydWarshall= 0.3105s  speedup=   2.4x
+n= 1600  edges= 50634  Johnson= 0.6536s  FloydWarshall= 2.5727s  speedup=   3.9x
