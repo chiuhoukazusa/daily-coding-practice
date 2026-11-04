@@ -377,4 +377,4 @@
 | 11-02 | Skeletal Animation (LBS + Dual-Quaternion Skinning) | 图形学/游戏开发, 骨骼层次结构, FK前向运动学, 线性混合蒙皮LBS, 双四元数蒙皮DQS, 骨轴twist糖纸塌陷对比, 权重归一化/无漂移/刚体跟随/半径保持量化验证 | skeletal_animation_output.png | verified |
 | 11-03 | Levenberg-Marquardt Nonlinear Least Squares | 数值方法, Levenberg-Marquardt, Gauss-Newton阻尼, 非线性最小二乘, 曲线拟合, 雅可比矩阵, 收敛性/残差量化验证, 对比Gauss-Newton/梯度下降 | lm_output.txt | verified |
 | 11-04 | BSP Dungeon Generation | 游戏开发/程序化生成, 二叉空间分割BSP, 递归叶子分割, 房间放置, 走廊连接(叶子兄弟+相邻), 全连通性BFS验证, 房间无重叠/边界/尺寸量化验证 | bsp_dungeon_output.ppm | verified |
-| 11-05 | Johnson Algorithm (All-Pairs Shortest Path) | 图算法, Johnson算法, 稀疏图APSP, Bellman-Ford重赋权, Dijkstra+势能, 负权边支持, Floyd-Warshall/Bellman-Ford基准对比, 最优性/正确性量化验证, 稀疏图加速比 | johnson_apsp_output.txt | dev-done |
+| 11-05 | Johnson Algorithm (All-Pairs Shortest Path) | 图算法, Johnson算法, 稀疏图APSP, Bellman-Ford重赋权, Dijkstra+势能, 负权边支持, Floyd-Warshall/Bellman-Ford基准对比, 最优性/正确性量化验证, 稀疏图加速比 | johnson_apsp_output.txt | verified |
