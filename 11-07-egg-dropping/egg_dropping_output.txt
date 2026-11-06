@@ -1,0 +1,32 @@
+k=  1 n= 100  naive= 100  opt= 100  logDP= 100  ceilLog2=  7  OK
+k=  2 n=  10  naive=   4  opt=   4  logDP=   4  ceilLog2=  4  OK
+k=  2 n=  36  naive=   8  opt=   8  logDP=   8  ceilLog2=  6  OK
+k=  2 n= 100  naive=  14  opt=  14  logDP=  14  ceilLog2=  7  OK
+k=  3 n=  14  naive=   4  opt=   4  logDP=   4  ceilLog2=  4  OK
+k=  3 n= 100  naive=   9  opt=   9  logDP=   9  ceilLog2=  7  OK
+k=  4 n=  50  naive=   6  opt=   6  logDP=   6  ceilLog2=  6  OK
+k=  5 n= 100  naive=   7  opt=   7  logDP=   7  ceilLog2=  7  OK
+k= 10 n= 100  naive=   7  opt=   7  logDP=   7  ceilLog2=  7  OK
+k=100 n= 100  naive=   7  opt=   7  logDP=   7  ceilLog2=  7  OK
+k=  3 n= 200  naive=  11  opt=  11  logDP=  11  ceilLog2=  8  OK
+k=  2 n= 200  naive=  20  opt=  20  logDP=  20  ceilLog2=  8  OK
+k=  8 n= 500  naive=   9  opt=   9  logDP=   9  ceilLog2=  9  OK
+k=  2 n=1000  naive=  45  opt=  45  logDP=  45  ceilLog2= 10  OK
+k=  3 n=1000  naive=  19  opt=  19  logDP=  19  ceilLog2= 10  OK
+
+一致性验证: 15/15 通过 ✅
+
+参考值校验:
+  k=1 n=100 期望=100 实际=100 ✅
+  k=2 n=36 期望=8 实际=8 ✅
+  k=2 n=100 期望=14 实际=14 ✅
+
+性能 (k=50, n=2000):
+  二分DP O(k*logn)  = 11 次
+  单调DP O(n*k)     = 11 次
+  naive(10,500)=9 (0ms)  opt(10,500)=9 (0ms)
+
+不变量验证:
+  [单调性1] 蛋数增加, 试验次数单调不增: ✅
+  [单调性2] 楼层增加, 试验次数单调不减: ✅
+  [最优下界] 蛋数充足时 == ceil(log2(n+1)) 二分下界: ✅
