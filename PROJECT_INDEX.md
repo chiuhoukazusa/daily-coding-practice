@@ -380,4 +380,4 @@
 | 11-05 | Johnson Algorithm (All-Pairs Shortest Path) | 图算法, Johnson算法, 稀疏图APSP, Bellman-Ford重赋权, Dijkstra+势能, 负权边支持, Floyd-Warshall/Bellman-Ford基准对比, 最优性/正确性量化验证, 稀疏图加速比 | johnson_apsp_output.txt | verified |
 | 11-06 | Karatsuba Multiplication | 算法/分治, Karatsuba大整数乘法, O(n^1.585), 朴素O(n^2)基准对比, __int128参考验证, 复杂度/加速比量化 | karatsuba_output.txt | published |
 | 11-07 | Egg Dropping Problem (DP) | 算法/动态规划, Egg Dropping, O(k*n)DP, O(k*logn)二分DP优化, 朴素基准对比, 最少试验次数量化验证 | egg_dropping_output.txt | verified |
-| 11-08 | Articulation Points & Bridges (Tarjan) | 图算法, 割点/桥, Tarjan DFS low-link, 暴力删除基准对比, 双连通分量定量验证 | articulation_bridges_output.txt | dev-done |
+| 11-08 | Articulation Points & Bridges (Tarjan) | 图算法, 割点/桥, Tarjan DFS low-link, 暴力删除基准对比, 双连通分量定量验证 | articulation_bridges_output.txt | verified |
