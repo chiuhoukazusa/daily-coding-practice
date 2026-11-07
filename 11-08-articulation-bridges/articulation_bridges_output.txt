@@ -1,0 +1,29 @@
+=== Articulation Points & Bridges (Tarjan) ===
+
+[Test 1] Path graph (tree, N=20)
+  Tarjan vs Brute match: PASS
+  All 19 edges are bridges: PASS
+  Articulation count = 18 (expected 18 interior nodes): PASS
+
+[Test 2] Cycle graph (N=15)
+  Tarjan vs Brute match: PASS
+  No articulation points: PASS
+  No bridges: PASS
+
+[Test 3] Two cycles joined by a bridge
+  Tarjan vs Brute match: PASS
+  Articulation = {3,4}: PASS
+  Bridge = (3,4): PASS
+
+[Test 4] Random connected graphs (50 sets)
+  Tarjan vs Brute match: 50/50 -> PASS
+
+[Test 5] Performance (N=5000, E=5049)
+  Tarjan time: 0.234115 ms
+  Bridges found: 49
+  Articulation found: 98
+  Within budget (<1000ms): PASS
+
+=== SUMMARY ===
+Passed 11/11 checks
+RESULT: PASS
