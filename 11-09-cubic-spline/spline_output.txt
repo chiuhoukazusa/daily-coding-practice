@@ -1,0 +1,30 @@
+=== Natural Cubic Spline Interpolation ===
+
+[Test 1] f(x) = sin(x) on [0, 2*pi], nodes = 8 (natural BC -> O(h^2))
+  Spline   : max-err=2.004135e-03  RMSE=9.576038e-04  mean-abs=7.452843e-04
+  PASS (max-err < 0.05)
+
+[Test 2] Runge function f(x)=1/(1+25x^2) on [-1,1], nodes = 11
+  Spline    : max-err=2.197383e-02  RMSE=7.156178e-03
+  Polynomial: max-err=1.915643e+00  RMSE=5.802365e-01
+  Spline max-err < 0.1 : PASS
+  Spline beats poly    : PASS (87.2x better)
+
+[Test 3] f(x)=e^x on [0,1], convergence order (natural BC -> ~2)
+  N= 4  max-err=1.504914e-02
+  N= 8  max-err=2.716768e-03
+  N=16  max-err=5.927507e-04
+  Estimated convergence order = 2.01 (theoretical ~2 for natural spline)
+  PASS (order consistent with natural-boundary O(h^2))
+
+[Test 4] linear f(x)=2x+1 on [0,1] -> any spline must be EXACT
+  1. max-err=8.881784e-16 (linear reproduced exactly)
+      PASS (exact linear reproduction)
+  2. node interpolation max-err=0.000000e+00 (must hit all knots exactly)
+      PASS (knots interpolated exactly)
+  PASS
+
+=== SUMMARY ===
+Natural cubic spline retains C2 continuity and avoids Runge oscillation.
+Natural BC forces zero 2nd-derivative at endpoints -> O(h^2) global convergence
+(clamped splines achieve O(h^4), a separate topic).
