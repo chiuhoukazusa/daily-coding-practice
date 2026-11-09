@@ -382,4 +382,4 @@
 | 11-07 | Egg Dropping Problem (DP) | 算法/动态规划, Egg Dropping, O(k*n)DP, O(k*logn)二分DP优化, 朴素基准对比, 最少试验次数量化验证 | egg_dropping_output.txt | verified |
 | 11-08 | Articulation Points & Bridges (Tarjan) | 图算法, 割点/桥, Tarjan DFS low-link, 暴力删除基准对比, 双连通分量定量验证 | articulation_bridges_output.txt | published |
 | 11-09 | Natural Cubic Spline Interpolation | 数值方法, 三次样条插值, 三对角Thomas算法, 自然边界条件, Runge现象对比(多项式插值), 解析解误差量化验证 | spline_output.txt | published |
-| 11-10 | RANSAC Robust Model Fitting | RANSAC, 随机采样一致性, 直线/圆拟合, 内点/外点, 最小二乘对比, 鲁棒性量化验证 | ransac_output.txt | verified |
+| 11-10 | RANSAC Robust Model Fitting | RANSAC, 随机采样一致性, 直线/圆拟合, 内点/外点, 最小二乘对比, 鲁棒性量化验证 | ransac_output.txt | published |
