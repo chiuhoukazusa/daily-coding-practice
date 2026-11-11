@@ -213,13 +213,6 @@ int main(int argc, char** argv) {
     }
     fclose(fp);
 
-    // also write raw float text for quantitative verification
-    char txtname[256];
-    snprintf(txtname, sizeof(txtname), "%s.raw.txt", outfile);
-    FILE* tfp = fopen(txtname, "w");
-    // write aggregate stats to stdout for verification instead
-    fclose(tfp);
-
     fprintf(stderr, "done: %s (%dx%d, %d spp)\n", outfile, w, h, spp);
     return 0;
 }
