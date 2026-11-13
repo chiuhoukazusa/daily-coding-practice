@@ -386,3 +386,4 @@
 | 11-11 | Jump Flood Algorithm (Voronoi Distance Transform) | 图形学/GPU计算, JFA跳跃泛洪, log n步进, 距离变换, 最近种子传播, 暴力精确基准对比, 误差/加速比量化验证 | jfa_output.ppm | verified |
 | 11-12 | Monte Carlo Path Tracing (Russian Roulette + Cosine-Weighted Importance Sampling) | 图形学, 路径追踪, 全局光照, Russian Roulette, 重要性采样, 折射/镜面/漫反射, Cornell Box, MSE收敛验证 | ref_1024.ppm | verified |
 | 11-13 | Polygon Boolean Operations (Union/Intersection/Difference) | 计算几何, 多边形布尔运算, 扫描线+梯形积分精确求解, 区间并/交/差, Shoelace面积量化验证 | polygon_boolean_output.png | verified |
+| 11-14 | Fast Marching Method (Eikonal Geodesic Distance) | 数值方法/游戏开发, 快速行军法, Eikonal方程, Dijkstra启发式, 堆优化, 障碍物绕行, 测地距离, 解析距离误差量化验证 | verified |
