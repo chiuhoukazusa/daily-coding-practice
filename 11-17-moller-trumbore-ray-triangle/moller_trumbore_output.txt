@@ -1,0 +1,30 @@
+=== Moller-Trumbore Ray-Triangle Intersection ===
+
+[Test 1] Analytic ground-truth (t, barycentrics)
+  hit=1 t=5.000000 (exp 5.000)  u=0.250000 v=0.250000 (exp 0.25 each)  P=(1.000000,1.000000,5.000000)
+  errors: |t|=0.000e+00 |u|=0.000e+00 |v|=0.000e+00 -> PASS
+
+[Test 2] Backface culling
+  cull: backfacing(+z dir vs +z n)=0 (exp 0), frontfacing(-z dir vs +z n)=1 (exp 1)
+  no-cull: +z dir=1 (exp 1), -z dir=1 (exp 1)
+  -> PASS
+
+[Test 3] Edge cases (parallel / miss / behind)
+  parallel=0 miss=0 behind=0 (all should be 0) -> PASS
+
+[Test 4] Random mesh: M-T vs plane-reference consistency
+  rays=200000  agree=200000 (1.0000)  disagree=0
+  max |dt|=1.421e-12  max |du|=1.573e-12  max |dv|=2.623e-13
+
+  -> PASS
+
+[Test 5] Hit point reconstruction from barycentrics
+  total=100000 hits=100000  max reconstruction error=0.000e+00
+  -> PASS
+
+[Test 6] Performance (MT vs plane reference)
+  ray-triangle tests=40000000 (MT hits=3, ref hits=3)
+  MT time=585.5ms  ref time=1071.7ms  speedup=1.83x
+  MT throughput=68.32 M tests/sec
+
+=== DONE ===
