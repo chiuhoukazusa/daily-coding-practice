@@ -390,3 +390,4 @@
 | 11-15 | Reaction-Diffusion (Gray-Scott) Turing Pattern | 算法/数值模拟, Gray-Scott反应扩散, 显式/半隐式FDM, 拉普拉斯离散, 图灵斑图, 质量守恒/U-V分布统计, 分叉参数扫描, PPM可视化 | gray_scott_output.ppm | published |
 | 11-16 | Wave Function Collapse (WFC) Procedural Tiling | 游戏开发/程序化生成, 波函数坍缩, 图案邻接约束, 最小熵坍缩, 约束传播, 无矛盾平铺, 熵/确定性/连通性量化验证 | wfc_output.ppm | dev-done |
 | 11-17 | Möller-Trumbore Ray-Triangle Intersection | 图形学, 光线-三角形求交, Möller-Trumbore算法, 重心坐标, 背面剔除, 暴力基准对比, 命中率/精度量化验证 | moller_trumbore_output.txt | verified |
+| 11-18 | Marching Tetrahedra Isosurface Extraction | 图形学, 四面体剖分, 等值面提取, 立方体对角划分5四面体, 无歧义顶点表, 网格流形性/体积守恒量化验证 | marching_tetrahedra_output.ppm | in-progress |
