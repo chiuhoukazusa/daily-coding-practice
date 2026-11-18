@@ -1,0 +1,9 @@
+Test 1  Modular Inverse            : 175/175 passed
+Test 2  Fast Power vs Naive       : 500/500 passed
+Test 3  CRT Classic==Garner & Verify : 2000/2000 passed  (brute cross-check 2000/2000)
+Test 4  Uniqueness 0<=x<M          : 500/500 passed
+Test 5  Large Moduli (>2^31), x     : 692053601036832067590870758829164282  verify=PASS
+Test 6a CRT(6 moduli, M~1.7e12)      : x=1411475449891  verify=PASS
+Test 6b Perf: CRT 0.000163498 ms/op   Brute 2.98986 ms/op   speedup 18286.9x   (brute sink=148725736)
+==== SUMMARY ====
+ALL QUANTITATIVE CHECKS PASSED ✅

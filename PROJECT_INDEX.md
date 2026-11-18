@@ -391,3 +391,4 @@
 | 11-16 | Wave Function Collapse (WFC) Procedural Tiling | 游戏开发/程序化生成, 波函数坍缩, 图案邻接约束, 最小熵坍缩, 约束传播, 无矛盾平铺, 熵/确定性/连通性量化验证 | wfc_output.ppm | dev-done |
 | 11-17 | Möller-Trumbore Ray-Triangle Intersection | 图形学, 光线-三角形求交, Möller-Trumbore算法, 重心坐标, 背面剔除, 暴力基准对比, 命中率/精度量化验证 | moller_trumbore_output.txt | verified |
 | 11-18 | Marching Tetrahedra Isosurface Extraction | 图形学, 四面体剖分, 等值面提取, 立方体对角划分5四面体, 无歧义顶点表, 网格流形性/体积守恒量化验证 | marching_tetrahedra_output.ppm | published |
+| 11-19 | Chinese Remainder Theorem (CRT + Modular Arithmetic) | 算法/数论, 中国剩余定理CRT, 扩展欧几里得模逆, 快速幂, 同余方程组求解, Garner表示, 暴力枚举基准对比, 重构正确性/加速比量化验证 | crt_output.txt | dev-done |
