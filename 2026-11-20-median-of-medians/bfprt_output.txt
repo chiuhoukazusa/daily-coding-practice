@@ -1,0 +1,8 @@
+correctness_tests=500 all_correct=PASS
+edge_single=42 edge_duplicates_median=5
+n=1000 bfprt_cmp=6484 (cmp/n=6.48) quickselect_cmp=4794 bfprt_ok=Y quickselect_ok=Y
+n=10000 bfprt_cmp=62748 (cmp/n=6.27) quickselect_cmp=39738 bfprt_ok=Y quickselect_ok=Y
+n=100000 bfprt_cmp=787573 (cmp/n=7.88) quickselect_cmp=410577 bfprt_ok=Y quickselect_ok=Y
+n=1000000 bfprt_cmp=4812607 (cmp/n=4.81) quickselect_cmp=4318759 bfprt_ok=Y quickselect_ok=Y
+adversarial_n=500000 bfprt_cmp=3619572 quickselect_cmp=2467976 bfprt_ok=Y quickselect_ok=Y
+ALL_CHECKS_PASSED
