@@ -393,4 +393,4 @@
 | 11-18 | Marching Tetrahedra Isosurface Extraction | 图形学, 四面体剖分, 等值面提取, 立方体对角划分5四面体, 无歧义顶点表, 网格流形性/体积守恒量化验证 | marching_tetrahedra_output.ppm | published |
 | 11-19 | Chinese Remainder Theorem (CRT + Modular Arithmetic) | 算法/数论, 中国剩余定理CRT, 扩展欧几里得模逆, 快速幂, 同余方程组求解, Garner表示, 暴力枚举基准对比, 重构正确性/加速比量化验证 | crt_output.txt | verified |
 | 11-20 | Median of Medians Linear Selection (BFPRT) | 算法/分治, 中位数中位数BFPRT线性选择, Quickselect对比, MoM分组, 确定性O(n)最坏情况验证, 基准对比, 正确性/复杂度量化验证 | bfprt_output.txt | verified |
-| 11-21 | Preetham Analytic Sky Model (Perez Daylight Distribution) | 图形学, 大气光学, 解析天空模型, Perez亮度分布, 色度XYZ→sRGB, 太阳方向/高度角, 天顶/地平线/环日亮度量化验证 | preetham_sky_output.ppm | in-progress |
+| 11-21 | Preetham Analytic Sky Model (Perez Daylight Distribution) | 图形学, 大气光学, 解析天空模型, Perez亮度分布, 色度XYZ→sRGB, 太阳方向/高度角, 天顶/地平线/环日亮度量化验证 | preetham_sky_output.ppm | dev-done |
