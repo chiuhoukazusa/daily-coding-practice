@@ -1,0 +1,10 @@
+[Test1 直线版] N=2000 Q=20000 mismatch=0
+PASS
+[Test2 线段版] N=3000 Q=20000 mismatch=0
+PASS
+[Test3 应用] 全坐标采样 min=-498346236 有效=yes
+[Test4 性能] N=100000 Q=100000
+  暴力耗时 = 8200.8 ms
+  LiChao耗时 = 2.90494 ms
+  加速比 = 2823.05x
+  结果一致性 = PASS
