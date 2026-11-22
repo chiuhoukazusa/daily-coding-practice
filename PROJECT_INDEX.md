@@ -395,4 +395,4 @@
 | 11-20 | Median of Medians Linear Selection (BFPRT) | 算法/分治, 中位数中位数BFPRT线性选择, Quickselect对比, MoM分组, 确定性O(n)最坏情况验证, 基准对比, 正确性/复杂度量化验证 | bfprt_output.txt | verified |
 | 11-21 | Preetham Analytic Sky Model (Perez Daylight Distribution) | 图形学, 大气光学, 解析天空模型, Perez亮度分布, 色度XYZ→sRGB, 太阳方向/高度角, 天顶/地平线/环日亮度量化验证 | preetham_sky_output.ppm | verified |
 | 11-22 | Spatial Hash Grid Collision Detection | 游戏开发/物理模拟, 空间哈希网格, 均匀网格邻域查询, 宽相碰撞检测, AABB重叠, 暴力O(n^2)基准对比, 复杂度/加速比量化验证 | spatial_hash_output.txt | published |
-| 11-23 | Li Chao Segment Tree (Convex Hull Trick) | 数据结构, 凸包技巧, 李超线段树, 动态插入直线/线段, 点最小值查询, 暴力基准对比, 正确性/加速比量化验证 | dev-done |
+| 11-23 | Li Chao Segment Tree (Convex Hull Trick) | 数据结构, 凸包技巧, 李超线段树, 动态插入直线/线段, 点最小值查询, 暴力基准对比, 正确性/加速比量化验证 | verified |
