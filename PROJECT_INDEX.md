@@ -398,4 +398,4 @@
 | 11-23 | Li Chao Segment Tree (Convex Hull Trick) | 数据结构, 凸包技巧, 李超线段树, 动态插入直线/线段, 点最小值查询, 暴力基准对比, 正确性/加速比量化验证 | verified |
 | 11-24 | DDA Voxel Grid Traversal (Amanatides-Woo) | 图形学/游戏开发, 3D-DDA体素网格光线遍历, 步进式单元格, tMax/tDelta参数化, 爆破基准对比, 遍历正确性/性能量化验证 | published |
 | 11-25 | Anisotropic GGX Microfacet BRDF | 图形学, 各向异性GGX法线分布, 拉伸高光, tangen/bitangent粗糙度轴, Cook-Torrance, 高光椭圆度/能量量化验证, 各向同性对比 | anisotropic_ggx_output.ppm | verified |
-| 11-26 | Voronoi Diagram Construction (Fortune's Sweep-Line) | 计算几何, Voronoi图, Fortune扫描线算法, 海滩线, 断点事件, Delaunay对偶, 单元面积蒙特卡洛验证, 最近站点像素分类, 欧拉公式验证 | voronoi_output.ppm | verified |
+| 11-26 | Voronoi Diagram Construction (Fortune's Sweep-Line) | 计算几何, Voronoi图, Fortune扫描线算法, 海滩线, 断点事件, Delaunay对偶, 单元面积蒙特卡洛验证, 最近站点像素分类, 欧拉公式验证 | voronoi_output.ppm | published |
