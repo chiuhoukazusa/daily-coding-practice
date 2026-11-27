@@ -1,0 +1,26 @@
+=== Validation 1: plane extraction sanity ===
+  all plane normals unit-length: PASS
+  all 8 frustum corners inside (dist<=0): PASS (max dist 5.33e-15)
+  point behind camera classified OUT: PASS
+
+=== Validation 2: correctness vs brute-force sampling ===
+  AABB: 2000 tests, false-negatives=0 (must be 0), IN/OUT disagree=0
+  Sphere: 2000 tests, false-negatives=0 (must be 0), IN/OUT disagree=0
+  AABB INTERSECT predictions verified by sampling: 218/218
+  => correctness: PASS
+
+=== Validation 3: culling cost (early-out benefit) ===
+  objects tested: 200000
+  culled (OUT): 157938, visible (IN+INTERSECT): 42062
+  naive plane-tests (no early-out): 1200000  (== 1200000 = 6*N)
+  analytic plane-tests (early-out):  555469
+  plane-test reduction: 46.3% of naive
+  naive time:   1.39 ms
+  analytic time: 3.68 ms
+  culled-count consistency (naive vs analytic): PASS
+
+=== Summary ===
+  frustum extraction: PASS
+  classification correctness: PASS
+  cull ratio: 79.0% of scene rejected
+  plane-test reduction: 46.3% of naive (early-out saves work)
