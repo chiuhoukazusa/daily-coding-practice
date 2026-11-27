@@ -400,3 +400,4 @@
 | 11-25 | Anisotropic GGX Microfacet BRDF | 图形学, 各向异性GGX法线分布, 拉伸高光, tangen/bitangent粗糙度轴, Cook-Torrance, 高光椭圆度/能量量化验证, 各向同性对比 | anisotropic_ggx_output.ppm | verified |
 | 11-26 | Voronoi Diagram Construction (Fortune's Sweep-Line) | 计算几何, Voronoi图, Fortune扫描线算法, 海滩线, 断点事件, Delaunay对偶, 单元面积蒙特卡洛验证, 最近站点像素分类, 欧拉公式验证 | voronoi_output.ppm | published |
 | 11-27 | Ordered Dithering (Bayer Matrix) | 图像处理/数字半调, Bayer有序抖动矩阵, 阈值量化, 1/2/4位调色板, 朴素量化对比, 色阶数/MSE/PSNR/梯度平滑度量化验证 | published |
+| 11-28 | View Frustum Culling (Plane Extraction + AABB/Sphere Tests) | 游戏开发/实时渲染, 视锥体剔除, 6平面提取, AABB/球体-平面判定, 视图矩阵, 暴力分类基准对比, 剔除正确性/加速比量化验证 | in-progress |
